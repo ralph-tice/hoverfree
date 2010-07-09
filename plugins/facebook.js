@@ -6,7 +6,11 @@ hoverZoomPlugins.push( {
 		var links = $("a.uiPhotoThumb,a.UIImageBlock_MED_Image,a.UIImageBlock_SMALL_Image");
 		links.each(function(index, el) {
 			var src = $(el).find('img')[0].src;
-			src = src.replace(/photos-\w/, 'sphotos').replace(/_[sq]\./, '_n.').replace(/\/q/, '/n');
+			if (src.indexOf('safe_image.php') > -1) {
+				src = unescape(src.substr(src.indexOf('&url=') + 5));				
+			} else {
+				src = src.replace(/photos-\w/, 'sphotos').replace(/_[sq]\./, '_n.').replace(/\/q/, '/n');
+			}
 			$(el).data('hoverzoomsrc', src);
 		});
 		return links;		
