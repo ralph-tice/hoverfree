@@ -1,0 +1,10 @@
+#hoverZoomImg { 
+	position: fixed; 
+	top: 10px; 
+	left: 10px; 
+	display: none; 
+	border: 2px solid #444; 
+	padding: 2px; 
+	background-color: #fff; 
+	border-radius: 3px;
+}

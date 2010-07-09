@@ -1,0 +1,13 @@
+{
+    "name": "Hover Zoom",
+    "version": "0.1",
+    "description": "Display full size image when the mouse hovers a link.",
+    "content_scripts": [
+        {
+			"matches": ["http://*/*"],
+			"css": ["hoverzoom.css"],
+            "js": ["jquery.min.js", "hoverzoom.js"],
+			"all_frames": true
+        }
+    ]
+}
