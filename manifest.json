@@ -8,6 +8,16 @@
 			"css": ["hoverzoom.css"],
             "js": ["jquery.min.js", "hoverzoom.js"],
 			"all_frames": true
-        }
-    ]
+        },
+        {
+			"matches": ["http://*/*"],
+            "js": ["plugins/default.js"],
+			"run_at": "document_start"
+        },
+        {
+			"matches": ["http://www.facebook.com/*"],
+            "js": ["plugins/facebook.js"],
+			"run_at": "document_start"
+        }    
+	]
 }

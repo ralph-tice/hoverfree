@@ -7,4 +7,5 @@
 	padding: 2px; 
 	background-color: #fff; 
 	border-radius: 3px;
+	z-index: 1000;
 }

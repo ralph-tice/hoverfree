@@ -1,4 +1,5 @@
-﻿function hoverZoom() {
+﻿var hoverZoomPlugins = hoverZoomPlugins ? hoverZoomPlugins : [];
+function hoverZoom() {
 
 	var wnd = $(window);
 	var doc = $(document);
@@ -23,6 +24,7 @@
 			position.top = wnd.scrollTop();
 		if (position.left + hoverZoomImg.width() > wnd.scrollLeft() + wnd.width() && position.left > wnd.scrollLeft() + wnd.width() / 2) {
 			position.left -= hoverZoomImg.width() + 20;
+			
 		} else {
 			position.left += 10;
 		}
@@ -33,12 +35,6 @@
 		mousePos = {top:event.pageY, left:event.pageX};
 		posImg(mousePos);
 	};
-	
-	function getImgLinks() {
-		return $("a[href]").filter(function(index) {
-			return this.href.match(/\.(jpg|jpeg|gif|png)$/i);
-		});
-	}
 	
 	// Mouse enters link
 	function imgLinkMouseEnter(event) {
@@ -51,8 +47,8 @@
 		hoverZoomImg.show();
 		
 		// Full size image
-		lastSrc = $(this).attr('href');
-		$('<img>').attr('src', $(this).attr('href')).load(function () {
+		lastSrc = $(this).data('hoverzoomsrc');
+		$('<img>').attr('src', $(this).data('hoverzoomsrc')).load(function () {
 			if (lastSrc == $(this).attr('src')) {
 				loading = false;
 				hoverZoomImg.empty();
@@ -70,20 +66,20 @@
 	}
 	
 	function bindImgLinks() {
-	
-		// Links to images
-		var imgLinks = getImgLinks();
-
-		imgLinks.unbind('mouseenter', imgLinkMouseEnter);
-		imgLinks.unbind('mouseleave', imgLinkMouseLeave);
-		imgLinks.bind('mouseenter', imgLinkMouseEnter);
-		imgLinks.bind('mouseleave', imgLinkMouseLeave);
+		for (i in hoverZoomPlugins) {
+			var imgLinks = hoverZoomPlugins[i].prepareImgLinks();
+			imgLinks.unbind('mouseenter', imgLinkMouseEnter);
+			imgLinks.unbind('mouseleave', imgLinkMouseLeave);
+			imgLinks.unbind('mousedown', imgLinkMouseLeave);
+			imgLinks.bind('mouseenter', imgLinkMouseEnter);
+			imgLinks.bind('mouseleave', imgLinkMouseLeave);
+			imgLinks.bind('mousedown', imgLinkMouseLeave);
+		}
 	}
 	
 	bindImgLinks();
 	
 	$(window).bind('DOMNodeInserted', function(event) {
-		//console.log(event.srcElement);
 		if (event.srcElement && $(event.srcElement).find('a[href]').length)
 			bindImgLinks();
 	});
