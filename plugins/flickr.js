@@ -1,7 +1,7 @@
 var hoverZoomPlugins = hoverZoomPlugins ? hoverZoomPlugins : [];
 hoverZoomPlugins.push( {
 	"name": "Flickr",
-	"version": "1.0",
+	"version": "0.1",
 	"prepareImgLinks": function() {
 		var links = $("span.photo_container a,div.context-photos a");
 		var res = $();

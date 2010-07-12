@@ -15,14 +15,24 @@
 			"run_at": "document_start"
         },
         {
-			"matches": ["http://www.facebook.com/*"],
+			"matches": ["http://*.facebook.com/*"],
             "js": ["plugins/facebook.js"],
 			"run_at": "document_start"
         },
         {
-			"matches": ["http://www.flickr.com/*"],
+			"matches": ["http://*.flickr.com/*"],
             "js": ["plugins/flickr.js"],
 			"run_at": "document_start"
-        } 
+        },
+        {
+			"matches": ["http://picasaweb.google.com/*"],
+            "js": ["plugins/picasa.js"],
+			"run_at": "document_start"
+        },
+        {
+			"matches": ["http://*.deviantart.com/*"],
+            "js": ["plugins/deviantart.js"],
+			"run_at": "document_start"
+        }
 	]
 }
