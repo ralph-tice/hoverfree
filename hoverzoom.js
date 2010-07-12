@@ -62,6 +62,8 @@ function hoverZoom() {
 	function documentMouseMove(event) {
 		mousePos = {top:event.pageY, left:event.pageX};
 		var links = $(event.target).parents('.hoverZoomLink');
+		if ($(event.target).hasClass('hoverZoomLink'))
+			links = links.add($(event.target));
 		if (links.length > 0) {
 		
 			// Happens when the mouse goes from an image to another without hovering the page background
