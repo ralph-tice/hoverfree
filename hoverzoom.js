@@ -11,11 +11,12 @@ function hoverZoom() {
 	var imgSrc = '';
 	var mousePos = {};
 	var loading = false;
+	var bindLinksTimeout;
 	
 	function posImg(position) {
 		if (!imgFullSize)
 			return;
-		position = position || mousePos;
+		position = position || {top:mousePos.top, left:mousePos.left};
 		
 		var offset = 20;
 		
@@ -78,6 +79,7 @@ function hoverZoom() {
 			if (!imgFullSize) {
 				loading = true;
 				imgLoading.appendTo(hoverZoomImg);
+				//$('<span>' + imgSrc + '</span>').appendTo(hoverZoomImg);
 				hoverZoomImg.show();
 				imgFullSize = $('<img />').attr('src', imgSrc).load(function () {				
 					// Only the last hovered link gets displayed
@@ -96,14 +98,22 @@ function hoverZoom() {
 			hoverZoomImg.empty();
 			hoverZoomImg.hide();
 		}
-	}
+	}	
 	
 	function bindImgLinks() {
 		for (i in hoverZoomPlugins) {
 			hoverZoomPlugins[i].prepareImgLinks().each(function() {
 				$(this).addClass('hoverZoomLink');
+				if (!$(this).data('hoverzoomsrc')) {
+					bindImgLinksAsync();
+				}
 			});
 		}
+	}
+	
+	function bindImgLinksAsync() {
+		window.clearTimeout(bindLinksTimeout);
+		bindLinksTimeout = window.setTimeout(bindImgLinks, 500);
 	}
 	
 	bindImgLinks();
@@ -111,10 +121,13 @@ function hoverZoom() {
 	$(document).bind('mousemove', documentMouseMove);
 		
 	wnd.bind('DOMNodeInserted', function(event) {
+		//console.log(event.srcElement);
 		if (event.srcElement && (
 		   (event.srcElement.nodeName && event.srcElement.nodeName.toLowerCase() == 'a') ||
-		   $(event.srcElement).find('a[href]').length))
-			bindImgLinks();
+		   $(event.srcElement).find('a').length) ||
+		   (event.relatedNode && event.relatedNode.nodeName && event.relatedNode.nodeName.toLowerCase() == 'a')) {
+			bindImgLinksAsync();
+		}
 	});
 };
 
