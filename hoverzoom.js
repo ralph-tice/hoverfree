@@ -23,8 +23,7 @@ function hoverZoom() {
 		if (position.top < wnd.scrollTop())
 			position.top = wnd.scrollTop();
 		if (position.left + hoverZoomImg.width() > wnd.scrollLeft() + wnd.width() && position.left > wnd.scrollLeft() + wnd.width() / 2) {
-			position.left -= hoverZoomImg.width() + 20;
-			
+			position.left -= hoverZoomImg.width() + 20;			
 		} else {
 			position.left += 10;
 		}
@@ -38,6 +37,9 @@ function hoverZoom() {
 	
 	// Mouse enters link
 	function imgLinkMouseEnter(event) {
+		//if ($(this).data('hoverzoomsrc') != '')
+			//return;
+			
 		posImg({top:event.pageY, left:event.pageX});
 		doc.bind('mousemove', documentMouseMove);
 		
@@ -53,7 +55,8 @@ function hoverZoom() {
 				loading = false;
 				hoverZoomImg.empty();
 				$(this).appendTo(hoverZoomImg);
-				posImg(mousePos);					
+				posImg(mousePos);	
+console.log(lastSrc);				
 			}
 		});
 	}
@@ -80,7 +83,9 @@ function hoverZoom() {
 	bindImgLinks();
 	
 	$(window).bind('DOMNodeInserted', function(event) {
-		if (event.srcElement && $(event.srcElement).find('a[href]').length)
+		if (event.srcElement && (
+		   (event.srcElement.nodeName && event.srcElement.nodeName.toLowerCase() == 'a') ||
+		   $(event.srcElement).find('a[href]').length))
 			bindImgLinks();
 	});
 };
