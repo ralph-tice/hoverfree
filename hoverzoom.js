@@ -1,4 +1,7 @@
-﻿var hoverZoomPlugins = hoverZoomPlugins ? hoverZoomPlugins : [];
+﻿// Copyright (c) 2010 Romain Vallet
+// Licensed under the MIT license, read license.txt
+
+var hoverZoomPlugins = hoverZoomPlugins || [];
 function hoverZoom() {
 
 	var wnd = $(window);
