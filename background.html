@@ -1,0 +1,29 @@
+<html>
+	<body>
+		<script type="text/javascript">
+			function loadJQuery(callback) {
+				var xhr = new XMLHttpRequest();
+				xhr.onreadystatechange = function(data) {
+					if (xhr.readyState == 4) {
+						if (xhr.status == 200) {
+							callback(xhr.responseText);
+						} else {
+							callback(null);
+						}
+					}
+				}
+				var url = 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js';
+				xhr.open('GET', url, true);
+				xhr.send();
+			};
+
+			function onRequest(request, sender, callback) {
+				if (request.action == 'loadJQuery') {
+					loadJQuery(callback);
+				}
+			};
+
+			chrome.extension.onRequest.addListener(onRequest);
+		</script>
+	</body>
+</html>

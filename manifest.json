@@ -9,11 +9,15 @@
 		"48": "icon48.png",
 		"128": "icon128.png"
 	},
+	"background_page": "background.html",
+	"permissions": [
+		"http://ajax.googleapis.com/"
+	],
 	"content_scripts": [
         {
 			"matches": ["http://*/*"],
 			"css": ["hoverzoom.css"],
-            "js": ["jquery.min.js", "hoverzoom.js"],
+            "js": ["hoverzoom.js"],
 			"all_frames": true
         },
         {
@@ -53,7 +57,7 @@
             "js": ["plugins/wikipedia.js"],
 			"run_at": "document_start"
         },
-        {
+		{
 			"matches": ["http://*.google.com/*", 
 						"https://*.google.com/*", 
 						"http://*.google.ad/*", 
@@ -414,6 +418,11 @@
 						"https://*.google.cat/*"],
             "js": ["plugins/google.js"],
 			"run_at": "document_start"
-        }
+        },
+        {
+			"matches": ["http://*.search.yahoo.com/*"],
+            "js": ["plugins/yahoo.js"],
+			"run_at": "document_start"
+        }        
 	]
 }

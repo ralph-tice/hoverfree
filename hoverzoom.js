@@ -81,7 +81,8 @@ function hoverZoom() {
 				hideHoverZoomImg();
 			}
 			
-			imgSrc = unescape(links.data('hoverzoomsrc'));
+			imgSrc = links.data('hoverzoomsrc');
+			//console.log(imgSrc);
 			
 			// If no image is currently displayed...
 			if (!imgFullSize) {
@@ -117,6 +118,8 @@ function hoverZoom() {
 				$(this).addClass('hoverZoomLink');
 				if (!$(this).data('hoverzoomsrc')) {
 					bindImgLinksAsync();
+				} else {
+					$(this).data('hoverzoomsrc', unescape($(this).data('hoverzoomsrc')));
 				}
 			});
 		}
@@ -142,4 +145,13 @@ function hoverZoom() {
 	});
 };
 
-hoverZoom();
+function jQueryOnLoad(data) {
+	if (data != null) {
+		eval(data);
+		hoverZoom();
+	} else {
+		console.warn('HoverZoom: Failed to load jQuery');
+	}
+}
+
+chrome.extension.sendRequest({'action' : 'loadJQuery'}, jQueryOnLoad);
