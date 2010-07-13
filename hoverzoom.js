@@ -59,6 +59,12 @@ function hoverZoom() {
 		
 		hoverZoomImg.offset(position);
 	}
+	
+	function hideHoverZoomImg() {
+			imgFullSize = null;
+			hoverZoomImg.empty();
+			hoverZoomImg.hide();
+	}
 
 	function documentMouseMove(event) {
 		mousePos = {top:event.pageY, left:event.pageX};
@@ -69,8 +75,7 @@ function hoverZoom() {
 		
 			// Happens when the mouse goes from an image to another without hovering the page background
 			if (links.data('hoverzoomsrc') != imgSrc) {
-				hoverZoomImg.empty();
-				imgFullSize = null;
+				hideHoverZoomImg();
 			}
 			
 			imgSrc = links.data('hoverzoomsrc');
@@ -81,7 +86,7 @@ function hoverZoom() {
 				imgLoading.appendTo(hoverZoomImg);
 				//$('<span>' + imgSrc + '</span>').appendTo(hoverZoomImg);
 				hoverZoomImg.show();
-				imgFullSize = $('<img />').attr('src', imgSrc).load(function () {				
+				imgFullSize = $('<img />').attr('src', imgSrc).load(function() {				
 					// Only the last hovered link gets displayed
 					if (imgSrc == $(this).attr('src')) {
 						loading = false;
@@ -90,13 +95,15 @@ function hoverZoom() {
 						$(this).appendTo(hoverZoomImg);
 						posImg();
 					}
+				}).error(function() {
+					if (imgSrc == $(this).attr('src')) {
+						hideHoverZoomImg();
+					}
 				});
 			}
 			posImg();
 		} else {
-			imgFullSize = null;
-			hoverZoomImg.empty();
-			hoverZoomImg.hide();
+			hideHoverZoomImg();
 		}
 	}	
 	
