@@ -4,9 +4,13 @@
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	"name": "Facebook",
-	"version": "0.1",
+	"version": "0.2",
 	"prepareImgLinks": function() {
-		var links = $("a.uiPhotoThumb,a.UIImageBlock_MED_Image,a.UIImageBlock_SMALL_Image,td.UIFullListing_Pic a,li.buddyRow a,a.chat_info_pic_link,a.UIPhotoGrid_PhotoLink,a.uiAttachmentMedia,div.uiFacepile a");
+		var links = $();
+		var imgs = $('a img.img:not(.loader)');
+		imgs.each(function() {
+			links = links.add($(this).parents('a').get(0));
+		});
 		links.each(function() {
 			
 			// Thumbnail URL
