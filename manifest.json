@@ -1,8 +1,15 @@
 {
     "name": "Hover Zoom",
     "version": "0.1",
-    "description": "Display full size image when the mouse hovers a link.",
-    "content_scripts": [
+    "description": "Move the mouse cursor over a link to an image to view it in full size.",
+	"update_url": "http://romanito.googlecode.com/svn/chrome/extensions/hoverzoom/trunk/update.xml",
+	"icons": {
+		"16": "icon16.png",
+		"32": "icon32.png",
+		"48": "icon48.png",
+		"128": "icon128.png"
+	},
+	"content_scripts": [
         {
 			"matches": ["http://*/*"],
 			"css": ["hoverzoom.css"],
