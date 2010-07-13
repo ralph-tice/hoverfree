@@ -81,7 +81,7 @@ function hoverZoom() {
 				hideHoverZoomImg();
 			}
 			
-			imgSrc = links.data('hoverzoomsrc');
+			imgSrc = unescape(links.data('hoverzoomsrc'));
 			
 			// If no image is currently displayed...
 			if (!imgFullSize) {
@@ -101,6 +101,7 @@ function hoverZoom() {
 				}).error(function() {
 					if (imgSrc == $(this).attr('src')) {
 						hideHoverZoomImg();
+						console.warn('HoverZoom: Failed to load image at ' + imgSrc);
 					}
 				});
 			}
