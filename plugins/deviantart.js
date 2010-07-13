@@ -1,4 +1,4 @@
-var hoverZoomPlugins = hoverZoomPlugins ? hoverZoomPlugins : [];
+var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	"name": "deviantART",
 	"version": "0.1",

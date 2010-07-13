@@ -1,4 +1,4 @@
-var hoverZoomPlugins = hoverZoomPlugins ? hoverZoomPlugins : [];
+var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	"name": "Picasa Web Albums",
 	"version": "0.1",
