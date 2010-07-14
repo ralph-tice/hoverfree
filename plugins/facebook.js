@@ -7,7 +7,7 @@ hoverZoomPlugins.push( {
 	"version": "0.2",
 	"prepareImgLinks": function() {
 		var links = $();
-		var imgs = $('a img.img:not(.loader)');
+		var imgs = $('a img.img:not(.loader):not(.throbber)');
 		imgs.each(function() {
 			links = links.add($(this).parents('a').get(0));
 		});
