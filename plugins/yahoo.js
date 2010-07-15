@@ -8,27 +8,33 @@ hoverZoomPlugins.push( {
 	"prepareImgLinks": function() {
 		var links = $("#yschimg a[href], .sm-media a[href]");
 		var res = $();
-		links.each(function() {
-			if ($(this).attr('href')) {
-				var src = unescape($(this).attr('href'));
-				var imgUrlIndex = src.indexOf('imgurl=');
-				if (imgUrlIndex == -1) {
-					src  = unescape($(this).find('img')[0].src);
-					imgUrlIndex = src.indexOf('url=');
-					if (imgUrlIndex > -1) {
-						imgUrlIndex -= 3;
+		try {
+			links.each(function() {
+					if ($(this).attr('href')) {
+						var src = unescape($(this).attr('href'));
+						var imgUrlIndex = src.indexOf('imgurl=');
+						if (imgUrlIndex == -1) {
+							var img = $(this).find('img').get(0);
+							if (img) {
+								src  = img.attr('src');
+								imgUrlIndex = src.indexOf('url=');
+								if (imgUrlIndex > -1) {
+									imgUrlIndex -= 3;
+								}
+							}
+						}
+						if (imgUrlIndex > -1) {
+							src = src.substring(imgUrlIndex + 7, src.indexOf('&', imgUrlIndex));		
+							if (src.substr(0, 4) != 'http') {
+								src = 'http://' + src;
+							}
+							$(this).data('hoverZoomSrc', src);
+							res = res.add($(this));
+						}
 					}
-				}
-				if (imgUrlIndex > -1) {
-					src = src.substring(imgUrlIndex + 7, src.indexOf('&', imgUrlIndex));		
-					if (src.substr(0, 4) != 'http') {
-						src = 'http://' + src;
-					}
-					$(this).data('hoverZoomSrc', src);
-					res = res.add($(this));
-				}
-			}
-		});
-		return res;		
+			});
+		} finally {
+			return res;
+		}
 	}
 });

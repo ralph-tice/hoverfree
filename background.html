@@ -1,6 +1,5 @@
 <html>
 	<body>
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 		<script type="text/javascript">
 			function loadJQuery(callback) {
 				var xhr = new XMLHttpRequest();
@@ -17,20 +16,11 @@
 				xhr.open('GET', url, true);
 				xhr.send();
 			};
-			
-			function searchIframe(url, searchString, callback) {
-				$('#hoverZoomIframe').attr('src', url).load(function() {
-					callback($(this.document).find(searchString).attr('src'));
-				});
-			}
 
 			function onRequest(request, sender, callback) {
 				switch(request.action) {
 					case 'loadJQuery':
 						loadJQuery(callback);
-						break;
-					case 'searchIframe':
-						searchIframe(request.url, request.searchString, callback);
 						break;
 				}
 			};
