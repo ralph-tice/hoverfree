@@ -11,7 +11,7 @@ hoverZoomPlugins.push( {
 			var src = $(this).find('img')[0].src;
 			var ext = src.substr(src.lastIndexOf('.'));
 			src = src.substring(0, src.indexOf(ext) + 4).replace(/thumb\//, '');
-			$(this).data('hoverzoomsrc', src);
+			$(this).data('hoverZoomSrc', src);
 		});
 		return links;		
 	}

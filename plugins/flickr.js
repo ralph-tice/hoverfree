@@ -17,11 +17,11 @@ hoverZoomPlugins.push( {
 			// If an invisible link (spaceball.gif) has been put on the thumbnail...
 			var spaceBall = $(this).parent().parent().find('a.image_link');
 			if (spaceBall.length > 0) {
-				spaceBall.data('hoverzoomsrc', src);
+				spaceBall.data('hoverZoomSrc', src);
 				res = res.add(spaceBall);
 			} 
 
-			$(this).data('hoverzoomsrc', src);
+			$(this).data('hoverZoomSrc', src);
 			res = res.add($(this));
 		});
 		return $(res);		

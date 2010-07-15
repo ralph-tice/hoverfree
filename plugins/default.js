@@ -10,8 +10,8 @@ hoverZoomPlugins.push( {
 			return this.href.match(/^[^\?]*\.(jpg|jpeg|gif|png)$/i);
 		});
 		links.each(function() {
-			if (!$(this).data('hoverzoomsrc'))
-				$(this).data('hoverzoomsrc', this.href);
+			if (!$(this).data('hoverZoomSrc') && !$(this).data('hoverZoomIframeSearch'))
+				$(this).data('hoverZoomSrc', this.href);
 		});
 		return links;	
 	}

@@ -28,7 +28,7 @@ hoverZoomPlugins.push( {
 			} else {
 				src = src.replace(/photos-\w/, 'sphotos').replace(/_[sqta]\./, '_n.').replace(/\/q/, '/n');
 			}
-			$(this).data('hoverzoomsrc', src);
+			$(this).data('hoverZoomSrc', src);
 		});
 		return links;		
 	}

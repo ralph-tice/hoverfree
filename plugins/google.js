@@ -13,7 +13,7 @@ hoverZoomPlugins.push( {
 				var imgUrlIndex = $(this).attr('href').indexOf('imgurl=');
 				if (imgUrlIndex > -1) {
 					var src = $(this).attr('href').substring(imgUrlIndex + 7, $(this).attr('href').indexOf('&', imgUrlIndex));		
-					$(this).data('hoverzoomsrc', src);
+					$(this).data('hoverZoomSrc', src);
 					res = res.add($(this));
 				}
 			}

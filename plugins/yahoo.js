@@ -24,7 +24,7 @@ hoverZoomPlugins.push( {
 					if (src.substr(0, 4) != 'http') {
 						src = 'http://' + src;
 					}
-					$(this).data('hoverzoomsrc', src);
+					$(this).data('hoverZoomSrc', src);
 					res = res.add($(this));
 				}
 			}

@@ -10,7 +10,7 @@ hoverZoomPlugins.push( {
 		links.each(function() {
 			var src = $(this).find('img')[0].src;
 			src = src.replace(/\/(s128|s144-c)\//, '/s800/');
-			$(this).data('hoverzoomsrc', src);
+			$(this).data('hoverZoomSrc', src);
 		});
 		return links;		
 	}
