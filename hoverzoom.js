@@ -64,7 +64,10 @@ function hoverZoom() {
 	}
 	
 	function hideHoverZoomImg() {
-		imgFullSize = null;
+		if (imgFullSize != null) {
+			$(imgFullSize).remove();
+			imgFullSize = null;
+		}
 		hoverZoomImg.empty();
 		hoverZoomImg.hide();
 	}
@@ -123,10 +126,10 @@ function hoverZoom() {
 	function bindImgLinks() {
 		for (i in hoverZoomPlugins) {
 			hoverZoomPlugins[i].prepareImgLinks().each(function() {
-				$(this).addClass('hoverZoomLink');
 				if (!$(this).data('hoverZoomSrc') && !$(this).data('hoverZoomIframeSearch')) {
 					bindImgLinksAsync();
 				} else {
+					$(this).addClass('hoverZoomLink');
 					$(this).data('hoverZoomSrc', deepUnescape($(this).data('hoverZoomSrc')));
 				}
 			});
