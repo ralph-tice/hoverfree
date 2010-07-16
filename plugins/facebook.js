@@ -7,19 +7,19 @@ hoverZoomPlugins.push( {
 	"version": "0.2",
 	"prepareImgLinks": function() {
 		var links = $();
-		var imgs = $('a img.img:not(.loader):not(.throbber)');
+		var imgs = $('a img.img:not([src^="http://static.ak.fbcdn.net"]),a img.UIProfileImage'); //:not(.loader):not(.throbber)
 		imgs.each(function() {
 			links = links.add($(this).parents('a').get(0));
 		});
 		links.each(function() {
 			
 			// Thumbnail URL
-			var src = $(this).find('img')[0].src;
+			var src = unescape($(this).find('img')[0].src);
 			
 			// If image URL is included as a querystring parameter
-			var indexQS = src.indexOf('&url=');
+			var indexQS = src.lastIndexOf('&url=');
 			if (indexQS == -1)
-				indexQS = src.indexOf('&src=');
+				indexQS = src.lastIndexOf('&src=');
 				
 			if (indexQS > -1) {
 				src = unescape(src.substr(indexQS + 5));
