@@ -1,6 +1,6 @@
 {
     "name": "Hover Zoom",
-    "version": "0.2",
+    "version": "0.3",
     "description": "Move the mouse cursor over a link to an image to view it in full size.",
 	"icons": {
 		"16": "icon16.png",
@@ -9,7 +9,12 @@
 		"128": "icon128.png"
 	},
 	"background_page": "background.html",
+	"page_action": {
+		"default_icon": "icon19.png",
+		"default_title": "Hover Zoom"
+	},
 	"permissions": [
+		"tabs",
 		"http://ajax.googleapis.com/"
 	],
 	"content_scripts": [

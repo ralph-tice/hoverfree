@@ -15,6 +15,8 @@ function hoverZoom() {
 	var mousePos = {};
 	var loading = false;
 	var bindLinksTimeout;
+	var pageActionShown = false;
+	var extensionEnabled = true;
 	
 	function posImg(position) {
 		if (!imgFullSize)
@@ -73,6 +75,9 @@ function hoverZoom() {
 	}
 
 	function documentMouseMove(event) {
+		if (!extensionEnabled)
+			return;
+			
 		mousePos = {top:event.pageY, left:event.pageX};
 		var links = $(event.target).parents('.hoverZoomLink');
 		if ($(event.target).hasClass('hoverZoomLink'))
@@ -129,6 +134,10 @@ function hoverZoom() {
 				if (!$(this).data('hoverZoomSrc') && !$(this).data('hoverZoomIframeSearch')) {
 					bindImgLinksAsync();
 				} else {
+					if (!pageActionShown) {
+						chrome.extension.sendRequest({'action' : 'showPageAction'});
+						pageActionShown = true;
+					}
 					$(this).addClass('hoverZoomLink');
 					$(this).data('hoverZoomSrc', deepUnescape($(this).data('hoverZoomSrc')));
 				}
@@ -137,6 +146,7 @@ function hoverZoom() {
 	}
 	
 	function bindImgLinksAsync() {
+		console.log('bindImgLinksAsync');
 		window.clearTimeout(bindLinksTimeout);
 		bindLinksTimeout = window.setTimeout(bindImgLinks, 500);
 	}
@@ -170,9 +180,25 @@ function hoverZoom() {
 				bindImgLinksAsync();
 			}
 		});
+		
+		chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+			switch(request.action) {
+				case 'pageActionClicked':
+					extensionEnabled = request.extensionEnabled;
+					if (!extensionEnabled) {
+						hideHoverZoomImg();
+					}
+					break;
+			}
+		});
+		
 	}
 	
-	init();
+	chrome.extension.sendRequest({'action' : 'isExtensionEnabled'}, function(enabled) {
+		if (enabled) {
+			init();
+		}
+	});
 };
 
 function jQueryOnLoad(data) {

@@ -1,6 +1,12 @@
 <html>
 	<body>
 		<script type="text/javascript">
+			var pageActionShown = false;
+			
+			if (localStorage.extensionEnabled == null) {
+				localStorage.extensionEnabled = true;
+			}
+		
 			function loadJQuery(callback) {
 				var xhr = new XMLHttpRequest();
 				xhr.onreadystatechange = function(data) {
@@ -19,13 +25,33 @@
 
 			function onRequest(request, sender, callback) {
 				switch(request.action) {
+					case 'isExtensionEnabled':
+						callback(localStorage.extensionEnabled);
+						break;
 					case 'loadJQuery':
 						loadJQuery(callback);
+						break;
+					case 'showPageAction':
+						chrome.pageAction.show(sender.tab.id);
+						pageActionShown = true;
 						break;
 				}
 			};
 
 			chrome.extension.onRequest.addListener(onRequest);
+			
+			chrome.pageAction.onClicked.addListener(function(tab) {
+				if (pageActionShown) {
+					chrome.pageAction.setIcon({path: "icon19d.png", tabId: tab.id});
+				} else {
+					chrome.pageAction.setIcon({path: "icon19.png", tabId: tab.id});
+				}
+				pageActionShown = !pageActionShown;
+				localStorage.extensionEnabled = !localStorage.extensionEnabled;
+				chrome.tabs.sendRequest(tab.id, {action: "pageActionClicked", extensionEnabled: localStorage.extensionEnabled});
+			});
+			
+			
 		</script>
 	</body>
 </html>
