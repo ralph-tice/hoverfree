@@ -1,5 +1,5 @@
 #hoverZoomImg { 
-	position: fixed; 
+	position: absolute; 
 	display: none; 
 	border: 1px solid #444; 
 	padding: 2px; 

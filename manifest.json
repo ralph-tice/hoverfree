@@ -3,16 +3,16 @@
     "version": "0.3",
     "description": "Move the mouse cursor over a link to an image to view it in full size.",
 	"icons": {
-		"16": "icon16.png",
-		"32": "icon32.png",
-		"48": "icon48.png",
-		"128": "icon128.png"
+		"16": "images/icon16.png",
+		"32": "images/icon32.png",
+		"48": "images/icon48.png",
+		"128": "images/icon128.png"
 	},
 	"background_page": "background.html",
-	"page_action": {
-		"default_icon": "icon19.png",
+	"browser_action": {
+		"default_icon": "images/icon19.png",
 		"default_title": "Hover Zoom"
-	},
+	},	
 	"permissions": [
 		"tabs",
 		"http://ajax.googleapis.com/"
@@ -605,6 +605,46 @@
 			"matches": ["http://*.search.yahoo.com/*"],
             "js": ["plugins/yahoo.js"],
 			"run_at": "document_start"
-        }        
+        },
+        {
+			"matches": ["http://opendesktop.org/*",
+						"http://kde-apps.org/*",
+						"http://gtk-apps.org/*",
+						"http://meego-central.org/*",
+						"http://cli-apps.org/*",
+						"http://qt-apps.org/*",
+						"http://qt-prop.org/*",
+						"http://maemo-apps.org/*",
+						"http://java-apps.org/*",
+						"http://eyeos-apps.org/*",
+						"http://wine-apps.org/*",
+						"http://server-apps.org/*",
+						"http://kde-look.org/*",
+						"http://gnome-look.org/*",
+						"http://xfce-look.org/*",
+						"http://box-look.org/*",
+						"http://e17-stuff.org/*",
+						"http://beryl-themes.org/*",
+						"http://compiz-themes.org/*",
+						"http://ede-look.org/*",
+						"http://debian-art.org/*",
+						"http://gentoo-art.org/*",
+						"http://suse-art.org/*",
+						"http://ubuntu-art.org/*",
+						"http://kubuntu-art.org/*",
+						"http://linuxmint-art.org/*",
+						"http://frugalware-art.org/*",
+						"http://arch-stuff.org/*",
+						"http://fedora-art.org/*",
+						"http://mandriva-art.org/*",
+						"http://kde-files.org/*",
+						"http://opentemplate.org/*",
+						"http://gimpstuff.org/*",
+						"http://inkscapestuff.org/*",
+						"http://scribusstuff.org/*",
+						"http://blenderstuff.org/*"],
+            "js": ["plugins/opendesktop.js"],
+			"run_at": "document_start"
+        }       
 	]
 }

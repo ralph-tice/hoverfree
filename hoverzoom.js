@@ -9,7 +9,7 @@ function hoverZoom() {
 	var hoverZoomImg = $('<div id="hoverZoomImg"></div>');
 	hoverZoomImg.appendTo(document.body);
 	var imgFullSize = null;		
-	var imgLoading = $('<img />').attr('src', chrome.extension.getURL('loading.gif'));
+	var imgLoading = $('<img />').attr('src', chrome.extension.getURL('images/loading.gif'));
 	
 	var imgSrc = '';
 	var mousePos = {};
@@ -17,6 +17,7 @@ function hoverZoom() {
 	var bindLinksTimeout;
 	var pageActionShown = false;
 	var extensionEnabled = true;
+	var bindLinksDelay = 500;
 	
 	function posImg(position) {
 		if (!imgFullSize)
@@ -62,7 +63,7 @@ function hoverZoom() {
 				position.top = wnd.scrollTop();	
 		}
 		
-		hoverZoomImg.offset(position);
+		hoverZoomImg.css('top', position.top + 'px').css('left', position.left + 'px');
 	}
 	
 	function hideHoverZoomImg() {
@@ -146,9 +147,11 @@ function hoverZoom() {
 	}
 	
 	function bindImgLinksAsync() {
-		console.log('bindImgLinksAsync');
+		if (!extensionEnabled)
+			return;
 		window.clearTimeout(bindLinksTimeout);
-		bindLinksTimeout = window.setTimeout(bindImgLinks, 500);
+		bindLinksTimeout = window.setTimeout(bindImgLinks, bindLinksDelay);
+		bindLinksDelay *= 2;
 	}
 	
 	function deepUnescape(url) {
@@ -158,6 +161,15 @@ function hoverZoom() {
 			ueUrl = unescape(url);
 		}
 		return url;
+	}
+	
+	function applyEnabledState() {
+		if (extensionEnabled) {
+			init();
+		} else {
+			hideHoverZoomImg();
+			$(document).unbind('mousemove', documentMouseMove);
+		}
 	}
 	
 	function init() {
@@ -177,27 +189,25 @@ function hoverZoom() {
 			   (event.srcElement.nodeName && event.srcElement.nodeName.toLowerCase() == 'a') ||
 			   $(event.srcElement).find('a').length) ||
 			   (event.relatedNode && event.relatedNode.nodeName && event.relatedNode.nodeName.toLowerCase() == 'a')) {
+				bindLinksDelay = 500;
 				bindImgLinksAsync();
 			}
 		});
-		
-		chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
-			switch(request.action) {
-				case 'pageActionClicked':
-					extensionEnabled = request.extensionEnabled;
-					if (!extensionEnabled) {
-						hideHoverZoomImg();
-					}
-					break;
-			}
-		});
-		
+				
 	}
+
+	chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+		switch(request.action) {
+			case 'pageActionClicked':
+				extensionEnabled = request.extensionEnabled;
+				applyEnabledState();
+				break;
+		}
+	});
 	
 	chrome.extension.sendRequest({'action' : 'isExtensionEnabled'}, function(enabled) {
-		if (enabled) {
-			init();
-		}
+		extensionEnabled = enabled;
+		applyEnabledState();
 	});
 };
 
