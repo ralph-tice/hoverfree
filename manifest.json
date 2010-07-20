@@ -9,12 +9,14 @@
 		"128": "images/icon128.png"
 	},
 	"background_page": "background.html",
+	"options_page": "options.html",
 	"browser_action": {
 		"default_icon": "images/icon19.png",
 		"default_title": "Hover Zoom"
 	},	
 	"permissions": [
 		"tabs",
+		"history",
 		"http://ajax.googleapis.com/"
 	],
 	"content_scripts": [
@@ -646,6 +648,11 @@
 						"http://blenderstuff.org/*"],
             "js": ["plugins/opendesktop.js"],
 			"run_at": "document_start"
-        }       
+        },
+        {
+			"matches": ["http://*/*", "https://*/*"],
+            "js": ["plugins/twitpic.js"],
+			"run_at": "document_start"
+        }     
 	]
 }

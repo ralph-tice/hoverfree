@@ -11,6 +11,11 @@ hoverZoomPlugins.push( {
 			var src = $(this).find('img')[0].src;
 			src = src.replace(/\/(s128|s144-c)\//, '/s800/');
 			$(this).data('hoverZoomSrc', [src]);
+			
+			var tooltip = $(this).parent().find('.goog-icon-list-icon-meta:eq(0)');
+			if (tooltip.length) {
+				$(this).data('hoverZoomCaption', tooltip.text());
+			}
 		});
 		return links;		
 	}

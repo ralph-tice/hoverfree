@@ -14,7 +14,8 @@ hoverZoomPlugins.push( {
 		links.each(function() {
 			
 			// Thumbnail URL
-			var src = unescape($(this).find('img')[0].src);
+			var img = $(this).find('img').get(0);
+			var src = unescape(img.src);
 			
 			// If image URL is included as a querystring parameter
 			var indexQS = src.lastIndexOf('&url=');
@@ -28,7 +29,13 @@ hoverZoomPlugins.push( {
 			} else {
 				src = src.replace(/photos-\w/, 'sphotos').replace(/_[sqta]\./, '_n.').replace(/\/q/, '/n');
 			}
+			
 			$(this).data('hoverZoomSrc', [src]);
+			
+			var tooltip = $(this).find('.uiTooltipText:eq(0)');
+			if (tooltip.length) {
+				$(this).data('hoverZoomCaption', tooltip.text());
+			}
 		});
 		return links;		
 	}

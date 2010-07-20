@@ -33,6 +33,12 @@
 					case 'loadJQuery':
 						loadJQuery(callback);
 						break;
+					case 'addUrlToHistory':
+						chrome.history.addUrl({url: request.url});
+						break;
+					case 'getOptions':
+						callback(JSON.parse(localStorage.options));
+						break;
 				}
 			};
 			
@@ -45,38 +51,45 @@
 					chrome.browserAction.setTitle({title: 'Hover Zoom\nClick to enable automatic image zooming'});
 				}
 			}
+			
+			function browserActionOnClick(tab) {
+				// Store new state
+				localStorage.extensionEnabled = extensionEnabled = !extensionEnabled;
+				refreshBrowserActionIcon();
+				
+				// Send new state to all tabs
+				chrome.windows.getAll(null, function (windows) {
+					for (i in windows) {
+						chrome.tabs.getAllInWindow(windows[i].id, function(tabs) {
+							for (j in tabs) {
+								chrome.tabs.sendRequest(tabs[j].id, {action: 'extensionEnabledChanged', extensionEnabled: extensionEnabled});
+							}
+						});
+					}
+				});
+			}
 
 			function init() {
 			
 				// Load state
 				// If none exists, create one
-				if (localStorage.extensionEnabled == null)
-					localStorage.extensionEnabled = true;
-					
+				if (localStorage.extensionEnabled == null) {
+					localStorage.extensionEnabled = true;	
+				}
 				extensionEnabled = toBool(localStorage.extensionEnabled);
 				
-				refreshBrowserActionIcon();
-						
-				chrome.extension.onRequest.addListener(onRequest);
-				
-				chrome.browserAction.onClicked.addListener(function(tab) {
-				
-					// Store new state
-					localStorage.extensionEnabled = extensionEnabled = !extensionEnabled;
-					refreshBrowserActionIcon();
-					
-					// Send new state to all tabs
-					chrome.windows.getAll(null, function (windows) {
-						for (i in windows) {
-							chrome.tabs.getAllInWindow(windows[i].id, function(tabs) {
-								for (j in tabs) {
-									chrome.tabs.sendRequest(tabs[j].id, {action: 'extensionEnabledChanged', extensionEnabled: extensionEnabled});
-								}
-							});
-						}
+				// Default options
+				if (localStorage.options == null) {
+					localStorage.options = JSON.stringify({
+						displayCaptions: true,
+						addToHistory: false
 					});
-					
-				});
+				}
+				
+				refreshBrowserActionIcon();		
+						
+				chrome.extension.onRequest.addListener(onRequest);				
+				chrome.browserAction.onClicked.addListener(browserActionOnClick);
 			}
 
 			init();

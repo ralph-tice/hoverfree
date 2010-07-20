@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Hover Zoom Options</title>
+		<style type="text/css">
+			body { padding: 1em; background: white; color: black; font-family: Arial,sans-serif}
+			p { text-align:left; padding:0 0 0.5em; font-size: 10pt; margin: 0 }
+			#body { margin: 0 auto; width: 30em; }
+			#container {float: left; margin: 1em;}
+			#icon { float: left }
+			#options { border: 1px solid #bbb; margin-bottom: 2em; padding: 1em; border-radius: 4px; background-color: #eee; height: 6em; }
+			#title { font-size: 1.5em }
+			#saved { display: none; background-color: #ffd; padding:.5em; }
+		</style>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+		<script>
+			// Saves options to localStorage.
+			function saveOptions() {
+				var options = {
+					displayCaptions: $('#chkDisplayCaptions')[0].checked,
+					addToHistory: $('#chkAddToHistory')[0].checked
+				};
+				localStorage.options = JSON.stringify(options);
+				sendOptionsToTabs();
+				$('#saved').clearQueue().fadeIn(100).delay(3000).fadeOut(600);			
+			}
+
+			// Restores options from localStorage.
+			function restoreOptions() {
+				if (!localStorage.options)
+					return;
+					
+				var options = JSON.parse(localStorage.options);
+				if (!options)
+					return;
+				
+				$('#chkDisplayCaptions')[0].checked = options.displayCaptions;
+				$('#chkAddToHistory')[0].checked = options.addToHistory;
+			}
+			
+			function sendOptionsToTabs() {
+				chrome.windows.getAll(null, function (windows) {
+					for (i in windows) {
+						chrome.tabs.getAllInWindow(windows[i].id, function(tabs) {
+							for (j in tabs) {
+								chrome.tabs.sendRequest(tabs[j].id, {action: 'optionsChanged', options: JSON.parse(localStorage.options)});
+							}
+						});
+					}
+				});
+			}
+			
+			$(function() {
+				$('input').change(saveOptions);
+				restoreOptions();
+			});
+		</script>
+	</head>
+	<body>
+		<div id="body">
+			<img id="icon" src="images/icon128.png">
+			<div id="container">
+				<h1 id="title">Hover Zoom Options</h1>
+				<div id="options">
+					<p><input type="checkbox" id="chkDisplayCaptions"> <label for="chkDisplayCaptions">Display picture captions</label></p>
+					<p><input type="checkbox" id="chkAddToHistory"> <label for="chkAddToHistory">Add viewed pictures to the browser's history</label></p>
+					<p id="saved">Options saved.</p>
+				</div>
+				<div id="about">
+					<p>&copy; 2010 Romain Vallet</p>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

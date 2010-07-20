@@ -9,3 +9,7 @@
 	z-index: 10000;
 	-webkit-box-shadow: 2px 2px 8px #000;
 }
+#hoverZoomCaption {
+	font: menu;
+	text-align: center;
+}
