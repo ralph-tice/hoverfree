@@ -4,7 +4,7 @@
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	"name": "Yahoo",
-	"version": "0.1",
+	"version": "0.2",
 	"prepareImgLinks": function() {
 		var links = $("#yschimg a[href], .sm-media a[href], .imgdd a[href]");
 		var res = $();
@@ -28,7 +28,7 @@ hoverZoomPlugins.push( {
 						if (src.substr(0, 4) != 'http') {
 							src = 'http://' + src;
 						}
-						$(this).data('hoverZoomSrc', src);
+						$(this).data('hoverZoomSrc', [src]);
 						res = res.add($(this));
 					} else {
 						if (img) {
@@ -36,7 +36,7 @@ hoverZoomPlugins.push( {
 							var lastDotIndex = src.lastIndexOf('.');
 							if (src.substr(lastDotIndex - 2, 2) == '-s') {
 								src = unescape(src.replace('-s.', '.'));	
-								$(this).data('hoverZoomSrc', src);
+								$(this).data('hoverZoomSrc', [src]);
 								res = res.add($(this));
 							}
 						}

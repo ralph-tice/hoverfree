@@ -70,7 +70,7 @@
 						for (i in windows) {
 							chrome.tabs.getAllInWindow(windows[i].id, function(tabs) {
 								for (j in tabs) {
-									chrome.tabs.sendRequest(tabs[j].id, {action: "pageActionClicked", extensionEnabled: extensionEnabled});
+									chrome.tabs.sendRequest(tabs[j].id, {action: 'extensionEnabledChanged', extensionEnabled: extensionEnabled});
 								}
 							});
 						}

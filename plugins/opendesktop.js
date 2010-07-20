@@ -23,7 +23,12 @@ hoverZoomPlugins.push( {
 				} else {
 					src = src.replace(re, '$1-' + pre + '$2/');
 				}
-				$(link).data('hoverZoomSrc', src);
+				var srcs = [src];
+				if (src.substr(src.lastIndexOf('.') + 1).toLowerCase() == 'png') {
+					srcs.push(src.replace(/png$/i, 'jpg'));
+					srcs.push(src.replace(/png$/i, 'JPG'));
+				}
+				$(link).data('hoverZoomSrc', srcs);
 				res = res.add($(link));			
 			}
 		});

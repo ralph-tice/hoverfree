@@ -4,7 +4,7 @@
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	"name": "Google",
-	"version": "0.1",
+	"version": "0.2",
 	"prepareImgLinks": function() {
 		var links = $("#iur a[href], #ImgContent a[href]");
 		var res = $();
@@ -13,7 +13,7 @@ hoverZoomPlugins.push( {
 				var imgUrlIndex = $(this).attr('href').indexOf('imgurl=');
 				if (imgUrlIndex > -1) {
 					var src = unescape($(this).attr('href').substring(imgUrlIndex + 7, $(this).attr('href').indexOf('&', imgUrlIndex)));		
-					$(this).data('hoverZoomSrc', src);
+					$(this).data('hoverZoomSrc', [src]);
 					res = res.add($(this));
 				}
 			}

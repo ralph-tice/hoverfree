@@ -4,7 +4,7 @@
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	"name": "Flickr",
-	"version": "0.1",
+	"version": "0.2",
 	"prepareImgLinks": function() {
 		var links = $("span.photo_container a,div.context-photos a");
 		var res = $();
@@ -17,11 +17,11 @@ hoverZoomPlugins.push( {
 			// If an invisible link (spaceball.gif) has been put on the thumbnail...
 			var spaceBall = $(this).parent().parent().find('a.image_link');
 			if (spaceBall.length > 0) {
-				spaceBall.data('hoverZoomSrc', src);
+				spaceBall.data('hoverZoomSrc', [src]);
 				res = res.add(spaceBall);
 			} 
 
-			$(this).data('hoverZoomSrc', src);
+			$(this).data('hoverZoomSrc', [src]);
 			res = res.add($(this));
 		});
 		return $(res);		

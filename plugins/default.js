@@ -4,14 +4,14 @@
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	"name": "Default",
-	"version": "0.1",
+	"version": "0.2",
 	"prepareImgLinks": function() {
 		var links = $("a[href]").filter(function(index) {
-			return this.href.match(/^[^\?]*\.(jpg|jpeg|gif|png)$/i);
+			return this.href.match(/^[^\?]*\.(jpg|jpeg|gif|png|svg|bmp|ico|xbm)$/i);
 		});
 		links.each(function() {
-			if (!$(this).data('hoverZoomSrc') && !$(this).data('hoverZoomIframeSearch'))
-				$(this).data('hoverZoomSrc', this.href);
+			if (!$(this).data('hoverZoomSrc'))
+				$(this).data('hoverZoomSrc', [this.href]);
 		});
 		return links;	
 	}
