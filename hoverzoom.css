@@ -7,7 +7,7 @@
 	padding: 2px; 
 	position: absolute;
 	z-index: 10000;
-	-webkit-box-shadow: 2px 2px 8px #000;
+	-webkit-box-shadow: 2px 2px 8px #444;
 }
 #hoverZoomCaption {
 	font: menu;

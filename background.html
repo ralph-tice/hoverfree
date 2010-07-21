@@ -1,7 +1,9 @@
+<!DOCTYPE html>
 <html>
 	<body>
+		<script src="common.js"></script>
 		<script type="text/javascript">
-			var extensionEnabled;
+			var options;
 
 			// Converts a string to a boolean value
 			function toBool(str) {
@@ -27,69 +29,51 @@
 
 			function onRequest(request, sender, callback) {
 				switch(request.action) {
-					case 'isExtensionEnabled':
-						callback(extensionEnabled);
-						break;
 					case 'loadJQuery':
 						loadJQuery(callback);
+						break;
+					case 'showPageAction':
+						showPageAction(sender.tab);
+						callback();
 						break;
 					case 'addUrlToHistory':
 						chrome.history.addUrl({url: request.url});
 						break;
 					case 'getOptions':
-						callback(JSON.parse(localStorage.options));
+						callback(options);
 						break;
+					case 'optionsChanged':
+						options = request.options;
+						break;				
 				}
 			};
 			
-			function refreshBrowserActionIcon() {
-				if (extensionEnabled) {
-					chrome.browserAction.setIcon({path: 'images/icon19.png'});
-					chrome.browserAction.setTitle({title: 'Hover Zoom\nClick to disable automatic image zooming'});
+			function showPageAction(tab) {
+				if (options.extensionEnabled) {
+					chrome.pageAction.setIcon({tabId: tab.id, path: 'images/icon19.png'});
+					chrome.pageAction.setTitle({tabId: tab.id, title: 'Hover Zoom\nClick to disable automatic image zooming'});
 				} else {
-					chrome.browserAction.setIcon({path: 'images/icon19d.png'});
-					chrome.browserAction.setTitle({title: 'Hover Zoom\nClick to enable automatic image zooming'});
+					chrome.pageAction.setIcon({tabId: tab.id, path: 'images/icon19d.png'});
+					chrome.pageAction.setTitle({tabId: tab.id, title: 'Hover Zoom\nClick to enable automatic image zooming'});
 				}
+				chrome.pageAction.show(tab.id);
 			}
 			
-			function browserActionOnClick(tab) {
+			function pageActionOnClick(tab) {
 				// Store new state
-				localStorage.extensionEnabled = extensionEnabled = !extensionEnabled;
-				refreshBrowserActionIcon();
+				options.extensionEnabled = !options.extensionEnabled;
+				localStorage.options = JSON.stringify(options);
 				
-				// Send new state to all tabs
-				chrome.windows.getAll(null, function (windows) {
-					for (i in windows) {
-						chrome.tabs.getAllInWindow(windows[i].id, function(tabs) {
-							for (j in tabs) {
-								chrome.tabs.sendRequest(tabs[j].id, {action: 'extensionEnabledChanged', extensionEnabled: extensionEnabled});
-							}
-						});
-					}
-				});
+				sendOptions(options);
 			}
-
-			function init() {
 			
-				// Load state
-				// If none exists, create one
-				if (localStorage.extensionEnabled == null) {
-					localStorage.extensionEnabled = true;	
-				}
-				extensionEnabled = toBool(localStorage.extensionEnabled);
+			function init() {
 				
-				// Default options
-				if (localStorage.options == null) {
-					localStorage.options = JSON.stringify({
-						displayCaptions: true,
-						addToHistory: false
-					});
-				}
-				
-				refreshBrowserActionIcon();		
+				// Load options
+				options = loadOptions();
 						
 				chrome.extension.onRequest.addListener(onRequest);				
-				chrome.browserAction.onClicked.addListener(browserActionOnClick);
+				chrome.pageAction.onClicked.addListener(pageActionOnClick);
 			}
 
 			init();

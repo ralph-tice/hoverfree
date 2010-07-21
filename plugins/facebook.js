@@ -4,7 +4,7 @@
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	"name": "Facebook",
-	"version": "0.3",
+	"version": "0.4",
 	"prepareImgLinks": function() {
 		var links = $();
 		var imgs = $('a img.img:not([src^="http://static.ak.fbcdn.net"]),a img.UIProfileImage'); //:not(.loader):not(.throbber)
@@ -27,7 +27,7 @@ hoverZoomPlugins.push( {
 				if (src.indexOf('&') > -1)
 					src = src.substr(0, src.indexOf('&'));
 			} else {
-				src = src.replace(/photos-\w/, 'sphotos').replace(/_[sqta]\./, '_n.').replace(/\/q/, '/n');
+				src = src.replace(/photos-\w/, 'sphotos').replace(/_[sqta]\./, '_n.').replace(/\/[sqta](\d)/, '/n$1');
 			}
 			
 			$(this).data('hoverZoomSrc', [src]);

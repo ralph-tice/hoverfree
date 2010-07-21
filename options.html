@@ -5,54 +5,76 @@
 		<style type="text/css">
 			body { padding: 1em; background: white; color: black; font-family: Arial,sans-serif}
 			p { text-align:left; padding:0 0 0.5em; font-size: 10pt; margin: 0 }
-			#body { margin: 0 auto; width: 30em; }
+			hr { height: 0; border-style: none; border-top: 1px solid #bbb; margin: 0.7em }
+			#body { margin: 0 auto; width: 40em; }
 			#container {float: left; margin: 1em;}
-			#icon { float: left }
-			#options { border: 1px solid #bbb; margin-bottom: 2em; padding: 1em; border-radius: 4px; background-color: #eee; height: 6em; }
+			#icon { float: left; margin-top: 2em }
+			#options { border: 1px solid #bbb; margin-bottom: 1em; padding: 1em; border-radius: 4px; background-color: #f2f2f2; }
 			#title { font-size: 1.5em }
+			#messages { padding: 1em; max-width: 18em; height: 3.5em; }
 			#saved { display: none; background-color: #ffd; padding:.5em; }
+			#txtDisplayDelay { text-align: right }
+			#title, #buttons, #about p, #messages p { text-align: center }
 		</style>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+		<script src="common.js"></script>
 		<script>
+			var options;
+		
 			// Saves options to localStorage.
 			function saveOptions() {
-				var options = {
-					displayCaptions: $('#chkDisplayCaptions')[0].checked,
-					addToHistory: $('#chkAddToHistory')[0].checked
-				};
+				options.extensionEnabled = $('#chkExtensionEnabled')[0].checked;
+				options.pageActionEnabled = $('#chkPageActionEnabled')[0].checked;
+				options.showCaptions = $('#chkShowCaptions')[0].checked;
+				options.addToHistory = $('#chkAddToHistory')[0].checked;
+				
+				// Display delay
+				options.displayDelay = parseFloat($('#txtDisplayDelay').val());
+				if (isNaN(options.displayDelay)) {
+					options.displayDelay = 0;
+				} else {
+					options.displayDelay *= 1000;
+				}
+				$('#txtDisplayDelay').val(options.displayDelay / 1000);
+				
 				localStorage.options = JSON.stringify(options);
-				sendOptionsToTabs();
-				$('#saved').clearQueue().fadeIn(100).delay(3000).fadeOut(600);			
+				enableButtons(false);
+				sendOptions(options);
+				$('#saved').clearQueue().fadeIn(100).delay(5000).fadeOut(600);			
 			}
 
 			// Restores options from localStorage.
 			function restoreOptions() {
-				if (!localStorage.options)
-					return;
-					
-				var options = JSON.parse(localStorage.options);
-				if (!options)
-					return;
+				options = loadOptions();
 				
-				$('#chkDisplayCaptions')[0].checked = options.displayCaptions;
+				enableButtons(false);
+				
+				$('#chkExtensionEnabled')[0].checked = options.extensionEnabled;
+				$('#chkPageActionEnabled')[0].checked = options.pageActionEnabled;
+				$('#chkShowCaptions')[0].checked = options.showCaptions;
 				$('#chkAddToHistory')[0].checked = options.addToHistory;
+				$('#txtDisplayDelay').val((options.displayDelay || 0) / 1000);
 			}
 			
-			function sendOptionsToTabs() {
-				chrome.windows.getAll(null, function (windows) {
-					for (i in windows) {
-						chrome.tabs.getAllInWindow(windows[i].id, function(tabs) {
-							for (j in tabs) {
-								chrome.tabs.sendRequest(tabs[j].id, {action: 'optionsChanged', options: JSON.parse(localStorage.options)});
-							}
-						});
-					}
-				});
+			function enableButtons(enabled) {
+				enabled = enabled || false;
+				$('button').attr('disabled', !enabled);
 			}
+			
+			function onRequest(request, sender, callback) {
+				switch(request.action) {
+					case 'optionsChanged':
+						restoreOptions();
+						break;				
+				}
+			}		
 			
 			$(function() {
-				$('input').change(saveOptions);
+				$('input').change(enableButtons).keypress(enableButtons);
+				$('#btnSave').click(saveOptions);
+				$('#btnReset').click(restoreOptions);
 				restoreOptions();
+				chrome.extension.onRequest.addListener(onRequest);
 			});
 		</script>
 	</head>
@@ -62,11 +84,23 @@
 			<div id="container">
 				<h1 id="title">Hover Zoom Options</h1>
 				<div id="options">
-					<p><input type="checkbox" id="chkDisplayCaptions"> <label for="chkDisplayCaptions">Display picture captions</label></p>
+					<p><input type="checkbox" id="chkExtensionEnabled"> <label for="chkExtensionEnabled">Enable extension</label></p>
+					<hr>
+					<p><input type="checkbox" id="chkPageActionEnabled"> <label for="chkPageActionEnabled">Show extension icon in address bar</label></p>
+					<p><input type="checkbox" id="chkShowCaptions"> <label for="chkShowCaptions">Show pictures captions</label></p>
 					<p><input type="checkbox" id="chkAddToHistory"> <label for="chkAddToHistory">Add viewed pictures to the browser's history</label></p>
-					<p id="saved">Options saved.</p>
+					<hr>
+					<p><label for="txtDisplayDelay">Delay before displaying a picture</label>: <input type="textbox" id="txtDisplayDelay" size="1"> sec.</p>
+				</div>
+				<div id="buttons">
+					<button id="btnSave">Save</button>
+					<button id="btnReset">Reset</button>
+				</div>
+				<div id="messages">
+					<div id="saved"><p>Options saved.<br>Some settings may need a page refresh.</p></div>
 				</div>
 				<div id="about">
+					<p><a href="http://code.google.com/p/romanito/wiki/HoverZoom">Home page</a> - <a href="http://code.google.com/p/romanito/issues/entry">Report a bug</a></p>
 					<p>&copy; 2010 Romain Vallet</p>
 				</div>
 			</div>
