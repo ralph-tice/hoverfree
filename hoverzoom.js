@@ -18,6 +18,7 @@ function hoverZoom() {
 	var options = {};
 	var bindLinksDelay = 500;
 	
+	// Calculate optimal image position and size
 	function posImg(position) {
 		if (!imgFullSize)
 			return;
@@ -30,7 +31,11 @@ function hoverZoom() {
 			position.top -= 10;
 		} else {
 			var margin = 8;
-			var padding = 6;
+			var padding = 10;
+			var wndWidth = wnd.width();
+			var wndHeight = wnd.height();
+			var wndScrollLeft = wnd.scrollLeft();
+			var wndScrollTop = wnd.scrollTop();
 			
 			imgFullSize.width('auto').height('auto');
 			var naturalWidth = imgFullSize.width();
@@ -39,33 +44,37 @@ function hoverZoom() {
 				return;
 			
 			var displayOnRight = true;
-			if (position.left - wnd.scrollLeft() < wnd.width() / 2) {
+			if (position.left - wndScrollLeft < wndWidth / 2) {
 				position.left += offset;
-				if (naturalWidth + padding > wnd.width() - position.left) {
-					imgFullSize.width(wnd.width() - position.left - padding + wnd.scrollLeft());
+				if (naturalWidth + padding > wndWidth - position.left) {
+					imgFullSize.width(wndWidth - position.left - padding + wndScrollLeft);
 				}
 			} else {
 				displayOnRight = false;
 				position.left -= offset;
 				if (naturalWidth + padding > position.left) {
-					imgFullSize.width(position.left - padding - wnd.scrollLeft());
+					imgFullSize.width(position.left - padding - wndScrollLeft);
 				}			
 			}
 			
 			position.top -= hoverZoomImg.height() / 2;
-			if (hoverZoomImg.height() > wnd.height())
-				imgFullSize.height(wnd.height() - padding).width('auto');
+			if (hoverZoomImg.height() > wndHeight)
+				imgFullSize.height(wndHeight - padding).width('auto');
 
 			if (hoverZoomCaption) {
 				hoverZoomCaption.css('max-width', imgFullSize.width());
+				while (hoverZoomImg.height() > wndHeight) {
+					imgFullSize.height(wndHeight - padding - hoverZoomCaption.height()).width('auto');
+					hoverZoomCaption.css('max-width', imgFullSize.width());
+				}
 			}
 
 			if (!displayOnRight) 
 				position.left -= hoverZoomImg.width() + padding;
-			if (position.top + hoverZoomImg.height() >= wnd.scrollTop() + wnd.height())
-				position.top = wnd.scrollTop() + wnd.height() - hoverZoomImg.height() - padding;
-			if (position.top < wnd.scrollTop())
-				position.top = wnd.scrollTop();	
+			if (position.top + hoverZoomImg.height() >= wndScrollTop + wndHeight)
+				position.top = wndScrollTop + wndHeight - hoverZoomImg.height() - padding;
+			if (position.top < wndScrollTop)
+				position.top = wndScrollTop;	
 			
 		}
 		

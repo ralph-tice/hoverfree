@@ -67,11 +67,11 @@
 				sendOptions(options);
 			}
 			
-			function init() {
-				
+			function init() {				
 				// Load options
 				options = loadOptions();
 						
+				// Bind events
 				chrome.extension.onRequest.addListener(onRequest);				
 				chrome.pageAction.onClicked.addListener(pageActionOnClick);
 			}
