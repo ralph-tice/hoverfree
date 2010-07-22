@@ -33,6 +33,7 @@
 				options.extensionEnabled = $('#chkExtensionEnabled')[0].checked;
 				options.pageActionEnabled = $('#chkPageActionEnabled')[0].checked;
 				options.showCaptions = $('#chkShowCaptions')[0].checked;
+				options.actionKey = $('#chkActionKey')[0].checked ? 17 : 0;
 				options.addToHistory = $('#chkAddToHistory')[0].checked;
 				options.displayDelay = getMilliseconds($('#txtDisplayDelay'));
 				options.fadeDuration = getMilliseconds($('#txtFadeDuration'));
@@ -52,6 +53,7 @@
 				$('#chkExtensionEnabled')[0].checked = options.extensionEnabled;
 				$('#chkPageActionEnabled')[0].checked = options.pageActionEnabled;
 				$('#chkShowCaptions')[0].checked = options.showCaptions;
+				$('#chkActionKey')[0].checked = options.actionKey != 0;
 				$('#chkAddToHistory')[0].checked = options.addToHistory;
 				$('#txtDisplayDelay').val((options.displayDelay || 0) / 1000);
 				$('#txtFadeDuration').val((options.displayDelay || 0) / 1000);
@@ -71,7 +73,7 @@
 			}		
 			
 			$(function() {
-				$('input').change(enableButtons).keypress(enableButtons);
+				$('input').change(enableButtons).keydown(enableButtons);
 				$('#btnSave').click(saveOptions);
 				$('#btnReset').click(restoreOptions);
 				restoreOptions();
@@ -89,6 +91,7 @@
 					<hr>
 					<p><input type="checkbox" id="chkPageActionEnabled"> <label for="chkPageActionEnabled">Show extension icon in address bar</label></p>
 					<p><input type="checkbox" id="chkShowCaptions"> <label for="chkShowCaptions">Show pictures captions</label></p>
+					<p><input type="checkbox" id="chkActionKey"> <label for="chkActionKey">Only show pictures if the Ctrl key is held down</label></p>
 					<p><input type="checkbox" id="chkAddToHistory"> <label for="chkAddToHistory">Add viewed pictures to the browser's history</label></p>
 					<hr>
 					<div id="delays">

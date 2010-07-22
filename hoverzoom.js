@@ -17,6 +17,7 @@ function hoverZoom() {
 	var bindLinksTimeout, loadFullSizeImageTimeout;
 	var options = {};
 	var bindLinksDelay = 500;
+	var actionKeyDown = false;
 	
 	// Calculate optimal image position and size
 	function posImg(position) {
@@ -78,6 +79,7 @@ function hoverZoom() {
 			
 		}
 		
+		position = {top: Math.round(position.top), left: Math.round(position.left)};
 		hoverZoomImg.css(position);
 	}
 	
@@ -94,12 +96,21 @@ function hoverZoom() {
 	function documentMouseMove(event) {
 		if (!options.extensionEnabled)
 			return;
-			
-		mousePos = {top:event.pageY, left:event.pageX};
-		var links = $(event.target).parents('.hoverZoomLink');
-		if ($(event.target).hasClass('hoverZoomLink'))
-			links = links.add($(event.target));
-		if (links.length > 0) {
+		
+		// Test if the action key was pressed without moving the mouse
+		var staticActionKeyPressed = (options.actionKey && event.pageY === undefined);
+		
+		var links;
+		if (staticActionKeyPressed) {
+			links = currentLink;
+		} else {
+			mousePos = {top:event.pageY, left:event.pageX};
+			links = $(event.target).parents('.hoverZoomLink');
+			if ($(event.target).hasClass('hoverZoomLink'))
+				links = links.add($(event.target));
+		}
+		
+		if (links && links.length > 0) {
 			if (links.data('hoverZoomSrc') && links.data('hoverZoomSrc') != 'undefined' && 
 				links.data('hoverZoomSrc')[links.data('hoverZoomSrcIndex')] && 
 				links.data('hoverZoomSrc')[links.data('hoverZoomSrcIndex')] != 'undefined') {
@@ -109,9 +120,12 @@ function hoverZoom() {
 				}				
 				if (!imgFullSize) {
 					currentLink = links;
-					imgSrc = links.data('hoverZoomSrc')[links.data('hoverZoomSrcIndex')];
-					window.clearTimeout(loadFullSizeImageTimeout);
-					loadFullSizeImageTimeout = window.setTimeout(loadFullSizeImage, options.displayDelay);
+					if (!options.actionKey || actionKeyDown) {
+						imgSrc = links.data('hoverZoomSrc')[links.data('hoverZoomSrcIndex')];
+						clearTimeout(loadFullSizeImageTimeout);
+						var delay = staticActionKeyPressed ? 0 : options.displayDelay;
+						loadFullSizeImageTimeout = setTimeout(loadFullSizeImage, delay);
+					}
 				} else {
 					posImg();
 				}
@@ -119,7 +133,8 @@ function hoverZoom() {
 				return;
 			}			
 		} else {
-			window.clearTimeout(loadFullSizeImageTimeout);
+			currentLink = null;
+			clearTimeout(loadFullSizeImageTimeout);
 			hideHoverZoomImg();
 		}
 	}
@@ -156,15 +171,16 @@ function hoverZoom() {
 						currentLink.data('hoverZoomSrcIndex', hoverZoomSrcIndex);
 						imgSrc = currentLink.data('hoverZoomSrc')[hoverZoomSrcIndex];
 						imgFullSize = null;
-						window.setTimeout(loadFullSizeImage, 10);
+						setTimeout(loadFullSizeImage, 10);
 					} else {
 						hideHoverZoomImg();
 						console.warn('HoverZoom: Failed to load image: ' + imgSrc);
 					}
 				}
-			}).click(function(event) {
-				
-			});
+			})/*.mousemove(function(event) {
+				if (!imgFullSize) {
+				}
+			})*/;
 		}
 		posImg();
 	}
@@ -235,8 +251,8 @@ function hoverZoom() {
 			return;
 		if (resetDelay)
 			bindLinksDelay = 500;
-		window.clearTimeout(bindLinksTimeout);
-		bindLinksTimeout = window.setTimeout(bindImgLinks, bindLinksDelay);
+		clearTimeout(bindLinksTimeout);
+		bindLinksTimeout = setTimeout(bindImgLinks, bindLinksDelay);
 		bindLinksDelay *= 2;
 	}
 	
@@ -285,7 +301,21 @@ function hoverZoom() {
 	}
 	
 	function bindEvents() {
-		$(document).bind('mousemove', documentMouseMove);
+		$(document).mousemove(documentMouseMove);
+		
+		if (options.actionKey) {
+			$(document).keydown(function(event) {
+				if (event.which == options.actionKey && !actionKeyDown) {
+					actionKeyDown = true;
+					$(this).mousemove();
+				}
+			}).keyup(function(event) {
+				if (event.which == options.actionKey) {
+					actionKeyDown = false;
+					hideHoverZoomImg();
+				}
+			});
+		}
 		
 		wnd.bind('DOMNodeInserted', function(event) {
 			if (event.srcElement && (event.srcElement.nodeName == 'A' || $(event.srcElement).find('a').length || $(event.srcElement).parents('a').length)) {

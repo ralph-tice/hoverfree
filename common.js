@@ -16,6 +16,7 @@ function loadOptions() {
 	options.addToHistory = options.hasOwnProperty('addToHistory') ? options.addToHistory : false;
 	options.displayDelay = options.hasOwnProperty('displayDelay') ? options.displayDelay : 200;
 	options.fadeDuration = options.hasOwnProperty('fadeDuration') ? options.fadeDuration : 200;
+	options.actionKey = options.hasOwnProperty('actionKey') ? options.actionKey : 0;
 	
 	localStorage.options = JSON.stringify(options);
 	return options;
