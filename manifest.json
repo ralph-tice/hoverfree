@@ -1,6 +1,6 @@
 {
     "name": "Hover Zoom",
-    "version": "0.4",
+    "version": "0.5",
     "description": "Move the mouse cursor over a link to an image to view it in full size.",
 	"icons": {
 		"16": "images/icon16.png",
@@ -653,6 +653,11 @@
 			"matches": ["http://*/*", "https://*/*"],
             "js": ["plugins/twitpic.js"],
 			"run_at": "document_start"
-        }     
+        },
+        {
+			"matches": ["http://*.gamekult.com/*"],
+            "js": ["plugins/gamekult.js"],
+			"run_at": "document_start"
+        } 
 	]
 }

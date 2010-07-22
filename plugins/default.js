@@ -9,10 +9,13 @@ hoverZoomPlugins.push( {
 		var links = $("a[href]").filter(function(index) {
 			return this.href.match(/^[^\?]*\.(jpg|jpeg|gif|png|svg|bmp|ico|xbm)$/i);
 		});
+		var res = [];
 		links.each(function() {
-			if (!$(this).data('hoverZoomSrc'))
+			if (!$(this).data('hoverZoomSrc')) {
 				$(this).data('hoverZoomSrc', [this.href]);
+				res.push(this);
+			}
 		});
-		return links;	
+		return $(res);	
 	}
 });

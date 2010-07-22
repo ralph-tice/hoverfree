@@ -82,13 +82,13 @@ function hoverZoom() {
 	}
 	
 	function hideHoverZoomImg() {
-		if (imgFullSize != null) {
-			$(imgFullSize).remove();
-			imgFullSize = null;
-		}
-		hoverZoomCaption = null;
-		hoverZoomImg.empty();
-		hoverZoomImg.hide();
+		if (!imgFullSize)
+			return;
+		imgFullSize = null;
+		hoverZoomImg.stop(true, true).fadeOut(options.fadeDuration, function() {
+			hoverZoomCaption = null;
+			hoverZoomImg.empty();
+		});
 	}
 
 	function documentMouseMove(event) {
@@ -128,18 +128,20 @@ function hoverZoom() {
 		// If no image is currently displayed...
 		if (!imgFullSize) {
 			loading = true;
+			hoverZoomImg.stop(true, true).show();
 			imgLoading.appendTo(hoverZoomImg);
-			hoverZoomImg.show();
 			imgFullSize = $('<img/>').attr('src', imgSrc).load(function() {
 				// Only the last hovered link gets displayed
 				if (imgSrc == $(this).attr('src')) {
 					loading = false;
+					hoverZoomImg.stop(true, true);
 					hoverZoomImg.offset({top:-9000, left:-9000}); 	// hides the image while making it available for size calculations
 					hoverZoomImg.empty();
 					$(this).appendTo(hoverZoomImg);
 					if (options.showCaptions && currentLink.data('hoverZoomCaption')) {
 						hoverZoomCaption = $('<div/>', {id: 'hoverZoomCaption', text: currentLink.data('hoverZoomCaption')}).appendTo(hoverZoomImg);
 					}
+					hoverZoomImg.hide().fadeIn(options.fadeDuration);
 					setTimeout(posImg, 10);
 					if (options.addToHistory) {
 						chrome.extension.sendRequest({action : 'addUrlToHistory', url: imgSrc});
@@ -160,6 +162,8 @@ function hoverZoom() {
 						console.warn('HoverZoom: Failed to load image: ' + imgSrc);
 					}
 				}
+			}).click(function(event) {
+				
 			});
 		}
 		posImg();
@@ -177,7 +181,7 @@ function hoverZoom() {
 		}
 		if (titledElement && titledElement.length) {
 			link.data('hoverZoomCaption', titledElement.attr('title'));
-			titledElement.removeAttr('title');
+			titledElement.parents('[title]').andSelf().add('[title]').removeAttr('title');
 		}
 	}
 	
@@ -188,6 +192,12 @@ function hoverZoom() {
 				if (!$(this).data('hoverZoomSrc')) {
 					bindImgLinksAsync();
 				} else {
+				
+					// Skip if the image has the same URL as the thumbnail
+					if ($(this).find('img[src="' + $(this).data('hoverZoomSrc')[0] + '"]').length) {
+						return;
+					}
+				
 					showPageAction = true;
 					
 					// If the extension is disabled, we only need to know 

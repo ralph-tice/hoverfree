@@ -13,13 +13,20 @@
 			#title { font-size: 1.5em }
 			#messages { padding: 1em; max-width: 18em; height: 3.5em; }
 			#saved { display: none; background-color: #ffd; padding:.5em; }
-			#txtDisplayDelay { text-align: right }
 			#title, #buttons, #about p, #messages p { text-align: center }
+			#delays p, #delays input { text-align: right }
 		</style>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 		<script src="common.js"></script>
 		<script>
 			var options;
+			
+			function getMilliseconds(ctrl) {
+				var value = parseFloat(ctrl.val());
+				value = isNaN(value) ? 0 : value * 1000;
+				ctrl.val(value / 1000);
+				return value;
+			}
 		
 			// Saves options to localStorage.
 			function saveOptions() {
@@ -27,15 +34,8 @@
 				options.pageActionEnabled = $('#chkPageActionEnabled')[0].checked;
 				options.showCaptions = $('#chkShowCaptions')[0].checked;
 				options.addToHistory = $('#chkAddToHistory')[0].checked;
-				
-				// Display delay
-				options.displayDelay = parseFloat($('#txtDisplayDelay').val());
-				if (isNaN(options.displayDelay)) {
-					options.displayDelay = 0;
-				} else {
-					options.displayDelay *= 1000;
-				}
-				$('#txtDisplayDelay').val(options.displayDelay / 1000);
+				options.displayDelay = getMilliseconds($('#txtDisplayDelay'));
+				options.fadeDuration = getMilliseconds($('#txtFadeDuration'));
 				
 				localStorage.options = JSON.stringify(options);
 				enableButtons(false);
@@ -54,6 +54,7 @@
 				$('#chkShowCaptions')[0].checked = options.showCaptions;
 				$('#chkAddToHistory')[0].checked = options.addToHistory;
 				$('#txtDisplayDelay').val((options.displayDelay || 0) / 1000);
+				$('#txtFadeDuration').val((options.displayDelay || 0) / 1000);
 			}
 			
 			function enableButtons(enabled) {
@@ -90,7 +91,10 @@
 					<p><input type="checkbox" id="chkShowCaptions"> <label for="chkShowCaptions">Show pictures captions</label></p>
 					<p><input type="checkbox" id="chkAddToHistory"> <label for="chkAddToHistory">Add viewed pictures to the browser's history</label></p>
 					<hr>
+					<div id="delays">
 					<p><label for="txtDisplayDelay">Delay before displaying a picture</label>: <input type="textbox" id="txtDisplayDelay" size="1"> sec.</p>
+					<p><label for="txtFadeDuration">Fading animation duration</label>: <input type="textbox" id="txtFadeDuration" size="1"> sec.</p>
+					</div>
 				</div>
 				<div id="buttons">
 					<button id="btnSave">Save</button>
@@ -100,7 +104,9 @@
 					<div id="saved"><p>Options saved.<br>Some settings may need a page refresh.</p></div>
 				</div>
 				<div id="about">
-					<p><a href="http://code.google.com/p/romanito/wiki/HoverZoom">Home page</a> - <a href="http://code.google.com/p/romanito/issues/entry">Report a bug</a></p>
+					<p><a href="http://code.google.com/p/romanito/wiki/HoverZoom">Home page</a> - <a href="http://code.google.com/p/romanito/issues/entry">Report a bug</a> - 
+					<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FHover-Zoom%2F121453051234637&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;colorscheme=light&amp;height=21&amp;ref=options_page" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:90px; height:21px; vertical-align: middle;" allowTransparency="true"></iframe>
+					</p>
 					<p>&copy; 2010 Romain Vallet</p>
 				</div>
 			</div>
