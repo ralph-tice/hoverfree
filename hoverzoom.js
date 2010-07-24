@@ -83,11 +83,11 @@ function hoverZoom() {
 		hoverZoomImg.css(position);
 	}
 	
-	function hideHoverZoomImg() {
-		if (!imgFullSize)
+	function hideHoverZoomImg(now) {
+		if (!now && !imgFullSize)
 			return;
 		imgFullSize = null;
-		hoverZoomImg.stop(true, true).fadeOut(options.fadeDuration, function() {
+		hoverZoomImg.stop(true, true).fadeOut(now ? 0 : options.fadeDuration, function() {
 			hoverZoomCaption = null;
 			hoverZoomImg.empty();
 		});
@@ -177,10 +177,11 @@ function hoverZoom() {
 						console.warn('HoverZoom: Failed to load image: ' + imgSrc);
 					}
 				}
-			})/*.mousemove(function(event) {
+			}).mousemove(function(event) {
 				if (!imgFullSize) {
+					hideHoverZoomImg(true);
 				}
-			})*/;
+			});
 		}
 		posImg();
 	}

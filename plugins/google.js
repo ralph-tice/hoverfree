@@ -4,20 +4,36 @@
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	"name": "Google",
-	"version": "0.2",
+	"version": "0.3",
 	"prepareImgLinks": function() {
+	
+		function getSrc(link) {
+			var imgUrlIndex = link.attr('href').indexOf('imgurl=');
+			if (imgUrlIndex > -1) {
+				return unescape(link.attr('href').substring(imgUrlIndex + 7, link.attr('href').indexOf('&', imgUrlIndex)));		
+			} else {
+				return null;
+			}
+		}
+		
 		var links = $("#iur a[href], #ImgContent a[href]");
 		var res = $();
 		links.each(function() {
 			if ($(this).attr('href')) {
-				var imgUrlIndex = $(this).attr('href').indexOf('imgurl=');
-				if (imgUrlIndex > -1) {
-					var src = unescape($(this).attr('href').substring(imgUrlIndex + 7, $(this).attr('href').indexOf('&', imgUrlIndex)));		
+				var src = getSrc($(this));
+				if (src) {
 					$(this).data('hoverZoomSrc', [src]);
 					res = res.add($(this));
 				}
 			}
 		});
+		
+		function rgHiOnLoad() {
+			var src = getSrc($(this).parent());
+			$('#rg_hta').addClass('hoverZoomLink').data('hoverZoomSrc', [src]).data('hoverZoomSrcIndex', 0);
+		}		
+		$('#rg_hi').load(rgHiOnLoad);
+		
 		return res;		
 	}
 });
