@@ -143,6 +143,7 @@ function hoverZoom() {
 		// If no image is currently displayed...
 		if (!imgFullSize) {
 			loading = true;
+			hoverZoomImg.empty();
 			hoverZoomImg.stop(true, true).show();
 			imgLoading.appendTo(hoverZoomImg);
 			imgFullSize = $('<img/>').attr('src', imgSrc).load(function() {
@@ -263,7 +264,7 @@ function hoverZoom() {
 			url = ueUrl;
 			ueUrl = unescape(url);
 		}
-		return url;
+		return decodeURIComponent( escape( url ));
 	}
 	
 	function applyOptions() {

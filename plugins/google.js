@@ -10,7 +10,7 @@ hoverZoomPlugins.push( {
 		function getSrc(link) {
 			var imgUrlIndex = link.attr('href').indexOf('imgurl=');
 			if (imgUrlIndex > -1) {
-				return unescape(link.attr('href').substring(imgUrlIndex + 7, link.attr('href').indexOf('&', imgUrlIndex)));		
+				return decodeURIComponent(link.attr('href').substring(imgUrlIndex + 7, link.attr('href').indexOf('&', imgUrlIndex)));		
 			} else {
 				return null;
 			}

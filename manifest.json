@@ -658,6 +658,21 @@
 			"matches": ["http://*.gamekult.com/*"],
             "js": ["plugins/gamekult.js"],
 			"run_at": "document_start"
-        } 
+        },
+        {
+			"matches": ["http://*.imdb.com/*",
+						"http://*.imdb.de/*",
+						"http://*.imdb.it/*",
+						"http://*.imdb.es/*",
+						"http://*.imdb.fr/*",
+						"http://*.imdb.pt/*"],
+            "js": ["plugins/imdb.js"],
+			"run_at": "document_start"
+        },
+        {
+			"matches": ["http://manager.co.th/*"],
+            "js": ["plugins/image.aspx.js"],
+			"run_at": "document_start"
+        }
 	]
 }
