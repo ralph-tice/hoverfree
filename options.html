@@ -3,7 +3,7 @@
 	<head>
 		<title>Hover Zoom Options</title>
 		<style type="text/css">
-			body { padding: 1em; background: white; color: black; font-family: Arial,sans-serif}
+			body { padding: 0; background: white; color: black; font-family: Arial,sans-serif}
 			p { text-align:left; padding:0 0 0.5em; font-size: 10pt; margin: 0 }
 			hr { height: 0; border-style: none; border-top: 1px solid #bbb; margin: 0.7em }
 			#body { margin: 0 auto; width: 40em; }
@@ -11,8 +11,10 @@
 			#icon { float: left; margin-top: 2em }
 			#options { border: 1px solid #bbb; margin-bottom: 1em; padding: 1em; border-radius: 4px; background-color: #f2f2f2; }
 			#title { font-size: 1.5em }
-			#messages { padding: 1em; max-width: 18em; height: 3.5em; }
+			h2 { font-size: 0.8em; border-bottom: 1px solid #bbb }
+			#messages { padding: 1em; max-width: 18em; height: 3em; }
 			#saved { display: none; background-color: #ffd; padding:.5em; }
+			#saved p { font-size: 9pt; }
 			#title, #buttons, #about p, #messages p { text-align: center }
 			#delays p, #delays input { text-align: right }
 		</style>
@@ -33,13 +35,13 @@
 				options.extensionEnabled = $('#chkExtensionEnabled')[0].checked;
 				options.pageActionEnabled = $('#chkPageActionEnabled')[0].checked;
 				options.showCaptions = $('#chkShowCaptions')[0].checked;
-				options.actionKey = $('#chkActionKey')[0].checked ? 17 : 0;
+				options.actionKey = $('#radActionKeyOn')[0].checked ? parseInt($('#selActionKey').val()) : 0;
 				options.addToHistory = $('#chkAddToHistory')[0].checked;
 				options.displayDelay = getMilliseconds($('#txtDisplayDelay'));
 				options.fadeDuration = getMilliseconds($('#txtFadeDuration'));
 				
 				localStorage.options = JSON.stringify(options);
-				enableButtons(false);
+				enableControls(false);
 				sendOptions(options);
 				$('#saved').clearQueue().fadeIn(100).delay(5000).fadeOut(600);			
 			}
@@ -47,21 +49,31 @@
 			// Restores options from localStorage.
 			function restoreOptions() {
 				options = loadOptions();
-				
-				enableButtons(false);
-				
+								
 				$('#chkExtensionEnabled')[0].checked = options.extensionEnabled;
 				$('#chkPageActionEnabled')[0].checked = options.pageActionEnabled;
 				$('#chkShowCaptions')[0].checked = options.showCaptions;
-				$('#chkActionKey')[0].checked = options.actionKey != 0;
+				$('#radActionKeyOff')[0].checked = options.actionKey == 0;
+				$('#radActionKeyOn')[0].checked = options.actionKey != 0;
 				$('#chkAddToHistory')[0].checked = options.addToHistory;
 				$('#txtDisplayDelay').val((options.displayDelay || 0) / 1000);
-				$('#txtFadeDuration').val((options.displayDelay || 0) / 1000);
+				$('#txtFadeDuration').val((options.fadeDuration || 0) / 1000);
+				
+				var selActionKey = $('#selActionKey')[0];
+				for (i=0; i<selActionKey.options.length; i++) {
+					console.log(selActionKey.options[i].value);
+					if (selActionKey.options[i].value == options.actionKey) {
+						selActionKey.options[i].selected = true;
+					}
+				}
+				
+				enableControls(false);
 			}
 			
-			function enableButtons(enabled) {
+			function enableControls(enabled) {
 				enabled = enabled || false;
 				$('button').attr('disabled', !enabled);
+				$('#selActionKey')[0].disabled = $('#radActionKeyOn')[0].checked ? '' : 'disabled';
 			}
 			
 			function onRequest(request, sender, callback) {
@@ -73,7 +85,7 @@
 			}		
 			
 			$(function() {
-				$('input').change(enableButtons).keydown(enableButtons);
+				$('input, select').change(enableControls).keydown(enableControls);
 				$('#btnSave').click(saveOptions);
 				$('#btnReset').click(restoreOptions);
 				restoreOptions();
@@ -88,16 +100,24 @@
 				<h1 id="title">Hover Zoom Options</h1>
 				<div id="options">
 					<p><input type="checkbox" id="chkExtensionEnabled"> <label for="chkExtensionEnabled">Enable extension</label></p>
-					<hr>
+					<h2>View</h2>
 					<p><input type="checkbox" id="chkPageActionEnabled"> <label for="chkPageActionEnabled">Show extension icon in address bar</label></p>
 					<p><input type="checkbox" id="chkShowCaptions"> <label for="chkShowCaptions">Show pictures captions</label></p>
-					<p><input type="checkbox" id="chkActionKey"> <label for="chkActionKey">Only show pictures if the Ctrl key is held down</label></p>
-					<p><input type="checkbox" id="chkAddToHistory"> <label for="chkAddToHistory">Add viewed pictures to the browser's history</label></p>
-					<hr>
+					<h2>Action key</h2>
+					<p><input type="radio" id="radActionKeyOn" name="radActionKey" value="1"> <label for="radActionKeyOn">Only show pictures if a key is held down:</label>
+					<select id="selActionKey">
+						<option value="16">Shift</option>
+						<option value="17">Ctrl</option>
+					</select>
+					</p>
+					<p><input type="radio" id="radActionKeyOff" name="radActionKey" value="0"> <label for="radActionKeyOff">Always show pictures</label></p>
+					<h2>Delays</h2>
 					<div id="delays">
 					<p><label for="txtDisplayDelay">Delay before displaying a picture</label>: <input type="textbox" id="txtDisplayDelay" size="1"> sec.</p>
 					<p><label for="txtFadeDuration">Fading animation duration</label>: <input type="textbox" id="txtFadeDuration" size="1"> sec.</p>
 					</div>
+					<h2>Advanced</h2>
+					<p><input type="checkbox" id="chkAddToHistory"> <label for="chkAddToHistory">Add viewed pictures to the browser's history</label></p>
 				</div>
 				<div id="buttons">
 					<button id="btnSave">Save</button>
