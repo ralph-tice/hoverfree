@@ -26,42 +26,53 @@ function hoverZoom() {
 		position = position || {top:mousePos.top, left:mousePos.left};
 		
 		var offset = 20;
+		var wndWidth = wnd.width();
+		var wndHeight = wnd.height();
+		var wndScrollLeft = wnd.scrollLeft();
+		var wndScrollTop = wnd.scrollTop();
+		
+		var displayOnRight = (position.left - wndScrollLeft < wndWidth / 2);
+		
+		if (displayOnRight) {
+			position.left += offset;
+		} else {
+			position.left -= offset;
+		}
 		
 		if (loading) {
-			position.left += offset;
 			position.top -= 10;
+			if (!displayOnRight)
+				position.left -= 25;
 		} else {
 			var margin = 8;
 			var padding = 10;
-			var wndWidth = wnd.width();
-			var wndHeight = wnd.height();
-			var wndScrollLeft = wnd.scrollLeft();
-			var wndScrollTop = wnd.scrollTop();
 			
 			imgFullSize.width('auto').height('auto');
+			
+			// Image natural dimensions
 			var naturalWidth = imgFullSize.width();
 			var naturalHeight = imgFullSize.height();
 			if (!naturalWidth || !naturalHeight)
 				return;
 			
-			var displayOnRight = true;
-			if (position.left - wndScrollLeft < wndWidth / 2) {
-				position.left += offset;
+			// Width adjustment
+			if (displayOnRight) {
 				if (naturalWidth + padding > wndWidth - position.left) {
 					imgFullSize.width(wndWidth - position.left - padding + wndScrollLeft);
 				}
 			} else {
-				displayOnRight = false;
-				position.left -= offset;
 				if (naturalWidth + padding > position.left) {
 					imgFullSize.width(position.left - padding - wndScrollLeft);
 				}			
 			}
 			
 			position.top -= hoverZoomImg.height() / 2;
+			
+			// Height adjustment
 			if (hoverZoomImg.height() > wndHeight)
 				imgFullSize.height(wndHeight - padding).width('auto');
 
+			// Caption
 			if (hoverZoomCaption) {
 				hoverZoomCaption.css('max-width', imgFullSize.width());
 				while (hoverZoomImg.height() > wndHeight) {
@@ -70,8 +81,11 @@ function hoverZoom() {
 				}
 			}
 
+			// Display image on the left side if the mouse is on the right
 			if (!displayOnRight) 
 				position.left -= hoverZoomImg.width() + padding;
+				
+			// Vertical position adjustments
 			if (position.top + hoverZoomImg.height() >= wndScrollTop + wndHeight)
 				position.top = wndScrollTop + wndHeight - hoverZoomImg.height() - padding;
 			if (position.top < wndScrollTop)
@@ -99,7 +113,9 @@ function hoverZoom() {
 		
 		// Test if the action key was pressed without moving the mouse
 		var staticActionKeyPressed = (options.actionKey && event.pageY === undefined);
-		
+
+		// If so, the MouseMove event was triggered programmaticaly and we don't have details
+		// about the mouse position and the event target, so we use the last saved ones.
 		var links;
 		if (staticActionKeyPressed) {
 			links = currentLink;
@@ -118,11 +134,15 @@ function hoverZoom() {
 				if (links.data('hoverZoomSrc')[links.data('hoverZoomSrcIndex')] != imgSrc) {
 					hideHoverZoomImg();
 				}				
+				
+				// Is the image source has not been set yet
 				if (!imgFullSize) {
 					currentLink = links;
 					if (!options.actionKey || actionKeyDown) {
 						imgSrc = links.data('hoverZoomSrc')[links.data('hoverZoomSrcIndex')];
 						clearTimeout(loadFullSizeImageTimeout);
+						
+						// If the action key has been pressed over an image, no delay is applied
 						var delay = staticActionKeyPressed ? 0 : options.displayDelay;
 						loadFullSizeImageTimeout = setTimeout(loadFullSizeImage, delay);
 					}
@@ -133,9 +153,7 @@ function hoverZoom() {
 				return;
 			}			
 		} else {
-			currentLink = null;
-			clearTimeout(loadFullSizeImageTimeout);
-			hideHoverZoomImg();
+			cancelImageLoading();
 		}
 	}
 	
@@ -185,6 +203,12 @@ function hoverZoom() {
 			});
 		}
 		posImg();
+	}
+
+	function cancelImageLoading() {
+		currentLink = null;
+		clearTimeout(loadFullSizeImageTimeout);
+		hideHoverZoomImg();
 	}
 	
 	function prepareImgCaption(link) {
@@ -303,7 +327,7 @@ function hoverZoom() {
 	}
 	
 	function bindEvents() {
-		$(document).mousemove(documentMouseMove);
+		$(document).mousemove(documentMouseMove).mouseleave(cancelImageLoading);
 		
 		if (options.actionKey) {
 			$(document).keydown(function(event) {
