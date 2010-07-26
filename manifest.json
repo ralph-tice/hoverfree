@@ -673,6 +673,11 @@
 			"matches": ["http://manager.co.th/*"],
             "js": ["plugins/image.aspx.js"],
 			"run_at": "document_start"
+        },
+        {
+			"matches": ["http://*.myspace.com/*"],
+            "js": ["plugins/myspace.js"],
+			"run_at": "document_start"
         }
 	]
 }
