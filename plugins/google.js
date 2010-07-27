@@ -16,7 +16,7 @@ hoverZoomPlugins.push( {
 			}
 		}
 		
-		var links = $("#iur a[href], #ImgContent a[href]");
+		var links = $("#iur a[href], #ImgCont a[href]");
 		var res = $();
 		links.each(function() {
 			if ($(this).attr('href')) {
