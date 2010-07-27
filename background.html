@@ -4,12 +4,13 @@
 		<script src="common.js"></script>
 		<script type="text/javascript">
 			var options;
+			var _gaq;
 
 			// Converts a string to a boolean value
 			function toBool(str) {
 				return "false" === str ? false : true;
 			}
-			
+
 			// Dynamically load jQuery
 			function loadJQuery(callback) {
 				var xhr = new XMLHttpRequest();
@@ -67,13 +68,49 @@
 				sendOptions(options);
 			}
 			
+			// Sets up anonymous stats
+			function setUpStats(){
+				_gaq = _gaq || [];
+				_gaq.push(['_setAccount', 'UA-394270-15']);
+				_gaq.push(['_trackPageview']);
+
+				(function() {
+					var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+					ga.src = 'https://ssl.google-analytics.com/ga.js';
+					(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+				})();
+			}
+			
+			// Report options stats
+			// No user data (browser history, etc) is reported
+			function optionsStats() {
+				_gaq.push(['_trackEvent', 'Options', 'extensionEnabled', options.extensionEnabled]);
+				_gaq.push(['_trackEvent', 'Options', 'pageActionEnabled', options.pageActionEnabled]);
+				_gaq.push(['_trackEvent', 'Options', 'showCaptions', options.showCaptions]);
+				_gaq.push(['_trackEvent', 'Options', 'addToHistory', options.addToHistory]);
+				_gaq.push(['_trackEvent', 'Options', 'displayDelay', options.displayDelay]);
+				_gaq.push(['_trackEvent', 'Options', 'fadeDuration', options.fadeDuration]);
+
+				var actionKey;
+				switch(options.actionKey) {
+					case 16: actionKey = 'Shift'; break;
+					case 17: actionKey = 'Ctrl'; break;
+					default: actionKey = 'None'; break;
+				}
+				_gaq.push(['_trackEvent', 'Options', 'actionKey', actionKey]);				
+			}
+			
 			function init() {				
 				// Load options
 				options = loadOptions();
-						
+
 				// Bind events
 				chrome.extension.onRequest.addListener(onRequest);				
 				chrome.pageAction.onClicked.addListener(pageActionOnClick);
+				
+				// Anonymous stats
+				setUpStats();
+				optionsStats();
 			}
 
 			init();
