@@ -8,7 +8,7 @@ function hoverZoom() {
 	var hoverZoomImg = $('<div id="hoverZoomImg"></div>').appendTo(document.body);
 	var hoverZoomCaption = null;
 	var imgFullSize = null;		
-	var imgLoading = $('<img />', {src: chrome.extension.getURL('images/loading.gif')});
+	var imgLoading = null;
 	
 	var imgSrc = '';
 	var currentLink = null;
@@ -163,6 +163,7 @@ function hoverZoom() {
 			loading = true;
 			hoverZoomImg.empty();
 			hoverZoomImg.stop(true, true).show();
+			imgLoading = imgLoading || $('<img />', {src: chrome.extension.getURL('images/loading.gif')});
 			imgLoading.appendTo(hoverZoomImg);
 			imgFullSize = $('<img/>').attr('src', imgSrc).load(function() {
 				// Only the last hovered link gets displayed
@@ -326,6 +327,12 @@ function hoverZoom() {
 		}
 	}
 	
+	function windowOnDOMNodeInserted(event) {
+		if (event.srcElement && (event.srcElement.nodeName == 'A' || $(event.srcElement).find('a').length || $(event.srcElement).parents('a').length)) {
+			bindImgLinksAsync(true);
+		}
+	}
+	
 	function bindEvents() {
 		$(document).mousemove(documentMouseMove).mouseleave(cancelImageLoading);
 		
@@ -343,11 +350,7 @@ function hoverZoom() {
 			});
 		}
 		
-		wnd.bind('DOMNodeInserted', function(event) {
-			if (event.srcElement && (event.srcElement.nodeName == 'A' || $(event.srcElement).find('a').length || $(event.srcElement).parents('a').length)) {
-				bindImgLinksAsync(true);
-			}
-		});
+		wnd.bind('DOMNodeInserted', windowOnDOMNodeInserted);
 		
 		wnd.load(function () {
 			bindImgLinksAsync(true);

@@ -43,6 +43,12 @@
 			"run_at": "document_start"
         },
         {
+			"matches": ["http://*.search.yahoo.com/*",
+						"http://*.search.yahoo.co.jp/*"],
+            "js": ["plugins/yahoo.js"],
+			"run_at": "document_start"
+        },
+        {
 			"matches": ["http://picasaweb.google.com/*", 
 						"http://picasaweb.google.ad/*", 
 						"http://picasaweb.google.ae/*", 
@@ -605,11 +611,6 @@
 			"run_at": "document_start"
         },
         {
-			"matches": ["http://*.search.yahoo.com/*"],
-            "js": ["plugins/yahoo.js"],
-			"run_at": "document_start"
-        },
-        {
 			"matches": ["http://opendesktop.org/*",
 						"http://kde-apps.org/*",
 						"http://gtk-apps.org/*",
@@ -677,6 +678,22 @@
         {
 			"matches": ["http://*.myspace.com/*"],
             "js": ["plugins/myspace.js"],
+			"run_at": "document_start"
+        },
+        {
+			"matches": ["http://*.baidu.com/*"],
+            "js": ["plugins/baidu.js"],
+			"run_at": "document_start"
+        },
+        {
+			"matches": ["http://*.amazon.com/*",
+						"http://*.amazon.ca/*",
+						"http://*.amazon.cn/*",
+						"http://*.amazon.fr/*",
+						"http://*.amazon.de/*",
+						"http://*.amazon.co.jp/*",
+						"http://*.amazon.co.uk/*"],
+            "js": ["plugins/amazon.js"],
 			"run_at": "document_start"
         }
 	]

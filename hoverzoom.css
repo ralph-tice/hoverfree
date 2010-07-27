@@ -1,7 +1,5 @@
 #hoverZoomImg { 
-	background: -webkit-gradient(linear, left top, right bottom, from(#ffffff), to(#ededed), color-stop(0.5, #ffffff));
 	border: 1px solid #444; 
-	border-radius: 3px;
 	display: none; 
 	line-height: 0;
 	overflow: hidden;
@@ -9,6 +7,10 @@
 	margin: 0;
 	position: absolute;
 	z-index: 2147483647;
+	height: auto !important;
+	width: auto !important;
+	border-radius: 3px;
+	background: -webkit-gradient(linear, left top, right bottom, from(#ffffff), to(#ededed), color-stop(0.5, #ffffff));
 	-webkit-box-shadow: 2px 2px 8px #444;
 }
 #hoverZoomCaption {
