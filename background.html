@@ -84,12 +84,12 @@
 			// Report options stats
 			// No user data (browser history, etc) is reported
 			function optionsStats() {
-				_gaq.push(['_trackEvent', 'Options', 'extensionEnabled', options.extensionEnabled]);
-				_gaq.push(['_trackEvent', 'Options', 'pageActionEnabled', options.pageActionEnabled]);
-				_gaq.push(['_trackEvent', 'Options', 'showCaptions', options.showCaptions]);
-				_gaq.push(['_trackEvent', 'Options', 'addToHistory', options.addToHistory]);
-				_gaq.push(['_trackEvent', 'Options', 'displayDelay', options.displayDelay]);
-				_gaq.push(['_trackEvent', 'Options', 'fadeDuration', options.fadeDuration]);
+				_gaq.push(['_trackEvent', 'Options', 'extensionEnabled', options.extensionEnabled ? 'true' : 'false']);
+				_gaq.push(['_trackEvent', 'Options', 'pageActionEnabled', options.pageActionEnabled ? 'true' : 'false']);
+				_gaq.push(['_trackEvent', 'Options', 'showCaptions', options.showCaptions ? 'true' : 'false']);
+				_gaq.push(['_trackEvent', 'Options', 'addToHistory', options.addToHistory ? 'true' : 'false']);
+				_gaq.push(['_trackEvent', 'Options', 'displayDelay', options.displayDelay ? 'true' : 'false']);
+				_gaq.push(['_trackEvent', 'Options', 'fadeDuration', options.fadeDuration ? 'true' : 'false']);
 
 				var actionKey;
 				switch(options.actionKey) {
