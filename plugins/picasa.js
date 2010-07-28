@@ -3,9 +3,9 @@
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
-	"name": "Picasa Web Albums",
-	"version": "0.2",
-	"prepareImgLinks": function() {
+	name: 'Picasa Web Albums',
+	version: '0.4',
+	prepareImgLinks: function(callback) {
 		var links = $("a.goog-icon-list-icon-link,div.gphoto-grid-cell a");
 		links.each(function() {
 			var src = $(this).find('img')[0].src;
@@ -17,6 +17,6 @@ hoverZoomPlugins.push( {
 				$(this).data('hoverZoomCaption', tooltip.text());
 			}
 		});
-		return links;		
+		callback(links);
 	}
 });

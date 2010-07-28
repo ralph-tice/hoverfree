@@ -5,7 +5,7 @@ var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	name: 'Facebook',
 	version: '0.5',
-	prepareImgLinks: function() {
+	prepareImgLinks: function(callback) {
 	
 		function srcReplace(src) {
 			return src.replace(/photos-\w/, 'sphotos').replace(/_[sqta]\./, '_n.').replace(/\/[sqta](\d)/, '/n$1');
@@ -54,6 +54,6 @@ hoverZoomPlugins.push( {
 			res.push(_this);
 		});
 		
-		return $(res);		
+		callback($(res));
 	}
 });

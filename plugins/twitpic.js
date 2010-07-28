@@ -3,18 +3,17 @@
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
-	"name": "Twitpic",
-	"version": "0.1",
-	"prepareImgLinks": function() {
-		var imgs = $("a img[src*=twitpic.com/img]");
-		var res = $();
-		imgs.each(function() {
-			var link = $(this).parents('a').get(0);
+	name: 'Twitpic',
+	version: '0.2',
+	prepareImgLinks: function(callback) {
+		var res = [];
+		$("a img[src*=twitpic.com/img]").each(function() {
+			var link = $(this).parents('a:eq(0)');
 			if (link) {
 				$(link).data('hoverZoomSrc', [$(this).attr('src').replace(/-thumb/, '-full')]);
-				res = res.add(link);
+				res.push(link);
 			}
 		});
-		return res;
+		callback($(res));
 	}
 });

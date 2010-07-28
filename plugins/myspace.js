@@ -5,7 +5,7 @@ var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	name: 'MySpace',
 	version: '0.1',
-	prepareImgLinks: function() {
+	prepareImgLinks: function(callback) {
 		var imgs = $('a img[src*=ac-images.myspacecdn.com], a img[src*=images.socialplan.com]');
 		var res = [];
 		imgs.each(function() {
@@ -15,6 +15,6 @@ hoverZoomPlugins.push( {
 			link.data('hoverZoomSrc', [src]);
 			res.push(link);
 		});
-		return $(res);	
+		callback($(res));
 	}
 });

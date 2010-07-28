@@ -3,9 +3,9 @@
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
-	"name": "Wikipedia",
-	"version": "0.2",
-	"prepareImgLinks": function() {
+	name: 'Wikipedia',
+	version: '0.4',
+	prepareImgLinks: function(callback) {
 		var links = $("a.image, div.l_image a");
 		links.each(function() {
 			var img = $(this).find('img')[0];
@@ -23,6 +23,6 @@ hoverZoomPlugins.push( {
 				$(this).data('hoverZoomSrc', [src]);
 			}
 		});
-		return links;		
+		callback(links);
 	}
 });

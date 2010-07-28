@@ -5,7 +5,7 @@ var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	name: 'Amazon',
 	version: '0.1',
-	prepareImgLinks: function() {
+	prepareImgLinks: function(callback) {
 		var res = [];
 		$("a img[src*=.images-amazon.com]:not([src*=g-ecx.images-amazon.com]), a img[src*=/img.amazon.]").each(function() {
 			var img = $(this);
@@ -15,6 +15,6 @@ hoverZoomPlugins.push( {
 			link.data('hoverZoomSrc', [src]);
 			res.push(link);
 		});
-		return $(res);		
+		callback($(res));
 	}
 });

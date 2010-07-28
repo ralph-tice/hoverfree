@@ -3,13 +3,13 @@
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
-	"name": "deviantART",
-	"version": "0.2",
-	"prepareImgLinks": function() {
+	name: 'deviantART',
+	version: '0.3',
+	prepareImgLinks: function(callback) {
 		var links = $("a[super_img]");
 		links.each(function() {		
 			$(this).data('hoverZoomSrc', [$(this).attr('super_fullimg') || $(this).attr('super_img')]);
 		});
-		return links;		
+		return callback(links);
 	}
 });

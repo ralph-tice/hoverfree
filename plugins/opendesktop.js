@@ -3,18 +3,19 @@
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
-	"name": "openDesktop.org",
-	"version": "0.1",
-	"prepareImgLinks": function() {
+	name: 'openDesktop.org',
+	version: '0.2',
+	prepareImgLinks: function(callback) {
 		var imgs = $("a img[src*=CONTENT]");
-		var res = $();
+		var res = [];
 		var re = /(content|knowledgebase)-m(\d+)\/(m?)/;
 		imgs.each(function() {
-			var src = $(this).attr('src');
+			var _this = $(this);
+			var src = _this.attr('src');
 			var index = src.match(re);
 			if (index) {
-				var link = $(this).parents('a').get(0);
-				var href = $(link).attr('href');
+				var link = _this.parents('a:eq(0)');
+				var href = link.attr('href');
 				var param = 'file' + index[2] + '=';
 				var fileIndex = href.indexOf(param);
 				var pre = index[1] == 'content' ? 'pre' : 'pics';
@@ -27,11 +28,13 @@ hoverZoomPlugins.push( {
 				if (src.substr(src.lastIndexOf('.') + 1).toLowerCase() == 'png') {
 					srcs.push(src.replace(/png$/i, 'jpg'));
 					srcs.push(src.replace(/png$/i, 'JPG'));
+					srcs.push(src.replace(/png$/i, 'jpeg'));
+					srcs.push(src.replace(/png$/i, 'JPEG'));
 				}
-				$(link).data('hoverZoomSrc', srcs);
-				res = res.add($(link));			
+				link.data('hoverZoomSrc', srcs);
+				res.push(link);	
 			}
 		});
-		return res;		
+		callback($(res));
 	}
 });

@@ -3,9 +3,9 @@
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
-	"name": "IMDb",
-	"version": "0.1",
-	"prepareImgLinks": function() {
+	name: 'IMDb',
+	version: '0.2',
+	prepareImgLinks: function(callback) {
 		var imgs = $("a img[src*='._V1.']");
 		var res = [];
 		imgs.each(function() {
@@ -17,6 +17,6 @@ hoverZoomPlugins.push( {
 			res.push(link);
 		});
 
-		return $(res);		
+		callback($(res));
 	}
 });

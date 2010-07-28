@@ -3,19 +3,20 @@
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
-	"name": "Default",
-	"version": "0.2",
-	"prepareImgLinks": function() {
-		var links = $("a[href]").filter(function(index) {
+	name: 'Default',
+	version: '0.3',
+	prepareImgLinks: function(callback) {
+		var res = [];
+		var links = $('a[href]').filter(function() {
 			return this.href.match(/^[^\?]*\.(jpg|jpeg|gif|png|svg|bmp|ico|xbm)$/i);
 		});
-		var res = [];
 		links.each(function() {
-			if (!$(this).data('hoverZoomSrc')) {
-				$(this).data('hoverZoomSrc', [this.href]);
-				res.push(this);
+			var _this = $(this);
+			if (!_this.data('hoverZoomSrc')) {
+				_this.data('hoverZoomSrc', [this.href]);
+				res.push(_this);
 			}
 		});
-		return $(res);	
+		callback($(res));	
 	}
 });

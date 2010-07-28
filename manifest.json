@@ -695,6 +695,11 @@
 						"http://*.amazon.co.uk/*"],
             "js": ["plugins/amazon.js"],
 			"run_at": "document_start"
+        },
+        {
+			"matches": ["http://*.photos.live.com/*"],
+            "js": ["plugins/windowslive.js"],
+			"run_at": "document_start"
         }
 	]
 }

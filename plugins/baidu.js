@@ -5,7 +5,7 @@ var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	name: 'Baidu',
 	version: '0.1',
-	prepareImgLinks: function() {
+	prepareImgLinks: function(callback) {
 		var res = [];
 		
 		// Image search
@@ -23,23 +23,27 @@ hoverZoomPlugins.push( {
 		// Encyclopedia, Space, etc
 		$("a img[src*=/abpic/], a img[src*=/mpic/]").each(function() {
 			var _this = $(this);
-			var src = _this.attr('src');
-			src = src.replace(/abpic|mpic/, 'pic');
 			var link = _this.parents('a:eq(0)');
-			link.data('hoverZoomSrc', [src]);
-			res.push(link);
+			if (!link.data('hoverZoomSrc')) {
+				var src = _this.attr('src');
+				src = src.replace(/abpic|mpic/, 'pic');
+				link.data('hoverZoomSrc', [src]);
+				res.push(link);
+			}
 		});
 				
 		// News
 		$("a img[src*='/it/u=']").each(function() {
 			var _this = $(this);
-			var src = _this.attr('src');
-			src = src.substring(src.lastIndexOf('http'), src.indexOf("&"));
 			var link = _this.parents('a:eq(0)');
-			link.data('hoverZoomSrc', [src]);
-			res.push(link);
+			if (!link.data('hoverZoomSrc')) {
+				var src = _this.attr('src');
+				src = src.substring(src.lastIndexOf('http'), src.indexOf("&"));
+				link.data('hoverZoomSrc', [src]);
+				res.push(link);
+			}
 		});
 
-		return $(res);
+		callback($(res));
 	}
 });

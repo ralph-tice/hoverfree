@@ -3,9 +3,9 @@
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
-	"name": "Google",
-	"version": "0.3",
-	"prepareImgLinks": function() {
+	name: 'Google',
+	version: '0.4',
+	prepareImgLinks: function(callback) {
 	
 		function getSrc(link) {
 			var imgUrlIndex = link.attr('href').indexOf('imgurl=');
@@ -17,13 +17,14 @@ hoverZoomPlugins.push( {
 		}
 		
 		var links = $("#iur a[href], #ImgCont a[href]");
-		var res = $();
+		var res = [];
 		links.each(function() {
-			if ($(this).attr('href')) {
-				var src = getSrc($(this));
+			var _this = $(this);
+			if (_this.attr('href')) {
+				var src = getSrc(_this);
 				if (src) {
-					$(this).data('hoverZoomSrc', [src]);
-					res = res.add($(this));
+					_this.data('hoverZoomSrc', [src]);
+					res.push(_this);
 				}
 			}
 		});
@@ -34,6 +35,6 @@ hoverZoomPlugins.push( {
 		}		
 		$('#rg_hi').load(rgHiOnLoad);
 		
-		return res;		
+		callback($(res));
 	}
 });
