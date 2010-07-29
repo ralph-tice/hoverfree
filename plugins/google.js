@@ -8,9 +8,11 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 	
 		function getSrc(link) {
-			var imgUrlIndex = link.attr('href').indexOf('imgurl=');
+			var href = link.attr('href');
+			if (!href) return null;
+			var imgUrlIndex = href.indexOf('imgurl=');
 			if (imgUrlIndex > -1) {
-				return decodeURIComponent(link.attr('href').substring(imgUrlIndex + 7, link.attr('href').indexOf('&', imgUrlIndex)));		
+				return decodeURIComponent(href.substring(imgUrlIndex + 7, href.indexOf('&', imgUrlIndex)));		
 			} else {
 				return null;
 			}

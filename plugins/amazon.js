@@ -10,6 +10,7 @@ hoverZoomPlugins.push( {
 		$("a img[src*=.images-amazon.com]:not([src*=g-ecx.images-amazon.com]), a img[src*=/img.amazon.]").each(function() {
 			var img = $(this);
 			var src = img.attr('src');
+			if (!src) return;
 			src = src.substr(0, src.indexOf('._')) + src.substr(src.lastIndexOf('.'));
 			var link = $(this).parents('a:eq(0)');
 			link.data('hoverZoomSrc', [src]);

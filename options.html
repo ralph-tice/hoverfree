@@ -61,7 +61,6 @@
 				
 				var selActionKey = $('#selActionKey')[0];
 				for (i=0; i<selActionKey.options.length; i++) {
-					console.log(selActionKey.options[i].value);
 					if (selActionKey.options[i].value == options.actionKey) {
 						selActionKey.options[i].selected = true;
 					}
@@ -95,6 +94,8 @@
 	</head>
 	<body>
 		<div id="body">
+			<!--<div style="border: 2px solid red; color: red; text-align: center; padding: 0.5em;">This version of Hover Zoom is for testing purpose only. It won't update automatically. 
+			Please install Hover Zoom from the <a href="https://chrome.google.com/extensions/detail/nonjdcjchghhkdoolnlbekcfllmednbl">Chrome Extension Gallery</a> for everyday use.</div>-->
 			<img id="icon" src="images/icon128.png">
 			<div id="container">
 				<h1 id="title">Hover Zoom Options</h1>

@@ -11,10 +11,12 @@ hoverZoomPlugins.push( {
 		imgs.each(function() {
 			var img = $(this);
 			var src = img.attr('src');
-			src = src.substr(0, src.indexOf('._V1.')) + src.substr(src.lastIndexOf('.'));
-			var link = $(this).parents('a:eq(0)');
-			link.data('hoverZoomSrc', [src]);
-			res.push(link);
+			if (src) {
+				src = src.substr(0, src.indexOf('._V1.')) + src.substr(src.lastIndexOf('.'));
+				var link = $(this).parents('a:eq(0)');
+				link.data('hoverZoomSrc', [src]);
+				res.push(link);
+			}
 		});
 
 		callback($(res));

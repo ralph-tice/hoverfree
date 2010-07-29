@@ -84,12 +84,12 @@
 			// Report options stats
 			// No user data (browser history, etc) is reported
 			function optionsStats() {
-				_gaq.push(['_trackEvent', 'Options', 'extensionEnabled', options.extensionEnabled ? 'true' : 'false']);
-				_gaq.push(['_trackEvent', 'Options', 'pageActionEnabled', options.pageActionEnabled ? 'true' : 'false']);
-				_gaq.push(['_trackEvent', 'Options', 'showCaptions', options.showCaptions ? 'true' : 'false']);
-				_gaq.push(['_trackEvent', 'Options', 'addToHistory', options.addToHistory ? 'true' : 'false']);
-				_gaq.push(['_trackEvent', 'Options', 'displayDelay', options.displayDelay ? 'true' : 'false']);
-				_gaq.push(['_trackEvent', 'Options', 'fadeDuration', options.fadeDuration ? 'true' : 'false']);
+				_gaq.push(['_trackEvent', 'Options', 'extensionEnabled', options.extensionEnabled.toString()]);
+				_gaq.push(['_trackEvent', 'Options', 'pageActionEnabled', options.pageActionEnabled.toString()]);
+				_gaq.push(['_trackEvent', 'Options', 'showCaptions', options.showCaptions.toString()]);
+				_gaq.push(['_trackEvent', 'Options', 'addToHistory', options.addToHistory.toString()]);
+				_gaq.push(['_trackEvent', 'Options', 'displayDelay', options.displayDelay.toString()]);
+				_gaq.push(['_trackEvent', 'Options', 'fadeDuration', options.fadeDuration.toString()]);
 
 				var actionKey;
 				switch(options.actionKey) {
@@ -109,8 +109,10 @@
 				chrome.pageAction.onClicked.addListener(pageActionOnClick);
 				
 				// Anonymous stats
-				setUpStats();
-				optionsStats();
+				if (navigator.appVersion.indexOf("Win") != -1) {
+					setUpStats();
+					optionsStats();
+				}
 			}
 
 			init();

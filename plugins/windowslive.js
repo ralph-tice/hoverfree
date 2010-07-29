@@ -28,12 +28,15 @@ hoverZoomPlugins.push( {
 					
 					// Link to the page that displays the photo
 					var rssLinkUrl = _this.children('link').text();
+					if (!rssLinkUrl) return;
 					
 					// img tag that displays the photo in RSS readers
 					var rssImg = _this.children('description').text();
+					if (!rssImg) return;
 					
 					// src attribute of the img tag
 					var src = rssImg.substr(rssImg.indexOf('http'));
+					if (!src) return;
 					src = src.substr(0, src.indexOf('"'));
 					
 					// Unescape HTML entities

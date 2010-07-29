@@ -279,6 +279,7 @@ function hoverZoom() {
 	}
 	
 	function prepareImgLinks() {
+		pageActionShown = false;
 		for (i in hoverZoomPlugins) {
 			hoverZoomPlugins[i].prepareImgLinks(imgLinksPrepared);
 		}

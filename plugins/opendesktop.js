@@ -16,6 +16,7 @@ hoverZoomPlugins.push( {
 			if (index) {
 				var link = _this.parents('a:eq(0)');
 				var href = link.attr('href');
+				if (!href) return;
 				var param = 'file' + index[2] + '=';
 				var fileIndex = href.indexOf(param);
 				var pre = index[1] == 'content' ? 'pre' : 'pics';

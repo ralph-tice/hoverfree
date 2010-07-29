@@ -18,7 +18,9 @@ hoverZoomPlugins.push( {
 			var link = _this.parents('a:eq(0)');
 			
 			// Thumbnail URL
-			var src = unescape(_this.attr('src'));
+			var src = _this.attr('src');
+			if (!src) return;
+			src = unescape(src);
 			
 			// If image URL is included as a querystring parameter
 			var indexQS = src.lastIndexOf('&url=');
@@ -27,6 +29,7 @@ hoverZoomPlugins.push( {
 				
 			if (indexQS > -1) {
 				src = unescape(src.substr(indexQS + 5));
+				if (!src) return;
 				if (src.indexOf('&') > -1)
 					src = src.substr(0, src.indexOf('&'));
 			} else {
@@ -48,10 +51,12 @@ hoverZoomPlugins.push( {
 			var _this = $(this);
 			var div = _this.parent();
 			var src = div.attr('style');
-			src = src.substring(src.indexOf('http:'), src.lastIndexOf(')'));
-			src = srcReplace(src);
-			_this.data('hoverZoomSrc', [src]);
-			res.push(_this);
+			if (src) {
+				src = src.substring(src.indexOf('http:'), src.lastIndexOf(')'));
+				src = srcReplace(src);
+				_this.data('hoverZoomSrc', [src]);
+				res.push(_this);
+			}
 		});
 		
 		callback($(res));

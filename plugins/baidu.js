@@ -26,9 +26,11 @@ hoverZoomPlugins.push( {
 			var link = _this.parents('a:eq(0)');
 			if (!link.data('hoverZoomSrc')) {
 				var src = _this.attr('src');
-				src = src.replace(/abpic|mpic/, 'pic');
-				link.data('hoverZoomSrc', [src]);
-				res.push(link);
+				if (src) {
+					src = src.replace(/abpic|mpic/, 'pic');
+					link.data('hoverZoomSrc', [src]);
+					res.push(link);
+				}
 			}
 		});
 				
@@ -38,9 +40,11 @@ hoverZoomPlugins.push( {
 			var link = _this.parents('a:eq(0)');
 			if (!link.data('hoverZoomSrc')) {
 				var src = _this.attr('src');
-				src = src.substring(src.lastIndexOf('http'), src.indexOf("&"));
-				link.data('hoverZoomSrc', [src]);
-				res.push(link);
+				if (src) {
+					src = src.substring(src.lastIndexOf('http'), src.indexOf("&"));
+					link.data('hoverZoomSrc', [src]);
+					res.push(link);
+				}
 			}
 		});
 
