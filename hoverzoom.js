@@ -96,6 +96,7 @@ function hoverZoom() {
 		
 		position = {top: Math.round(position.top), left: Math.round(position.left)};
 		hoverZoomImg.css(position);
+		//hoverZoomImg.offset(position);
 	}
 	
 	function hideHoverZoomImg(now) {
@@ -162,11 +163,16 @@ function hoverZoom() {
 		// If no image is currently displayed...
 		if (!imgFullSize) {
 			loading = true;
-			hoverZoomImg = hoverZoomImg || $('<div id="hoverZoomImg"></div>').appendTo(document.body);
+			
+			// Full size image container
+			hoverZoomImg = hoverZoomImg || $('<div id="hoverZoomImg"></div>').appendTo(document.body);			
 			hoverZoomImg.empty();
 			hoverZoomImg.stop(true, true).show();
+			
+			// Loading image container
 			imgLoading = imgLoading || $('<img />', {src: chrome.extension.getURL('images/loading.gif')});
 			imgLoading.appendTo(hoverZoomImg);
+			
 			imgFullSize = $('<img/>').attr('src', imgSrc).load(function() {
 				// Only the last hovered link gets displayed
 				if (imgSrc == $(this).attr('src')) {
