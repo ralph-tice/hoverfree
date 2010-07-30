@@ -6,10 +6,18 @@ hoverZoomPlugins.push( {
 	name: 'deviantART',
 	version: '0.3',
 	prepareImgLinks: function(callback) {
-		var links = $("a[super_img]");
-		links.each(function() {		
-			$(this).data('hoverZoomSrc', [$(this).attr('super_fullimg') || $(this).attr('super_img')]);
+		var res = [];
+		$("a img[src^=http://th]").each(function() {
+			var _this = $(this);
+			var src = _this.attr('src');
+			if (!src) return;
+			var aSrc = src.split('/');
+			aSrc.splice(4, 1);
+			src = aSrc.join('/');
+			var link = _this.parents('a:eq(0)');
+			link.data('hoverZoomSrc', [src]);
+			res.push(link);
 		});
-		return callback(links);
+		return callback($(res));
 	}
 });
