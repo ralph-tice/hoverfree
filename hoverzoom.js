@@ -129,11 +129,12 @@ function hoverZoom() {
 		}
 		
 		if (links && links.length > 0) {
+			var hoverZoomSrcIndex = links.data('hoverZoomSrcIndex') || 0;
 			if (links.data('hoverZoomSrc') && links.data('hoverZoomSrc') != 'undefined' && 
-				links.data('hoverZoomSrc')[links.data('hoverZoomSrcIndex')] && 
-				links.data('hoverZoomSrc')[links.data('hoverZoomSrcIndex')] != 'undefined') {
+				links.data('hoverZoomSrc')[hoverZoomSrcIndex] && 
+				links.data('hoverZoomSrc')[hoverZoomSrcIndex] != 'undefined') {
 				// Happens when the mouse goes from an image to another without hovering the page background
-				if (links.data('hoverZoomSrc')[links.data('hoverZoomSrcIndex')] != imgSrc) {
+				if (links.data('hoverZoomSrc')[hoverZoomSrcIndex] != imgSrc) {
 					hideHoverZoomImg();
 				}				
 				
@@ -141,7 +142,7 @@ function hoverZoom() {
 				if (!imgFullSize) {
 					currentLink = links;
 					if (!options.actionKey || actionKeyDown) {
-						imgSrc = links.data('hoverZoomSrc')[links.data('hoverZoomSrcIndex')];
+						imgSrc = links.data('hoverZoomSrc')[hoverZoomSrcIndex];
 						clearTimeout(loadFullSizeImageTimeout);
 						
 						// If the action key has been pressed over an image, no delay is applied
@@ -241,14 +242,17 @@ function hoverZoom() {
 		var showPageAction = false;
 
 		links.each(function() {
-			if (!$(this).data('hoverZoomSrc')) {
+			var _this = $(this)
+			if (!_this.data('hoverZoomSrc')) {
 
-				prepareImgLinksAsync();
+				prepareImgLinksAsync(true);
 		
 			} else {
-						
-				// Skip if the image has the same URL as the thumbnail
-				if ($(this).find('img[src="' + $(this).data('hoverZoomSrc')[0] + '"]').length) {
+				
+				// Skip if the image has the same URL as the thumbnail.
+				// Base64 embedded thumbnails are filtered to avoid a freeze.
+				if (_this.find('img[src^=data]').length == 0
+					&& _this.find('img[src="' + _this.data('hoverZoomSrc')[0] + '"]').length) {
 					return;
 				}
 			
@@ -260,20 +264,20 @@ function hoverZoom() {
 					return;
 				}
 
-				$(this).addClass('hoverZoomLink');
+				_this.addClass('hoverZoomLink');
 				
 				// Convert URL special characters
-				var srcs = $(this).data('hoverZoomSrc');
+				var srcs = _this.data('hoverZoomSrc');
 				for (i in srcs) {
 					srcs[i] = deepUnescape(srcs[i]);
 				}
-				$(this).data('hoverZoomSrc', srcs);
+				_this.data('hoverZoomSrc', srcs);
 				
-				$(this).data('hoverZoomSrcIndex', 0);
+				_this.data('hoverZoomSrcIndex', 0);
 				
 				// Caption
-				if (options.showCaptions && !$(this).data('hoverZoomCaption')) {
-					prepareImgCaption($(this));
+				if (options.showCaptions && !_this.data('hoverZoomCaption')) {
+					prepareImgCaption(_this);
 				}
 			}
 		});
@@ -286,15 +290,15 @@ function hoverZoom() {
 	
 	function prepareImgLinks() {
 		pageActionShown = false;
-		for (i in hoverZoomPlugins) {
+		for (var i = 0; i < hoverZoomPlugins.length; i++) {
 			hoverZoomPlugins[i].prepareImgLinks(imgLinksPrepared);
 		}
 	}
 	
-	function prepareImgLinksAsync(resetDelay) {
+	function prepareImgLinksAsync(dontResetDelay) {
 		if (!options.extensionEnabled)
 			return;
-		if (resetDelay)
+		if (!dontResetDelay)
 			prepareImgLinksDelay = 500;
 		clearTimeout(prepareImgLinksTimeout);
 		prepareImgLinksTimeout = setTimeout(prepareImgLinks, prepareImgLinksDelay);
@@ -347,7 +351,7 @@ function hoverZoom() {
 	
 	function windowOnDOMNodeInserted(event) {
 		if (event.srcElement && (event.srcElement.nodeName == 'A' || $(event.srcElement).find('a').length || $(event.srcElement).parents('a').length)) {
-			prepareImgLinksAsync(true);
+			prepareImgLinksAsync();
 		}
 	}
 	
@@ -369,10 +373,7 @@ function hoverZoom() {
 		}
 		
 		wnd.bind('DOMNodeInserted', windowOnDOMNodeInserted);
-		
-		wnd.load(function () {
-			prepareImgLinksAsync(true);
-		});
+		wnd.load(prepareImgLinksAsync);
 	}
 	
 	function init() {

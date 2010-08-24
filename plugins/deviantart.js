@@ -4,7 +4,7 @@
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	name: 'deviantART',
-	version: '0.3',
+	version: '0.4',
 	prepareImgLinks: function(callback) {
 		var res = [];
 		$("a img[src^=http://th]").each(function() {

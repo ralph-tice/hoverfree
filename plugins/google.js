@@ -4,7 +4,7 @@
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	name: 'Google',
-	version: '0.4',
+	version: '0.5',
 	prepareImgLinks: function(callback) {
 	
 		function getSrc(link) {
@@ -33,7 +33,7 @@ hoverZoomPlugins.push( {
 		
 		function rgHiOnLoad() {
 			var src = getSrc($(this).parent());
-			$('#rg_hta').addClass('hoverZoomLink').data('hoverZoomSrc', [src]).data('hoverZoomSrcIndex', 0);
+			$('#rg_hta').addClass('hoverZoomLink').data('hoverZoomSrc', [src]);
 		}		
 		$('#rg_hi').load(rgHiOnLoad);
 		

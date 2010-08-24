@@ -4,7 +4,7 @@
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	name: 'Facebook',
-	version: '0.5',
+	version: '0.6',
 	prepareImgLinks: function(callback) {
 	
 		function srcReplace(src) {
@@ -45,6 +45,22 @@ hoverZoomPlugins.push( {
 			
 			res.push(link);
 		});
+		
+		// Photo albums
+		
+		function preparePhotoAlbumLink() {
+			var _this = $(this);
+			var i = _this.find('i:eq(0)');
+			var src = i.attr('style');
+			if (src) {
+				src = src.substring(src.indexOf('http:'), src.lastIndexOf(')'));
+				src = srcReplace(src);
+				_this.data('hoverZoomSrc', [src]);
+				res.push(_this);
+			}
+		}
+		
+		$('.uiMediaThumb').each(preparePhotoAlbumLink).mouseenter(preparePhotoAlbumLink);
 		
 		// Photo albums covers
 		$('.album_thumb a.album_link').each(function() {

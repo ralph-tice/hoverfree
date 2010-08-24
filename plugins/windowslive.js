@@ -8,7 +8,7 @@
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	name: 'Windows Live',
-	version: '0.1',
+	version: '0.2',
 	prepareImgLinks: function(callback) {
 	
 		// RSS file URL
@@ -48,8 +48,8 @@ hoverZoomPlugins.push( {
 					src = unescape(src);
 					
 					// Since the call is asynchronous, the list of links can't be returned by the prepareImgLinks function,
-					// so all the processing
-					res.push($('a[href="' + rssLinkUrl + '"]').data('hoverZoomSrc', [src]).data('hoverZoomSrcIndex', 0).addClass('hoverZoomLink'));
+					// so all the processing is done here
+					res.push($('a[href="' + rssLinkUrl + '"]').data('hoverZoomSrc', [src]).addClass('hoverZoomLink'));
 				});
 				callback($(res));
 			}
