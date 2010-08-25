@@ -2,23 +2,26 @@
 <html>
 	<head>
 		<title>Hover Zoom Options</title>
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.0/themes/base/jquery-ui.css" />
+		<link rel="stylesheet" href="common.css" />
 		<style type="text/css">
-			body { padding: 0; background: white; color: black; font-family: Arial,sans-serif}
-			p { text-align:left; padding:0 0 0.5em; font-size: 10pt; margin: 0 }
-			hr { height: 0; border-style: none; border-top: 1px solid #bbb; margin: 0.7em }
 			#body { margin: 0 auto; width: 40em; }
 			#container {float: left; margin: 1em;}
 			#icon { float: left; margin-top: 2em }
-			#options { border: 1px solid #bbb; margin-bottom: 1em; padding: 1em; border-radius: 4px; background-color: #f2f2f2; }
+			#tabs { width: 25em; }
+			#tabs li { font-size: 10pt; }
 			#title { font-size: 1.5em }
-			h2 { font-size: 0.8em; border-bottom: 1px solid #bbb }
-			#messages { padding: 1em; max-width: 18em; height: 3em; }
+			#selExcludedSites, #txtAddExcludedSite { width: 23em; }
+			#excludedSites button { width: 5em; }
+			#messages { padding: 1em; max-width: 28em; height: 3em; }
 			#saved { display: none; background-color: #ffd; padding:.5em; }
 			#saved p { font-size: 9pt; }
 			#title, #buttons, #about p, #messages p { text-align: center }
 			#delays p, #delays input { text-align: right }
+			.notice { font-size: 8pt; }
 		</style>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"></script>
 		<script src="common.js"></script>
 		<script>
 			var options;
@@ -29,7 +32,7 @@
 				ctrl.val(value / 1000);
 				return value;
 			}
-		
+
 			// Saves options to localStorage.
 			function saveOptions() {
 				options.extensionEnabled = $('#chkExtensionEnabled')[0].checked;
@@ -38,11 +41,18 @@
 				options.actionKey = $('#radActionKeyOn')[0].checked ? parseInt($('#selActionKey').val()) : 0;
 				options.addToHistory = $('#chkAddToHistory')[0].checked;
 				options.displayDelay = getMilliseconds($('#txtDisplayDelay'));
-				options.fadeDuration = getMilliseconds($('#txtFadeDuration'));
+				options.fadeDuration = getMilliseconds($('#txtFadeDuration'));				
+				
+				// Excluded sites
+				options.excludedSites = [];
+				$('#selExcludedSites option').each(function() {
+					options.excludedSites.push($(this).text());
+				});
 				
 				localStorage.options = JSON.stringify(options);
 				enableControls(false);
 				sendOptions(options);
+				restoreOptions();
 				$('#saved').clearQueue().fadeIn(100).delay(5000).fadeOut(600);			
 			}
 
@@ -59,6 +69,11 @@
 				$('#txtDisplayDelay').val((options.displayDelay || 0) / 1000);
 				$('#txtFadeDuration').val((options.fadeDuration || 0) / 1000);
 				
+				$('#selExcludedSites').empty();
+				for (var i = 0; i < options.excludedSites.length; i++) {
+					$('<option>' + options.excludedSites[i] + '</option>').appendTo('#selExcludedSites');
+				}
+				
 				var selActionKey = $('#selActionKey')[0];
 				for (i=0; i<selActionKey.options.length; i++) {
 					if (selActionKey.options[i].value == options.actionKey) {
@@ -69,9 +84,20 @@
 				enableControls(false);
 			}
 			
+			function btnAddExcludedSiteOnClick() {
+				var site = $('#txtAddExcludedSite').val().trim().toLowerCase().replace(/.*:\/\//, '')
+				if (site)
+					$('<option>' + site + '</option>').appendTo('#selExcludedSites');
+				$('#txtAddExcludedSite').val('');
+			}
+			
+			function btnRemoveExcludedSiteOnClick() {
+				$('#selExcludedSites option:selected').remove();
+			}
+			
 			function enableControls(enabled) {
 				enabled = enabled || false;
-				$('button').attr('disabled', !enabled);
+				$('#buttons button').attr('disabled', !enabled);
 				$('#selActionKey')[0].disabled = $('#radActionKeyOn')[0].checked ? '' : 'disabled';
 			}
 			
@@ -84,9 +110,10 @@
 			}		
 			
 			$(function() {
-				$('input, select').change(enableControls).keydown(enableControls);
+				$('input, select, textarea').change(enableControls).keydown(enableControls);
 				$('#btnSave').click(saveOptions);
 				$('#btnReset').click(restoreOptions);
+				$('#tabs').tabs({ selected: 0 });
 				restoreOptions();
 				chrome.extension.onRequest.addListener(onRequest);
 			});
@@ -99,26 +126,42 @@
 			<img id="icon" src="images/icon128.png">
 			<div id="container">
 				<h1 id="title">Hover Zoom Options</h1>
-				<div id="options">
-					<p><input type="checkbox" id="chkExtensionEnabled"> <label for="chkExtensionEnabled">Enable extension</label></p>
-					<h2>View</h2>
-					<p><input type="checkbox" id="chkPageActionEnabled"> <label for="chkPageActionEnabled">Show extension icon in address bar</label></p>
-					<p><input type="checkbox" id="chkShowCaptions"> <label for="chkShowCaptions">Show pictures captions</label></p>
-					<h2>Action key</h2>
-					<p><input type="radio" id="radActionKeyOn" name="radActionKey" value="1"> <label for="radActionKeyOn">Only show pictures if a key is held down:</label>
-					<select id="selActionKey">
-						<option value="16">Shift</option>
-						<option value="17">Ctrl</option>
-					</select>
-					</p>
-					<p><input type="radio" id="radActionKeyOff" name="radActionKey" value="0"> <label for="radActionKeyOff">Always show pictures</label></p>
-					<h2>Delays</h2>
-					<div id="delays">
-					<p><label for="txtDisplayDelay">Delay before displaying a picture</label>: <input type="textbox" id="txtDisplayDelay" size="1"> sec.</p>
-					<p><label for="txtFadeDuration">Fading animation duration</label>: <input type="textbox" id="txtFadeDuration" size="1"> sec.</p>
+				<div id="tabs">
+					<ul>
+						<li><a href="#optionTab1">General</a></li>
+						<li><a href="#optionTab2">Sites</a></li>
+					</ul>
+					<div id="optionTab1">
+						<p><input type="checkbox" id="chkExtensionEnabled"> <label for="chkExtensionEnabled">Enable extension</label></p>
+						<h2>View</h2>
+						<p><input type="checkbox" id="chkPageActionEnabled"> <label for="chkPageActionEnabled">Show extension icon in address bar</label></p>
+						<p><input type="checkbox" id="chkShowCaptions"> <label for="chkShowCaptions">Show pictures captions</label></p>
+						<h2>Action key</h2>
+						<p><input type="radio" id="radActionKeyOn" name="radActionKey" value="1"> <label for="radActionKeyOn">Only show pictures if a key is held down:</label>
+						<select id="selActionKey">
+							<option value="16">Shift</option>
+							<option value="17">Ctrl</option>
+						</select>
+						</p>
+						<p><input type="radio" id="radActionKeyOff" name="radActionKey" value="0"> <label for="radActionKeyOff">Always show pictures</label></p>
+						<h2>Delays</h2>
+						<div id="delays">
+						<p><label for="txtDisplayDelay">Delay before displaying a picture</label>: <input type="textbox" id="txtDisplayDelay" size="1"> sec.</p>
+						<p><label for="txtFadeDuration">Fading animation duration</label>: <input type="textbox" id="txtFadeDuration" size="1"> sec.</p>
+						</div>
+						<h2>Advanced</h2>
+						<p><input type="checkbox" id="chkAddToHistory"> <label for="chkAddToHistory">Add viewed pictures to the browser's history</label></p>
 					</div>
-					<h2>Advanced</h2>
-					<p><input type="checkbox" id="chkAddToHistory"> <label for="chkAddToHistory">Add viewed pictures to the browser's history</label></p>
+					<div id="optionTab2">
+						<h2>Disable Hover Zoom for specific sites</h2>
+						<p>Enter domains for which Hover Zoom must be disabled.</p>
+						<p><i>Examples: facebook.com, picasaweb.google.com</i></p>
+						<table id="excludedSites"><tr><td><input type="text" id="txtAddExcludedSite"></td>
+						<td><button id="btnAddExcludedSite" onclick="btnAddExcludedSiteOnClick()">Add</button></td></tr>
+						<tr><td><select id="selExcludedSites" size="12"></select></td>
+						<td><button id="btnRemoveExcludedSite" onclick="btnRemoveExcludedSiteOnClick()">Remove</button></td></tr></table>
+						<p class="notice">Be aware that domain filters can overlap. Example: if you have filtered "picasaweb.google.com" and "google.com", removing "picasaweb.google.com" will not reactivate Picasa Web Albums, as it will still be excluded by the "google.com" filter.</p>
+					</div>
 				</div>
 				<div id="buttons">
 					<button id="btnSave">Save</button>

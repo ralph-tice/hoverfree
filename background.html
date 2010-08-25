@@ -46,16 +46,23 @@
 					case 'optionsChanged':
 						options = request.options;
 						break;				
+					case 'saveOptions':
+						localStorage.options = JSON.stringify(request.options);
+						sendOptions(request.options);
+						break;				
+					case 'isExcludedSite':
+						callback(isExcludedSite(request.url));
+						break;				
 				}
 			};
 			
 			function showPageAction(tab) {
-				if (options.extensionEnabled) {
-					chrome.pageAction.setIcon({tabId: tab.id, path: 'images/icon19.png'});
-					chrome.pageAction.setTitle({tabId: tab.id, title: 'Hover Zoom\nClick to disable automatic image zooming'});
-				} else {
+				if (!options.extensionEnabled || isExcludedSite(tab.url)) {
 					chrome.pageAction.setIcon({tabId: tab.id, path: 'images/icon19d.png'});
-					chrome.pageAction.setTitle({tabId: tab.id, title: 'Hover Zoom\nClick to enable automatic image zooming'});
+					//chrome.pageAction.setTitle({tabId: tab.id, title: 'Hover Zoom\nClick to enable automatic image zooming'});
+				} else {
+					chrome.pageAction.setIcon({tabId: tab.id, path: 'images/icon19.png'});
+					//chrome.pageAction.setTitle({tabId: tab.id, title: 'Hover Zoom\nClick to disable automatic image zooming'});
 				}
 				chrome.pageAction.show(tab.id);
 			}
@@ -106,7 +113,7 @@
 
 				// Bind events
 				chrome.extension.onRequest.addListener(onRequest);				
-				chrome.pageAction.onClicked.addListener(pageActionOnClick);
+				//chrome.pageAction.onClicked.addListener(pageActionOnClick);
 				
 				// Anonymous stats
 				if (navigator.appVersion.indexOf("Win") != -1) {

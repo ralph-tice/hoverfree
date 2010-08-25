@@ -19,6 +19,7 @@ function hoverZoom() {
 	var prepareImgLinksDelay = 500;
 	var actionKeyDown = false
 	var	pageActionShown = false;
+	var webSiteExcluded = null;
 	
 	// Calculate optimal image position and size
 	function posImg(position) {
@@ -110,7 +111,7 @@ function hoverZoom() {
 	}
 
 	function documentMouseMove(event) {
-		if (!options.extensionEnabled)
+		if (!options.extensionEnabled || isExcludedSite())
 			return;
 		
 		// Test if the action key was pressed without moving the mouse
@@ -258,9 +259,9 @@ function hoverZoom() {
 			
 				showPageAction = true;
 				
-				// If the extension is disabled, we only need to know 
+				// If the extension is disabled or the site is excluded, we only need to know 
 				// whether the page action needs to be shown or not.
-				if (!options.extensionEnabled) {
+				if (!options.extensionEnabled || isExcludedSite()) {
 					return;
 				}
 
@@ -290,13 +291,14 @@ function hoverZoom() {
 	
 	function prepareImgLinks() {
 		pageActionShown = false;
+		$('.hoverZoomLink').removeClass('hoverZoomLink');
 		for (var i = 0; i < hoverZoomPlugins.length; i++) {
 			hoverZoomPlugins[i].prepareImgLinks(imgLinksPrepared);
 		}
 	}
 	
 	function prepareImgLinksAsync(dontResetDelay) {
-		if (!options.extensionEnabled)
+		if (!options.extensionEnabled || isExcludedSite())
 			return;
 		if (!dontResetDelay)
 			prepareImgLinksDelay = 500;
@@ -316,20 +318,27 @@ function hoverZoom() {
 	
 	function applyOptions() {
 		init();
-		if (!options.extensionEnabled) {
+		if (!options.extensionEnabled || isExcludedSite()) {
 			hideHoverZoomImg();
 			$(document).unbind('mousemove', documentMouseMove);
 		}
 	}
 	
 	function isExcludedSite() {
-		var excludedSites = [];
+		
+		// If site exclusion has already been tested
+		if (webSiteExcluded != null)
+			return webSiteExcluded;
+		
 		var siteHost = document.location.href.split('/', 3)[2];
-		for (i in excludedSites) {
-			if (excludedSites[i].length <= siteHost.length)
-				if (siteHost.substr(siteHost.length - excludedSites[i].length) == excludedSites[i])
+		for (var i = 0; i < options.excludedSites.length; i++) {
+			if (options.excludedSites[i] && options.excludedSites[i].length <= siteHost.length)
+				if (siteHost == options.excludedSites[i] || siteHost.substr(siteHost.length - options.excludedSites[i].length - 1) == '.' + options.excludedSites[i]) {
+					webSiteExcluded = true;
 					return true;
+				}
 		}
+		webSiteExcluded = false;
 		return false;
 	}
 	
@@ -377,9 +386,7 @@ function hoverZoom() {
 	}
 	
 	function init() {
-		/*if (isExcludedSite()) {
-			return;
-		}*/
+		webSiteExcluded = null;
 		prepareImgLinks();		
 		bindEvents();
 	}

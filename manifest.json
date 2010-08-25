@@ -12,6 +12,7 @@
 	"options_page": "options.html",
 	"page_action": {
 		"default_icon": "images/icon19.png",
+		"default_popup": "popup.html",
 		"default_title": "Hover Zoom"
 	},	
 	"permissions": [

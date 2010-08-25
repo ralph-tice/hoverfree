@@ -17,8 +17,10 @@ function loadOptions() {
 	options.displayDelay = options.hasOwnProperty('displayDelay') ? options.displayDelay : 200;
 	options.fadeDuration = options.hasOwnProperty('fadeDuration') ? options.fadeDuration : 200;
 	options.actionKey = options.hasOwnProperty('actionKey') ? options.actionKey : 0;
+	options.excludedSites = options.hasOwnProperty('excludedSites') ? options.excludedSites : [];
 	
 	localStorage.options = JSON.stringify(options);
+	
 	return options;
 }
 
@@ -40,4 +42,14 @@ function sendOptions(options) {
 	// Send options to other extension pages
 	chrome.extension.sendRequest(request);
 }
-			
+
+// Return true is the url is part of an excluded site
+function isExcludedSite(url) {
+	var siteHost = url.split('/', 3)[2];
+	for (var i = 0; i < options.excludedSites.length; i++) {
+		if (options.excludedSites[i] && options.excludedSites[i].length <= siteHost.length)
+			if (siteHost == options.excludedSites[i] || siteHost.substr(siteHost.length - options.excludedSites[i].length - 1) == '.' + options.excludedSites[i])
+				return true;
+	}
+	return false;
+}
