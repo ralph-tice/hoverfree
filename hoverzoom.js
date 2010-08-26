@@ -291,7 +291,7 @@ function hoverZoom() {
 	
 	function prepareImgLinks() {
 		pageActionShown = false;
-		$('.hoverZoomLink').removeClass('hoverZoomLink');
+		$('.hoverZoomLink').removeClass('hoverZoomLink').removeData('hoverZoomSrc');
 		for (var i = 0; i < hoverZoomPlugins.length; i++) {
 			hoverZoomPlugins[i].prepareImgLinks(imgLinksPrepared);
 		}
