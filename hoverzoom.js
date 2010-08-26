@@ -14,12 +14,10 @@ function hoverZoom() {
 	var currentLink = null;
 	var mousePos = {};
 	var loading = false;
-	var prepareImgLinksTimeout, loadFullSizeImageTimeout;
+	var loadFullSizeImageTimeout;
 	var options = {};
-	var prepareImgLinksDelay = 500;
 	var actionKeyDown = false
 	var	pageActionShown = false;
-	var webSiteExcluded = null;
 	
 	// Calculate optimal image position and size
 	function posImg(position) {
@@ -107,6 +105,7 @@ function hoverZoom() {
 		hoverZoomImg.stop(true, true).fadeOut(now ? 0 : options.fadeDuration, function() {
 			hoverZoomCaption = null;
 			hoverZoomImg.empty();
+			showFlashObjects(true);
 		});
 	}
 
@@ -191,6 +190,7 @@ function hoverZoom() {
 					if (options.addToHistory) {
 						chrome.extension.sendRequest({action : 'addUrlToHistory', url: imgSrc});
 					}
+					showFlashObjects(false);
 				}
 			}).error(function() {
 				if (imgSrc == $(this).attr('src')) {
@@ -297,6 +297,7 @@ function hoverZoom() {
 		}
 	}
 	
+	var prepareImgLinksDelay = 500, prepareImgLinksTimeout;
 	function prepareImgLinksAsync(dontResetDelay) {
 		if (!options.extensionEnabled || isExcludedSite())
 			return;
@@ -324,6 +325,7 @@ function hoverZoom() {
 		}
 	}
 	
+	var webSiteExcluded = null;
 	function isExcludedSite() {
 		
 		// If site exclusion has already been tested
@@ -340,6 +342,16 @@ function hoverZoom() {
 		}
 		webSiteExcluded = false;
 		return false;
+	}
+
+	var flashObjects = null;
+	function showFlashObjects(visible) {
+		if (!visible) {
+			flashObjects = $('object:visible, embed:visible');
+			flashObjects.css('visibility', 'hidden');
+		} else if (flashObjects) {
+			flashObjects.css('visibility', 'visible');
+		}
 	}
 	
 	function loadOptions() {
@@ -395,13 +407,18 @@ function hoverZoom() {
 	loadOptions();
 };
 
-function jQueryOnLoad(data) {
-	if (data != null) {
-		eval(data);
-		hoverZoom();
-	} else {
-		console.warn('HoverZoom: Failed to load jQuery');
-	}
+function loadJQuery() {
+	chrome.extension.sendRequest(
+		{action : 'ajaxGet', url: 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js'},
+		function(data) {
+			if (data != null) {
+				eval(data);
+				hoverZoom();
+			} else {
+				console.warn('HoverZoom: Failed to load jQuery');
+			}
+		}
+	);
 }
 
-chrome.extension.sendRequest({action : 'loadJQuery'}, jQueryOnLoad);
+loadJQuery();

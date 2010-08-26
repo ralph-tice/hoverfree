@@ -1,6 +1,6 @@
 {
     "name": "Hover Zoom",
-    "version": "1.0",
+    "version": "1.1",
     "description": "Move the mouse cursor over a link to an image to view it in full size.",
 	"icons": {
 		"16": "images/icon16.png",
@@ -18,7 +18,8 @@
 	"permissions": [
 		"tabs",
 		"history",
-		"http://ajax.googleapis.com/"
+		"http://ajax.googleapis.com/",
+		"http://open.api.ebay.com/"
 	],
 	"content_scripts": [
         {
@@ -705,6 +706,36 @@
         {
 			"matches": ["http://*.hi5.com/*"],
             "js": ["plugins/hi5.js"],
+			"run_at": "document_start"
+        },
+        {
+			"matches": ["http://*.play.com/*"],
+            "js": ["plugins/play.js"],
+			"run_at": "document_start"
+        },
+        {
+			"matches": ["http://*.ebay.com/*",
+						"http://*.ebay.de/*",
+						"http://*.ebay.com.au/*",
+						"http://*.ebay.at/*",
+						"http://*.ebay.be/*",
+						"http://*.ebay.com.cn/*",
+						"http://*.ebay.es/*",
+						"http://*.ebay.fr/*",
+						"http://*.ebay.com.hk/*",
+						"http://*.ebay.in/*",
+						"http://*.ebay.ie/*",
+						"http://*.ebay.it/*",
+						"http://*.ebay.com.my/*",
+						"http://*.ebay.nl/*",
+						"http://*.ebay.ph/*",
+						"http://*.ebay.pl/*",
+						"http://*.ebay.co.uk/*",
+						"http://*.ebay.com.sg/*",
+						"http://*.ebay.ch/*",
+						"http://*.ebay.co.th/*",
+						"http://*.ebay.vn/*"],
+            "js": ["plugins/ebay.js"],
 			"run_at": "document_start"
         }
 	]

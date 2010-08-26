@@ -3,21 +3,19 @@
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
-	name: 'deviantART',
-	version: '0.4',
+	name: 'Play.com',
+	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [];
-		$("a img[src^=http://th]").each(function() {
+		$("a img[src$=s.jpg], a img[src$=m.jpg]").each(function() {
 			var _this = $(this);
 			var src = _this.attr('src');
 			if (!src) return;
-			var aSrc = src.split('/');
-			aSrc.splice(4, 1);
-			src = aSrc.join('/');
+			src = src.replace(/[sm]\.jpg/, 'x.jpg');
 			var link = _this.parents('a:eq(0)');
 			link.data('hoverZoomSrc', [src]);
 			res.push(link);
 		});
-		callback($(res));
+		return callback($(res));
 	}
 });

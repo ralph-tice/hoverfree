@@ -11,8 +11,8 @@
 				return "false" === str ? false : true;
 			}
 
-			// Dynamically load jQuery
-			function loadJQuery(callback) {
+			// Performs an ajax GET request
+			function ajaxGet(url, callback) {
 				var xhr = new XMLHttpRequest();
 				xhr.onreadystatechange = function(data) {
 					if (xhr.readyState == 4) {
@@ -23,15 +23,14 @@
 						}
 					}
 				}
-				var url = 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js';
 				xhr.open('GET', url, true);
 				xhr.send();
 			};
 
 			function onRequest(request, sender, callback) {
 				switch(request.action) {
-					case 'loadJQuery':
-						loadJQuery(callback);
+					case 'ajaxGet':
+						ajaxGet(request.url, callback);
 						break;
 					case 'showPageAction':
 						showPageAction(sender.tab);
