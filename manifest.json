@@ -737,6 +737,11 @@
 						"http://*.ebay.vn/*"],
             "js": ["plugins/ebay.js"],
 			"run_at": "document_start"
+        },
+        {
+			"matches": ["http://*.allocine.fr/*"],
+            "js": ["plugins/allocine.js"],
+			"run_at": "document_start"
         }
 	]
 }

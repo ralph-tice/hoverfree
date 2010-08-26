@@ -252,10 +252,12 @@ function hoverZoom() {
 				
 				// Skip if the image has the same URL as the thumbnail.
 				// Base64 embedded thumbnails are filtered to avoid a freeze.
-				if (_this.find('img[src^=data]').length == 0
-					&& _this.find('img[src="' + _this.data('hoverZoomSrc')[0] + '"]').length) {
-					return;
-				}
+				try {
+					if (_this.find('img[src^=data]').length == 0
+						&& _this.find('img[src="' + _this.data('hoverZoomSrc')[0] + '"]').length) {
+						return;
+					}
+				} catch(e) {}
 			
 				showPageAction = true;
 				
