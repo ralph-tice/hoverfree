@@ -3,15 +3,15 @@
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
-	name: 'Twitpic',
-	version: '0.2',
+	name: 'Twitter',
+	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.srcReplace(res, 
-			'a img[src*=twitpic.com/img]',
-			/-(thumb|mini)/,
-			'-full'
-		);			
+			'a img[src*=_mini.]:not([src*=default_profile_]), a img[src*=_normal.], a img[src*=_bigger.]',
+			/_(mini|normal|bigger)/,
+			''
+		);	
 		callback($(res));
 	}
 });

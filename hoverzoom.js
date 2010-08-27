@@ -206,7 +206,7 @@ var hoverZoom = {
 							setTimeout(loadFullSizeImage, 10);
 						} else {
 							hideHoverZoomImg();
-							console.warn('HoverZoom: Failed to load image: ' + imgSrc);
+							console.warn('[HoverZoom] Failed to load image: ' + imgSrc);
 						}
 					}
 				}).mousemove(function(event) {
@@ -259,7 +259,9 @@ var hoverZoom = {
 							&& _this.find('img[src="' + _this.data('hoverZoomSrc')[0] + '"]').length) {
 							return;
 						}
-					} catch(e) {}
+					} catch(e) {
+						console.error(e);
+					}
 				
 					showPageAction = true;
 					
