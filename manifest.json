@@ -739,8 +739,21 @@
 			"run_at": "document_start"
         },
         {
-			"matches": ["http://*.allocine.fr/*"],
+			"matches": ["http://*.allocine.fr/*",
+						"http://*.filmstarts.de/*",
+						"http://*.sensacine.com/*"],
             "js": ["plugins/allocine.js"],
+			"run_at": "document_start"
+        },
+        {
+			"matches": ["http://*.flixster.com/*",
+						"http://*.rottentomatoes.com/*"],
+            "js": ["plugins/flixster.js"],
+			"run_at": "document_start"
+        },
+        {
+			"matches": ["http://*.gamespot.com/*"],
+            "js": ["plugins/gamespot.js"],
 			"run_at": "document_start"
         }
 	]

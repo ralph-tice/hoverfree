@@ -3,14 +3,14 @@
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
-	name: 'IMDb',
-	version: '0.3',
+	name: 'YouTube',
+	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.srcReplace(res, 
-			'a img[src*=._V1.]',
-			/\._V1\..*\./,
-			'.'
+			'a img[src$=/default.jpg]',
+			'default.jpg',
+			'hqdefault.jpg'
 		);
 		callback($(res));
 	}
