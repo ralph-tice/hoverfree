@@ -255,7 +255,8 @@ var hoverZoom = {
 					// Skip if the image has the same URL as the thumbnail.
 					// Base64 embedded thumbnails are filtered to avoid a freeze.
 					try {
-						if (_this.find('img[src^=data]').length == 0
+						if (_this.find('img[src]').length
+							&& _this.find('img[src^=data]').length == 0
 							&& _this.find('img[src="' + _this.data('hoverZoomSrc')[0] + '"]').length) {
 							return;
 						}

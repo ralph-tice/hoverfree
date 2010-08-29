@@ -760,6 +760,11 @@
 			"matches": ["http://*.twitter.com/*"],
             "js": ["plugins/twitter.js"],
 			"run_at": "document_start"
+        },
+        {
+			"matches": ["http://*.ravelry.com/*"],
+            "js": ["plugins/ravelry.js"],
+			"run_at": "document_start"
         }
 	]
 }
