@@ -15,7 +15,9 @@ hoverZoomPlugins.push( {
 			aSrc.splice(4, 1);
 			src = aSrc.join('/');
 			var link = _this.parents('a:eq(0)');
-			link.data('hoverZoomSrc', [src]);
+			// deviantArt tends to refuse to load images sometimes.
+			// src is stored several times in hoverZoomSrc so that it may retry several times if loading fails.
+			link.data('hoverZoomSrc', [src, src, src, src]);
 			res.push(link);
 		});
 		callback($(res));
