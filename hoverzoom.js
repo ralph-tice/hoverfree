@@ -19,6 +19,7 @@ var hoverZoom = {
 		var loadFullSizeImageTimeout;
 		var options = {};
 		var actionKeyDown = false
+		var fullZoomKeyDown = false;
 		var	pageActionShown = false;
 		
 		// Calculate optimal image position and size
@@ -28,12 +29,24 @@ var hoverZoom = {
 			position = position || {top:mousePos.top, left:mousePos.left};
 			
 			var offset = 20;
+			var margin = 8;
+			var padding = 10;
 			var wndWidth = wnd.width();
 			var wndHeight = wnd.height();
 			var wndScrollLeft = wnd.scrollLeft();
 			var wndScrollTop = wnd.scrollTop();
 			
 			var displayOnRight = (position.left - wndScrollLeft < wndWidth / 2);
+			
+			function posCaption() {
+				if (hoverZoomCaption) {
+					hoverZoomCaption.css('max-width', imgFullSize.width());
+					while (hoverZoomImg.height() > wndHeight) {
+						imgFullSize.height(wndHeight - padding - hoverZoomCaption.height()).width('auto');
+						hoverZoomCaption.css('max-width', imgFullSize.width());
+					}
+				}				
+			}
 			
 			if (displayOnRight) {
 				position.left += offset;
@@ -45,9 +58,23 @@ var hoverZoom = {
 				position.top -= 10;
 				if (!displayOnRight)
 					position.left -= 25;
+					
+			} else if (fullZoomKeyDown) {
+			
+				imgFullSize.width(wndWidth - padding).height('auto');				
+				if (hoverZoomImg.height() > wndHeight) {
+					imgFullSize.height(wndHeight - padding).width('auto');
+					position.top = wndScrollTop;
+					position.left = wndScrollLeft + wndWidth / 2 - hoverZoomImg.width() / 2;
+				} else {
+					position.top = wndScrollTop + wndHeight / 2 - hoverZoomImg.height() / 2;
+					position.left = wndScrollLeft;
+				}
+
+				posCaption();
+				
+				
 			} else {
-				var margin = 8;
-				var padding = 10;
 				
 				imgFullSize.width('auto').height('auto');
 				
@@ -74,14 +101,7 @@ var hoverZoom = {
 				if (hoverZoomImg.height() > wndHeight)
 					imgFullSize.height(wndHeight - padding).width('auto');
 
-				// Caption
-				if (hoverZoomCaption) {
-					hoverZoomCaption.css('max-width', imgFullSize.width());
-					while (hoverZoomImg.height() > wndHeight) {
-						imgFullSize.height(wndHeight - padding - hoverZoomCaption.height()).width('auto');
-						hoverZoomCaption.css('max-width', imgFullSize.width());
-					}
-				}
+				posCaption();
 
 				// Display image on the left side if the mouse is on the right
 				if (!displayOnRight) 
@@ -101,7 +121,7 @@ var hoverZoom = {
 		}
 		
 		function hideHoverZoomImg(now) {
-			if (!now && !imgFullSize)
+			if (!now && !imgFullSize || !hoverZoomImg)
 				return;
 			imgFullSize = null;
 			hoverZoomImg.stop(true, true).fadeOut(now ? 0 : options.fadeDuration, function() {
@@ -201,6 +221,7 @@ var hoverZoom = {
 							// If the link has several possible sources, we try to load the next one
 							hoverZoomSrcIndex++;
 							currentLink.data('hoverZoomSrcIndex', hoverZoomSrcIndex);
+							console.info('[HoverZoom] Failed to load image: ' + imgSrc + '\nTrying next one...');
 							imgSrc = currentLink.data('hoverZoomSrc')[hoverZoomSrcIndex];
 							imgFullSize = null;
 							setTimeout(loadFullSizeImage, 10);
@@ -386,22 +407,31 @@ var hoverZoom = {
 		function bindEvents() {
 			$(document).mousemove(documentMouseMove).mouseleave(cancelImageLoading);
 			
-			if (options.actionKey) {
+			if (options.actionKey || options.fullZoomKey) {
 				$(document).keydown(function(event) {
 					if (event.which == options.actionKey && !actionKeyDown) {
 						actionKeyDown = true;
 						$(this).mousemove();
+					}
+					if (event.which == options.fullZoomKey && !fullZoomKeyDown) {
+						fullZoomKeyDown = true;
+						posImg();
 					}
 				}).keyup(function(event) {
 					if (event.which == options.actionKey) {
 						actionKeyDown = false;
 						hideHoverZoomImg();
 					}
+					if (event.which == options.fullZoomKey) {
+						fullZoomKeyDown = false;
+						posImg();
+					}
 				});
 			}
 			
 			wnd.bind('DOMNodeInserted', windowOnDOMNodeInserted);
 			wnd.load(prepareImgLinksAsync);
+			wnd.scroll(hideHoverZoomImg);
 		}
 		
 		function init() {

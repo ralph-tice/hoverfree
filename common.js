@@ -16,8 +16,12 @@ function loadOptions() {
 	options.addToHistory = options.hasOwnProperty('addToHistory') ? options.addToHistory : false;
 	options.displayDelay = options.hasOwnProperty('displayDelay') ? options.displayDelay : 200;
 	options.fadeDuration = options.hasOwnProperty('fadeDuration') ? options.fadeDuration : 200;
-	options.actionKey = options.hasOwnProperty('actionKey') ? options.actionKey : 0;
 	options.excludedSites = options.hasOwnProperty('excludedSites') ? options.excludedSites : [];
+	
+	// Action keys
+	options.actionKey = options.hasOwnProperty('actionKey') ? options.actionKey : 0;
+	if (!options.hasOwnProperty('fullZoomKey')) 
+		options.fullZoomKey = options.actionKey != 17 ? 17 : 0;
 	
 	localStorage.options = JSON.stringify(options);
 	

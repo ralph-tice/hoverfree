@@ -38,7 +38,8 @@
 				options.extensionEnabled = $('#chkExtensionEnabled')[0].checked;
 				options.pageActionEnabled = $('#chkPageActionEnabled')[0].checked;
 				options.showCaptions = $('#chkShowCaptions')[0].checked;
-				options.actionKey = $('#radActionKeyOn')[0].checked ? parseInt($('#selActionKey').val()) : 0;
+				options.actionKey = parseInt($('#selActionKey').val());
+				options.fullZoomKey = parseInt($('#selFullZoomKey').val());
 				options.addToHistory = $('#chkAddToHistory')[0].checked;
 				options.displayDelay = getMilliseconds($('#txtDisplayDelay'));
 				options.fadeDuration = getMilliseconds($('#txtFadeDuration'));				
@@ -63,22 +64,15 @@
 				$('#chkExtensionEnabled')[0].checked = options.extensionEnabled;
 				$('#chkPageActionEnabled')[0].checked = options.pageActionEnabled;
 				$('#chkShowCaptions')[0].checked = options.showCaptions;
-				$('#radActionKeyOff')[0].checked = options.actionKey == 0;
-				$('#radActionKeyOn')[0].checked = options.actionKey != 0;
 				$('#chkAddToHistory')[0].checked = options.addToHistory;
 				$('#txtDisplayDelay').val((options.displayDelay || 0) / 1000);
 				$('#txtFadeDuration').val((options.fadeDuration || 0) / 1000);
+				$('#selActionKey').val(options.actionKey);
+				$('#selFullZoomKey').val(options.fullZoomKey);	
 				
 				$('#selExcludedSites').empty();
 				for (var i = 0; i < options.excludedSites.length; i++) {
 					$('<option>' + options.excludedSites[i] + '</option>').appendTo('#selExcludedSites');
-				}
-				
-				var selActionKey = $('#selActionKey')[0];
-				for (i=0; i<selActionKey.options.length; i++) {
-					if (selActionKey.options[i].value == options.actionKey) {
-						selActionKey.options[i].selected = true;
-					}
 				}
 				
 				enableControls(false);
@@ -95,10 +89,21 @@
 				$('#selExcludedSites option:selected').remove();
 			}
 			
+			function selFullZoomKeyOnChange() {
+				if ($('#selFullZoomKey').val() == $('#selActionKey').val()) {
+					$('#selActionKey').val('0').effect("highlight", {color: 'red'}, 2000);
+				}
+			}
+			
+			function selActionKeyOnChange() {
+				if ($('#selFullZoomKey').val() == $('#selActionKey').val()) {
+					$('#selFullZoomKey').val('0').effect("highlight", {color: 'red'}, 2000);
+				}
+			}
+			
 			function enableControls(enabled) {
 				enabled = enabled || false;
 				$('#buttons button').attr('disabled', !enabled);
-				$('#selActionKey')[0].disabled = $('#radActionKeyOn')[0].checked ? '' : 'disabled';
 			}
 			
 			function onRequest(request, sender, callback) {
@@ -130,20 +135,13 @@
 					<ul>
 						<li><a href="#optionTab1">General</a></li>
 						<li><a href="#optionTab2">Sites</a></li>
+						<li><a href="#optionTab3">Action keys</a></li>
 					</ul>
 					<div id="optionTab1">
 						<p><input type="checkbox" id="chkExtensionEnabled"> <label for="chkExtensionEnabled">Enable extension</label></p>
 						<h2>View</h2>
 						<p><input type="checkbox" id="chkPageActionEnabled"> <label for="chkPageActionEnabled">Show extension icon in address bar</label></p>
 						<p><input type="checkbox" id="chkShowCaptions"> <label for="chkShowCaptions">Show pictures captions</label></p>
-						<h2>Action key</h2>
-						<p><input type="radio" id="radActionKeyOn" name="radActionKey" value="1"> <label for="radActionKeyOn">Only show pictures if a key is held down:</label>
-						<select id="selActionKey">
-							<option value="16">Shift</option>
-							<option value="17">Ctrl</option>
-						</select>
-						</p>
-						<p><input type="radio" id="radActionKeyOff" name="radActionKey" value="0"> <label for="radActionKeyOff">Always show pictures</label></p>
 						<h2>Delays</h2>
 						<div id="delays">
 						<p><label for="txtDisplayDelay">Delay before displaying a picture</label>: <input type="textbox" id="txtDisplayDelay" size="1"> sec.</p>
@@ -161,6 +159,26 @@
 						<tr><td><select id="selExcludedSites" size="12"></select></td>
 						<td><button id="btnRemoveExcludedSite" onclick="btnRemoveExcludedSiteOnClick()">Remove</button></td></tr></table>
 						<p class="notice">Be aware that domain filters can overlap. Example: if you have filtered "picasaweb.google.com" and "google.com", removing "picasaweb.google.com" will not reactivate Picasa Web Albums, as it will still be excluded by the "google.com" filter.</p>
+					</div>
+					<div id="optionTab3">
+						<h2>Activate Hover Zoom</h2>
+						<p>If a key is set, Hover Zoom will be active only when this key is held down.</p>
+						<p>Key to activate Hover Zoom:
+							<select id="selActionKey" onchange="selActionKeyOnChange()">
+								<option value="0">None</option>
+								<option value="16">Shift</option>
+								<option value="17">Ctrl</option>
+							</select>
+						</p>
+						<h2>Activate full zoom</h2>
+						<p>When this key is held down, the picture is displayed using all available space.</p>
+						<p>Key to activate full zoom:
+							<select id="selFullZoomKey" onchange="selFullZoomKeyOnChange()">
+								<option value="0">None</option>
+								<option value="16">Shift</option>
+								<option value="17">Ctrl</option>
+							</select>
+						</p>
 					</div>
 				</div>
 				<div id="buttons">
