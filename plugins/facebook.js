@@ -19,19 +19,21 @@ hoverZoomPlugins.push( {
 			
 			// Thumbnail URL
 			var src = _this.attr('src');
-			if (!src) return;
+			if (!src) { return; }
 			src = unescape(src);
 			
 			// If image URL is included as a querystring parameter
 			var indexQS = src.lastIndexOf('&url=');
-			if (indexQS == -1)
+			if (indexQS == -1) {
 				indexQS = src.lastIndexOf('&src=');
+			}
 				
 			if (indexQS > -1) {
 				src = unescape(src.substr(indexQS + 5));
-				if (!src) return;
-				if (src.indexOf('&') > -1)
+				if (!src) { return; }
+				if (src.indexOf('&') > -1) {
 					src = src.substr(0, src.indexOf('&'));
+				}
 			} else {
 				src = srcReplace(src);
 			}
@@ -46,8 +48,7 @@ hoverZoomPlugins.push( {
 			res.push(link);
 		});
 		
-		// Photo albums
-		
+		// Photo albums		
 		function preparePhotoAlbumLink() {
 			var _this = $(this);
 			var i = _this.find('i:eq(0)');

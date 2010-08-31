@@ -32,6 +32,12 @@
 				ctrl.val(value / 1000);
 				return value;
 			}
+			
+			function loadKeys(sel) {
+				for (var i=65; i<91; i++) {
+					$('<option value="' + i + '">&#' + i + ';</option>').appendTo(sel);
+				}
+			}
 
 			// Saves options to localStorage.
 			function saveOptions() {
@@ -90,13 +96,13 @@
 			}
 			
 			function selFullZoomKeyOnChange() {
-				if ($('#selFullZoomKey').val() == $('#selActionKey').val()) {
+				if ($('#selFullZoomKey').val() != '0' && $('#selFullZoomKey').val() == $('#selActionKey').val()) {
 					$('#selActionKey').val('0').effect("highlight", {color: 'red'}, 2000);
 				}
 			}
 			
 			function selActionKeyOnChange() {
-				if ($('#selFullZoomKey').val() == $('#selActionKey').val()) {
+				if ($('#selActionKey').val() != '0' && $('#selFullZoomKey').val() == $('#selActionKey').val()) {
 					$('#selFullZoomKey').val('0').effect("highlight", {color: 'red'}, 2000);
 				}
 			}
@@ -115,6 +121,7 @@
 			}		
 			
 			$(function() {
+				loadKeys($('#selActionKey, #selFullZoomKey'));
 				$('input, select, textarea').change(enableControls).keydown(enableControls);
 				$('#btnSave').click(saveOptions);
 				$('#btnReset').click(restoreOptions);
@@ -171,7 +178,7 @@
 							</select>
 						</p>
 						<h2>Activate full zoom</h2>
-						<p>When this key is held down, the picture is displayed using all available space.</p>
+						<p>When this key is held down, the picture is displayed using all available space. Useful for large pictures.</p>
 						<p>Key to activate full zoom:
 							<select id="selFullZoomKey" onchange="selFullZoomKeyOnChange()">
 								<option value="0">None</option>

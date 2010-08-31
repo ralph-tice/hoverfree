@@ -11,7 +11,7 @@ hoverZoomPlugins.push( {
 			var img = $(this).find('img')[0];
 			if (img) {
 				var src = img.src;
-				if (!src) return;
+				if (!src) { return; }
 				var ext;
 				if (src.substr(src.length-8) == '.svg.png') {
 					ext = '.svg';

@@ -10,7 +10,7 @@ hoverZoomPlugins.push( {
 		$("a img[src^=http://th]").each(function() {
 			var _this = $(this);
 			var src = _this.attr('src');
-			if (!src) return;
+			if (!src) { return; }
 			var aSrc = src.split('/');
 			aSrc.splice(4, 1);
 			src = aSrc.join('/');

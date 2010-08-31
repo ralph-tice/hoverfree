@@ -14,7 +14,7 @@ hoverZoomPlugins.push( {
 				if (_this.attr('href')) {
 					var img = _this.find('img').get(0);
 					var src = _this.attr('href');
-					if (!src) return;
+					if (!src) { return; }
 					src = unescape(src);
 					var imgUrlIndex = src.indexOf('imgurl=');
 					if (imgUrlIndex == -1) {

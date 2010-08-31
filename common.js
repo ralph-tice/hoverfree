@@ -5,7 +5,7 @@
 // Return default values if none exist
 function loadOptions() {
 	var options;
-	if (localStorage.options == null) {
+	if (localStorage.options === null) {
 		localStorage.options = '{}';
 	}
 	options = JSON.parse(localStorage.options);
@@ -20,8 +20,7 @@ function loadOptions() {
 	
 	// Action keys
 	options.actionKey = options.hasOwnProperty('actionKey') ? options.actionKey : 0;
-	if (!options.hasOwnProperty('fullZoomKey')) 
-		options.fullZoomKey = options.actionKey != 17 ? 17 : 0;
+	options.fullZoomKey = options.hasOwnProperty('fullZoomKey') ? options.fullZoomKey : 0;
 	
 	localStorage.options = JSON.stringify(options);
 	
@@ -34,9 +33,9 @@ function sendOptions(options) {
 	
 	// Send options to all tabs
 	chrome.windows.getAll(null, function (windows) {
-		for (i in windows) {
+		for (var i=0; i<windows.length; i++) {
 			chrome.tabs.getAllInWindow(windows[i].id, function(tabs) {
-				for (j in tabs) {
+				for (var j=0; j<tabs.length; j++) {
 					chrome.tabs.sendRequest(tabs[j].id, request);
 				}
 			});
@@ -51,9 +50,11 @@ function sendOptions(options) {
 function isExcludedSite(url) {
 	var siteHost = url.split('/', 3)[2];
 	for (var i = 0; i < options.excludedSites.length; i++) {
-		if (options.excludedSites[i] && options.excludedSites[i].length <= siteHost.length)
-			if (siteHost == options.excludedSites[i] || siteHost.substr(siteHost.length - options.excludedSites[i].length - 1) == '.' + options.excludedSites[i])
+		if (options.excludedSites[i] && options.excludedSites[i].length <= siteHost.length) {
+			if (siteHost == options.excludedSites[i] || siteHost.substr(siteHost.length - options.excludedSites[i].length - 1) == '.' + options.excludedSites[i]) {
 				return true;
+			}
+		}
 	}
 	return false;
 }

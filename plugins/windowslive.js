@@ -13,7 +13,7 @@ hoverZoomPlugins.push( {
 	
 		// RSS file URL
 		var rssUrl = $(document.head).find('link[type="application/rss+xml"]').attr('href');
-		if (!rssUrl) return;
+		if (!rssUrl) { return; }
 		
 		// Load RSS through an ajax request
 		$.ajax({
@@ -28,15 +28,15 @@ hoverZoomPlugins.push( {
 					
 					// Link to the page that displays the photo
 					var rssLinkUrl = _this.children('link').text();
-					if (!rssLinkUrl) return;
+					if (!rssLinkUrl) { return; }
 					
 					// img tag that displays the photo in RSS readers
 					var rssImg = _this.children('description').text();
-					if (!rssImg) return;
+					if (!rssImg) { return; }
 					
 					// src attribute of the img tag
 					var src = rssImg.substr(rssImg.indexOf('http'));
-					if (!src) return;
+					if (!src) { return; }
 					src = src.substr(0, src.indexOf('"'));
 					
 					// Unescape HTML entities
@@ -49,7 +49,7 @@ hoverZoomPlugins.push( {
 					
 					// Since the call is asynchronous, the list of links can't be returned by the prepareImgLinks function,
 					// so all the processing is done here
-					res.push($('a[href="' + rssLinkUrl + '"]').data('hoverZoomSrc', [src]).addClass('hoverZoomLink'));
+					res.push($('a[href="' + rssLinkUrl + '"]').data('hoverZoomSrc', [src, src]).addClass('hoverZoomLink'));
 				});
 				callback($(res));
 			}
