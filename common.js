@@ -5,7 +5,7 @@
 // Return default values if none exist
 function loadOptions() {
 	var options;
-	if (localStorage.options === null) {
+	if (localStorage.options == null) {
 		localStorage.options = '{}';
 	}
 	options = JSON.parse(localStorage.options);

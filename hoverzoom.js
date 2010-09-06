@@ -141,7 +141,7 @@ var hoverZoom = {
 			}
 			
 			// Test if the action key was pressed without moving the mouse
-			var staticActionKeyPressed = ((options.actionKey || options.fullZoomKey) && event.pageY === undefined);
+			var staticActionKeyPressed = ((options.actionKey || options.fullZoomKey) && event.pageY == undefined);
 
 			// If so, the MouseMove event was triggered programmaticaly and we don't have details
 			// about the mouse position and the event target, so we use the last saved ones.
@@ -283,7 +283,7 @@ var hoverZoom = {
 					// Base64 embedded thumbnails are filtered to avoid a freeze.
 					try {
 						if (_this.find('img[src]').length && 
-							_this.find('img[src^=data]').length === 0 && 
+							_this.find('img[src^=data]').length == 0 && 
 							_this.find('img[src="' + _this.data('hoverZoomSrc')[0] + '"]').length) {
 							return;
 						}
@@ -365,7 +365,7 @@ var hoverZoom = {
 		function isExcludedSite() {
 			
 			// If site exclusion has already been tested
-			if (webSiteExcluded !== null) {
+			if (webSiteExcluded != null) {
 				return webSiteExcluded;
 			}
 			
@@ -465,7 +465,7 @@ var hoverZoom = {
 		chrome.extension.sendRequest(
 			{action : 'ajaxGet', url: 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js'},
 			function(data) {
-				if (data !== null) {
+				if (data != null) {
 					eval(data);
 					hoverZoom.loadHoverZoom();
 				} else {

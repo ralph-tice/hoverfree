@@ -31,10 +31,11 @@ hoverZoomPlugins.push( {
 		});		
 		callback($(res));
 		
-		function rgHiOnLoad() {
-			var src = getSrc($(this).parent());
-			$('#rg_hta').addClass('hoverZoomLink').data('hoverZoomSrc', [src]);
+		function rgHtaOnMouseMove() {
+			var _this = $(this);
+			var src = getSrc(_this);
+			_this.addClass('hoverZoomLink').data('hoverZoomSrc', [src]);
 		}		
-		$('#rg_hi').load(rgHiOnLoad);
+		$('#rg_hta').mousemove(rgHtaOnMouseMove);
 	}
 });
