@@ -1,6 +1,6 @@
 {
     "name": "Hover Zoom",
-    "version": "1.1",
+    "version": "1.2",
     "description": "Move the mouse cursor over a link to an image to view it in full size.",
 	"icons": {
 		"16": "images/icon16.png",
@@ -31,6 +31,13 @@
         {
 			"matches": ["http://*/*", "https://*/*"],
             "js": ["plugins/default.js"],
+			"run_at": "document_start",
+			"all_frames": true
+        },
+        {
+			"matches": ["http://*/*", "https://*/*"],
+            "js": ["plugins/imgur_a.js", 
+			       "plugins/flickr_a.js"],
 			"run_at": "document_start",
 			"all_frames": true
         },
@@ -246,7 +253,9 @@
 						"http://*.wikiquote.org/*", 
 						"http://*.wikibooks.org/*",
 						"http://*.wikisource.org/*",
-						"http://*.wikiversity.org/*"],
+						"http://*.wikiversity.org/*",
+						"http://*.encyclopediadramatica.com/*",
+						"http://*/wiki/*"],
             "js": ["plugins/wikipedia.js"],
 			"run_at": "document_start"
         },
@@ -764,6 +773,11 @@
         {
 			"matches": ["http://*.ravelry.com/*"],
             "js": ["plugins/ravelry.js"],
+			"run_at": "document_start"
+        },
+        {
+			"matches": ["http://*.jeuxvideo.com/*"],
+            "js": ["plugins/jeuxvideo.com.js"],
 			"run_at": "document_start"
         }
 	]

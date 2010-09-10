@@ -128,6 +128,7 @@ var hoverZoom = {
 				return;
 			}
 			imgFullSize = null;
+			if (loading) { now = true; }
 			hoverZoomImg.stop(true, true).fadeOut(now ? 0 : options.fadeDuration, function() {
 				hoverZoomCaption = null;
 				hoverZoomImg.empty();
@@ -196,7 +197,7 @@ var hoverZoom = {
 				// Full size image container
 				hoverZoomImg = hoverZoomImg || $('<div id="hoverZoomImg"></div>').appendTo(document.body);			
 				hoverZoomImg.empty();
-				hoverZoomImg.stop(true, true).show();
+				hoverZoomImg.stop(true, true).fadeIn(options.fadeDuration);
 				
 				// Loading image container
 				imgLoading = imgLoading || $('<img />', {src: chrome.extension.getURL('images/loading.gif')});
@@ -215,7 +216,7 @@ var hoverZoom = {
 						}
 						hoverZoomImg.hide().fadeIn(options.fadeDuration);
 						setTimeout(posImg, 10);
-						if (options.addToHistory) {
+						if (options.addToHistory && !chrome.extension.inIncognitoTab) {
 							chrome.extension.sendRequest({action : 'addUrlToHistory', url: imgSrc});
 						}
 						showFlashObjects(false);
@@ -385,7 +386,7 @@ var hoverZoom = {
 		var flashObjects = null;
 		function showFlashObjects(visible) {
 			if (!visible) {
-				flashObjects = $('object:visible, embed:visible');
+				flashObjects = $('object:visible, embed:visible, iframe[src*=flickr.com/apps]');
 				flashObjects.css('visibility', 'hidden');
 			} else if (flashObjects) {
 				flashObjects.css('visibility', 'visible');

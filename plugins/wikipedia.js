@@ -19,7 +19,7 @@ hoverZoomPlugins.push( {
 				else {
 					ext = src.substr(src.lastIndexOf('.'));
 				}
-				src = src.substring(0, src.indexOf(ext) + 4).replace(/thumb\//, '');
+				src = src.substring(0, src.indexOf(ext) + ext.length).replace(/thumb\//, '');
 				$(this).data('hoverZoomSrc', [src]);
 			}
 		});
