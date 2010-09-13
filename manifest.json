@@ -37,18 +37,14 @@
         {
 			"matches": ["http://*/*", "https://*/*"],
             "js": ["plugins/imgur_a.js", 
-			       "plugins/flickr_a.js"],
+			       "plugins/flickr_a.js",
+				   "plugins/subimg.net_a.js"],
 			"run_at": "document_start",
 			"all_frames": true
         },
         {
 			"matches": ["http://*.facebook.com/*"],
             "js": ["plugins/facebook.js"],
-			"run_at": "document_start"
-        },
-        {
-			"matches": ["http://*.flickr.com/*"],
-            "js": ["plugins/flickr.js"],
 			"run_at": "document_start"
         },
         {

@@ -470,7 +470,7 @@ var hoverZoom = {
 					eval(data);
 					hoverZoom.loadHoverZoom();
 				} else {
-					console.warn('HoverZoom: Failed to load jQuery');
+					console.warn('[HoverZoom] Failed to load jQuery');
 				}
 			}
 		);
@@ -497,7 +497,29 @@ var hoverZoom = {
 			link.data('hoverZoomSrc', [src]);
 			res.push(link);
 		});
-	}
+	},
+	
+	// Utility function to be used by plugins.
+	// Search for links using the 'filter' parameter,
+	// process their href attribute using the 'search' and 'replace' values,
+	// store the result in the link and add the link to the 'res' array.
+	hrefReplace: function(res, filter, search, replace) {
+		$(filter).each(function() {
+			var link = $(this);
+			if (link.data('hoverZoomSrc')) { return; }
+			var href = link.attr('href');
+			if (!href) { return; }
+			if (Array.isArray(search)) {
+				for (var i=0; i<search.length; i++) {
+					href = href.replace(search[i], replace[i]);
+				}
+			} else {
+				href = href.replace(search, replace);
+			}
+			link.data('hoverZoomSrc', [href]);
+			res.push(link);
+		});
+	}	
 };
 
 hoverZoom.loadJQuery();

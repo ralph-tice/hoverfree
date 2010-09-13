@@ -21,10 +21,19 @@ hoverZoomPlugins.push( {
 
 		hoverZoom.srcReplace(res, 
 			'a img',
-			/_square\.|_[mst]\./,
+			/_square\./,
 			'.'
 		);	
 		
 		callback($(res));
+		
+		// This second processing makes use of the Flickr API to try to get larger pictures.
+		$('a img[src*=static.flickr.com]').each(function() {
+			var _this = $(this),
+				link = _this.parents('a:eq(0)'),
+				src = _this.attr('src');
+			hoverZoomPluginFlickerA.prepareImgLinkFromSrc(link, src, callback);
+		});
+		
 	}
 });
