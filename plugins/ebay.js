@@ -6,11 +6,11 @@
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	name: 'eBay',
-	version: '0.1',
+	version: '0.2',
 	prepareImgLinks: function(callback) {
 		var res = [];
 		var appId = 'RomainVa-3007-4951-b943-aaedf0d9af84';
-		var requestUrlBase = 'http://open.api.ebay.com/shopping?appid=' + appId + '&version=525&siteid=0&callname=GetMultipleItems&responseencoding=JSON&ItemID=';
+		var requestUrlBase = 'http://open.api.ebay.com/shopping?appid=' + appId + '&version=687&siteid=0&callname=GetMultipleItems&responseencoding=JSON&ItemID=';
 		var itemIndex = 0;
 		var hzItems = [], itemIds = [];
 	

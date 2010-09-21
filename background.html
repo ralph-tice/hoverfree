@@ -87,6 +87,18 @@
 				})();
 			}
 			
+			function keyCodeToKeyName(keyCode) {
+				if (keyCode == 16) {
+					return 'Shift';
+				} else if (keyCode == 17) {
+					return 'Ctrl';
+				} else if (keyCode >= 65 && keyCode <= 90) {
+					return String.fromCharCode(keyCode);
+				} else {
+					return 'None';
+				}
+			}
+			
 			// Report options stats
 			// No user data (browser history, etc) is reported
 			function optionsStats() {
@@ -96,14 +108,11 @@
 				_gaq.push(['_trackEvent', 'Options', 'addToHistory', options.addToHistory.toString()]);
 				_gaq.push(['_trackEvent', 'Options', 'displayDelay', options.displayDelay.toString()]);
 				_gaq.push(['_trackEvent', 'Options', 'fadeDuration', options.fadeDuration.toString()]);
-
-				var actionKey;
-				switch(options.actionKey) {
-					case 16: actionKey = 'Shift'; break;
-					case 17: actionKey = 'Ctrl'; break;
-					default: actionKey = 'None'; break;
+				_gaq.push(['_trackEvent', 'Options', 'actionKey', keyCodeToKeyName(options.actionKey)]);				
+				_gaq.push(['_trackEvent', 'Options', 'fullZoomKey', keyCodeToKeyName(options.fullZoomKey)]);				
+				for (var i=0; i<options.excludedSites.length; i++) {
+					_gaq.push(['_trackEvent', 'Options', 'excludedSites', options.excludedSites[i]]);				
 				}
-				_gaq.push(['_trackEvent', 'Options', 'actionKey', actionKey]);				
 			}
 			
 			function init() {				

@@ -48,6 +48,11 @@
 			"run_at": "document_start"
         },
         {
+			"matches": ["http://*.flickr.com/*"],
+            "js": ["plugins/flickr.js"],
+			"run_at": "document_start"
+        },
+        {
 			"matches": ["http://*.search.yahoo.com/*",
 						"http://*.search.yahoo.co.jp/*"],
             "js": ["plugins/yahoo.js"],

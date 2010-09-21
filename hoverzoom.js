@@ -279,11 +279,12 @@ var hoverZoom = {
 					prepareImgLinksAsync(true);
 			
 				} else {
-					
+										
 					// Skip if the image has the same URL as the thumbnail.
 					// Base64 embedded thumbnails are filtered to avoid a freeze.
 					try {
-						if (_this.find('img[src]').length && 
+						if (_this.data('hoverZoomSrc')[0].indexOf("'") == -1 && 
+							_this.find('img[src]').length && 
 							_this.find('img[src^=data]').length == 0 && 
 							_this.find('img[src="' + _this.data('hoverZoomSrc')[0] + '"]').length) {
 							return;
@@ -386,7 +387,7 @@ var hoverZoom = {
 		var flashObjects = null;
 		function showFlashObjects(visible) {
 			if (!visible) {
-				flashObjects = $('object:visible, embed:visible, iframe[src*=flickr.com/apps]');
+				flashObjects = $('object:visible, embed:visible, iframe[src*=flickr.com/apps], iframe.media-embed, iframe.youtube-player');
 				flashObjects.css('visibility', 'hidden');
 			} else if (flashObjects) {
 				flashObjects.css('visibility', 'visible');
@@ -408,7 +409,7 @@ var hoverZoom = {
 		}
 		
 		function windowOnDOMNodeInserted(event) {
-			if (event.srcElement && (event.srcElement.nodeName == 'A' || $(event.srcElement).find('a').length || $(event.srcElement).parents('a').length)) {
+			if (event.srcElement && (event.srcElement.nodeName == 'A' || event.srcElement.nodeName == 'IMG' || $(event.srcElement).find('a, img').length || $(event.srcElement).parents('a, img').length)) {
 				prepareImgLinksAsync();
 			}
 		}
