@@ -211,6 +211,10 @@ var hoverZoom = {
 						hoverZoomImg.offset({top:-9000, left:-9000});	// hides the image while making it available for size calculations
 						hoverZoomImg.empty();
 						$(this).appendTo(hoverZoomImg);
+						if ($(this).height() <= 1) {
+							$(this).error();
+							return;
+						}
 						if (options.showCaptions && currentLink && currentLink.data('hoverZoomCaption')) {
 							hoverZoomCaption = $('<div/>', {id: 'hoverZoomCaption', text: currentLink.data('hoverZoomCaption')}).appendTo(hoverZoomImg);
 						}
