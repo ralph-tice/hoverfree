@@ -11,7 +11,7 @@ hoverZoomPlugins.push( {
 		if (document.location.hostname == 'subimg.net') {
 			filter = 'a[href*=?id=]';
 		}
-		hoverZoom.hrefReplace(res, 
+		hoverZoom.urlReplace(res, 
 			filter,
 			/([^\/]+)\?id=(.*)/,
 			'$2.$1'

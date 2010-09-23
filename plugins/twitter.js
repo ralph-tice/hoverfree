@@ -7,7 +7,7 @@ hoverZoomPlugins.push( {
 	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [];
-		hoverZoom.srcReplace(res, 
+		hoverZoom.urlReplace(res, 
 			'a img[src*=_mini.]:not([src*=default_profile_]), a img[src*=_normal.], a img[src*=_bigger.]',
 			/_(mini|normal|bigger)/,
 			''

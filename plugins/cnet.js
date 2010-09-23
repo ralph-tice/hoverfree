@@ -8,7 +8,7 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = [],
 			filter1 = /^(.*)_[0-9]+x[0-9]+\.(jpg|png|gif).*$/i,
-			filter2 = /^(.*\/cnwk\..*\/[0-9]+-[0-9]+)-[0-9]+-(.*)\.(jpg|png|gif).*$/i,
+			//filter2 = /^(.*\/cnwk\..*\/[0-9]+-[0-9]+)-[0-9]+-(.*)\.(jpg|png|gif).*$/i,
 			imgs = $('a img[src*=i.com.com]');
 			
 		imgs.each(function() {
@@ -18,11 +18,12 @@ hoverZoomPlugins.push( {
 			if (src.match(filter1)) {
 				src = src.replace(filter1, '$1.$2');
 				link.data('hoverZoomSrc', [src]);
-			} else if (src.match(filter2)) {
+			} /*else if (src.match(filter2)) {
 				var srcs = [src.replace(filter2, '$1-440-$2.$3'),
-					src.replace(filter2, '$1-200-$2.$3')];
+					src.replace(filter2, '$1-200-$2.$3'),
+					src.replace(filter2, '$1-160-$2.$3')];
 				link.data('hoverZoomSrc', srcs);
-			}
+			}*/
 			res.push(link);
 		});
 

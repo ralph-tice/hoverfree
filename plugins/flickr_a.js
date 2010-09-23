@@ -58,7 +58,7 @@ var hoverZoomPluginFlickerA = {
 		hoverZoomPluginFlickerA.prepareImgLinkFromPhotoId(link, photoId, callback);		
 	},
 	
-	// Prepares a link by making aa Flickr API call.
+	// Prepares a link by making a Flickr API call.
 	prepareImgLinkFromPhotoId: function(link, photoId, callback) {
 		if (!link || !photoId) { return; }
 		// Check if the url was stored

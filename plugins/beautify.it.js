@@ -7,7 +7,7 @@ hoverZoomPlugins.push( {
 	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [];
-		hoverZoom.srcReplace(res, 
+		hoverZoom.urlReplace(res, 
 			'a img.photo',
 			/^.*src=\.(.*)&.*/,
 			'$1'

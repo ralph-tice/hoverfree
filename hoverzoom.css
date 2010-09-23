@@ -13,6 +13,9 @@
 	background: -webkit-gradient(linear, left top, right bottom, from(#ffffff), to(#ededed), color-stop(0.5, #ffffff));
 	-webkit-box-shadow: 2px 2px 8px #444;
 }
+#hoverZoomImg img { 
+	border: none;
+}
 #hoverZoomCaption {
 	font: menu;
 	text-align: center;

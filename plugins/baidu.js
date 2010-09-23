@@ -19,20 +19,25 @@ hoverZoomPlugins.push( {
 				res.push(_this);
 			}
 		});
-		
+
 		// Encyclopedia, Space, etc
-		hoverZoom.srcReplace(res, 
+		hoverZoom.urlReplace(res, 
 			'a img[src*=/abpic/], a img[src*=/mpic/]',
 			/abpic|mpic/,
 			'pic'
 		);		
-				
+
 		// News
-		hoverZoom.srcReplace(res, 
-			"a img[src*='/it/u=']",
-			/.+(http:.*)&.*/,
-			'$1'
-		);	
+		$("a img[src*='/it/u=']").each(function() {
+			var _this = $(this);
+			var src = _this.attr('src');
+			if (src) {
+				src = src.replace(/.*\/it\/u=(.*)&.*/, '$1');
+				src = unescape(src);
+				_this.data('hoverZoomSrc', [src]);
+				res.push(_this);
+			}
+		});
 
 		callback($(res));
 	}

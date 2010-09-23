@@ -3,15 +3,15 @@
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
-	name: 'JeuxVideo.com',
+	name: 'Last.fm',
 	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'a img[src$=.gif]',
-			/gif$/,
-			'jpg'
-		);		
-		callback($(res));
+			'a img[src*=/serve/]',
+			/\/serve\/.*\//,
+			'/serve/_/'
+		);			
+		callback($(res));	
 	}
 });

@@ -8,7 +8,7 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = [];
 		
-		$('.thumbnail, .zoomable_photo, .photo').each(function() {
+		/*$('.thumbnail, .zoomable_photo, .photo').each(function() {
 			var _this = $(this);
 			var src = _this.attr('style');
 			if (!src) return;
@@ -17,11 +17,17 @@ hoverZoomPlugins.push( {
 			src = src.replace('_small', '').replace('_best_fit', '').replace(/_[mst]./, '.');
 			_this.data('hoverZoomSrc', [src]);
 			res.push(_this);
-		});
+		});*/
 
-		hoverZoom.srcReplace(res, 
+		hoverZoom.urlReplace(res, 
+			'.thumbnail, .zoomable_photo, .photo',
+			['_small', '_best_fit', /_[mst]\./],
+			['', '', '.']
+		);			
+		
+		hoverZoom.urlReplace(res, 
 			'a img',
-			/_square\./,
+			'_square.',
 			'.'
 		);	
 		

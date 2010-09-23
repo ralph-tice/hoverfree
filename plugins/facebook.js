@@ -15,6 +15,8 @@ hoverZoomPlugins.push( {
 		
 		$('a img.img:not([src^="http://static.ak.fbcdn.net"]),a img.UIProfileImage').each(function() {			
 			var _this = $(this);
+			if (_this.parents('.uiSideNav').length) { return; }
+			
 			var link = _this.parents('a:eq(0)');
 			
 			// Thumbnail URL

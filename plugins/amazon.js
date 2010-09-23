@@ -7,7 +7,7 @@ hoverZoomPlugins.push( {
 	version: '0.2',
 	prepareImgLinks: function(callback) {
 		var res = [];
-		hoverZoom.srcReplace(res, 
+		hoverZoom.urlReplace(res, 
 			'a img[src*=.images-amazon.com]:not([src*=g-ecx.images-amazon.com]), a img[src*=/img.amazon.]',
 			/\._.*\./,
 			'.'

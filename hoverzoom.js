@@ -120,7 +120,6 @@ var hoverZoom = {
 			
 			position = {top: Math.round(position.top), left: Math.round(position.left)};
 			hoverZoomImg.css(position);
-			//hoverZoomImg.offset(position);
 		}
 		
 		function hideHoverZoomImg(now) {
@@ -203,7 +202,9 @@ var hoverZoom = {
 				imgLoading = imgLoading || $('<img />', {src: chrome.extension.getURL('images/loading.gif')});
 				imgLoading.appendTo(hoverZoomImg);
 				
-				imgFullSize = $('<img/>').attr('src', imgSrc).load(function() {
+				imgFullSize = $('<img/>').load(imgFullSizeOnLoad).error(imgFullSizeOnError).mousemove(imgFullSizeOnMouseMove).attr('src', imgSrc);
+				
+				function imgFullSizeOnLoad() {
 					// Only the last hovered link gets displayed
 					if (imgSrc == $(this).attr('src')) {
 						loading = false;
@@ -211,10 +212,6 @@ var hoverZoom = {
 						hoverZoomImg.offset({top:-9000, left:-9000});	// hides the image while making it available for size calculations
 						hoverZoomImg.empty();
 						$(this).appendTo(hoverZoomImg);
-						if ($(this).height() <= 1) {
-							$(this).error();
-							return;
-						}
 						if (options.showCaptions && currentLink && currentLink.data('hoverZoomCaption')) {
 							hoverZoomCaption = $('<div/>', {id: 'hoverZoomCaption', text: currentLink.data('hoverZoomCaption')}).appendTo(hoverZoomImg);
 						}
@@ -225,7 +222,9 @@ var hoverZoom = {
 						}
 						showFlashObjects(false);
 					}
-				}).error(function() {
+				}
+				
+				function imgFullSizeOnError() {
 					if (imgSrc == $(this).attr('src')) {
 						var hoverZoomSrcIndex = currentLink ? currentLink.data('hoverZoomSrcIndex') : 0;
 						if (currentLink && hoverZoomSrcIndex < currentLink.data('hoverZoomSrc').length - 1) {
@@ -235,17 +234,19 @@ var hoverZoom = {
 							console.info('[HoverZoom] Failed to load image: ' + imgSrc + '\nTrying next one...');
 							imgSrc = currentLink.data('hoverZoomSrc')[hoverZoomSrcIndex];
 							imgFullSize = null;
-							setTimeout(loadFullSizeImage, 10);
+							setTimeout(loadFullSizeImage, 100);
 						} else {
 							hideHoverZoomImg();
 							console.warn('[HoverZoom] Failed to load image: ' + imgSrc);
 						}
 					}
-				}).mousemove(function(event) {
+				}
+				
+				function imgFullSizeOnMouseMove() {
 					if (!imgFullSize) {
 						hideHoverZoomImg(true);
 					}
-				});
+				}
 			}
 			posImg();
 		}
@@ -482,49 +483,38 @@ var hoverZoom = {
 	},
 	
 	// Utility function to be used by plugins.
-	// Search for image links using the 'filter' parameter,
-	// process their src attribute using the 'search' and 'replace' values,
+	// Search for links or images using the 'filter' parameter,
+	// process their src or href attribute using the 'search' and 'replace' values,
 	// store the result in the link and add the link to the 'res' array.
-	srcReplace: function(res, filter, search, replace) {
+	urlReplace: function(res, filter, search, replace, parentFilter) {
 		$(filter).each(function() {
-			var _this = $(this),
-				link = _this.parents('a:eq(0)');
+			var _this = $(this), link, url;
+			if (this.src) {
+				url = _this.attr('src');
+				if (!parentFilter) {
+					parentFilter = 'a:eq(0)';
+				}
+				link = _this.parents(parentFilter);
+			} else if (this.style && this.style.backgroundImage && this.style.backgroundImage.indexOf('url') > -1) {
+				url = this.style.backgroundImage.replace(/.*url\s*\(\s*(.*)\s*\).*/, '$1');
+				link = _this;
+			} else if (this.href) {
+				url = _this.attr('href');
+				link = _this;
+			} 
 			if (link.data('hoverZoomSrc')) { return; }
-			var src = _this.attr('src');
-			if (!src) {	return;	}
+			if (!url) {	return;	}
 			if (Array.isArray(search)) {
 				for (var i=0; i<search.length; i++) {
-					src = src.replace(search[i], replace[i]);
+					url = url.replace(search[i], replace[i]);
 				}
 			} else {
-				src = src.replace(search, replace);
+				url = url.replace(search, replace);
 			}
-			link.data('hoverZoomSrc', [src]);
+			link.data('hoverZoomSrc', [url]);
 			res.push(link);
 		});
-	},
-	
-	// Utility function to be used by plugins.
-	// Search for links using the 'filter' parameter,
-	// process their href attribute using the 'search' and 'replace' values,
-	// store the result in the link and add the link to the 'res' array.
-	hrefReplace: function(res, filter, search, replace) {
-		$(filter).each(function() {
-			var link = $(this);
-			if (link.data('hoverZoomSrc')) { return; }
-			var href = link.attr('href');
-			if (!href) { return; }
-			if (Array.isArray(search)) {
-				for (var i=0; i<search.length; i++) {
-					href = href.replace(search[i], replace[i]);
-				}
-			} else {
-				href = href.replace(search, replace);
-			}
-			link.data('hoverZoomSrc', [href]);
-			res.push(link);
-		});
-	}	
+	}
 };
 
 hoverZoom.loadJQuery();

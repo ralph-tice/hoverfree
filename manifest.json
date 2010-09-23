@@ -1,7 +1,7 @@
 {
     "name": "Hover Zoom",
     "version": "1.3",
-    "description": "Move the mouse cursor over a link to an image to view it in full size.",
+    "description": "Move the mouse cursor over a link to an image to view it in full size. Works on many sites (Facebook, Flickr, Twitter, Google, etc).",
 	"icons": {
 		"16": "images/icon16.png",
 		"32": "images/icon32.png",
@@ -767,7 +767,8 @@
 			"run_at": "document_start"
         },
         {
-			"matches": ["http://*.twitter.com/*"],
+			"matches": ["http://*.twitter.com/*",
+						"https://*.twitter.com/*"],
             "js": ["plugins/twitter.js"],
 			"run_at": "document_start"
         },
@@ -789,6 +790,37 @@
         {
 			"matches": ["http://*.cnet.com/*"],
             "js": ["plugins/cnet.js"],
+			"run_at": "document_start"
+        },
+        {
+			"matches": ["http://*.last.fm/*",
+						"http://*.lastfm.fr/*",
+						"http://*.lastfm.de/*",
+						"http://*.lastfm.es/*",
+						"http://*.lastfm.it/*",
+						"http://*.lastfm.jp/*",
+						"http://*.lastfm.pl/*",
+						"http://*.lastfm.com.br/*",
+						"http://*.lastfm.ru/*",
+						"http://*.lastfm.se/*",
+						"http://*.lastfm.com.tr/*"],
+            "js": ["plugins/lastfm.js"],
+			"run_at": "document_start"
+        },
+        {
+			"matches": ["http://*.musicme.com/*"],
+            "js": ["plugins/musicme.js"],
+			"run_at": "document_start",
+			"all_frames": true
+        },
+        {
+			"matches": ["http://*.tinypic.com/*"],
+            "js": ["plugins/tinypic.js"],
+			"run_at": "document_start"
+        },
+        {
+			"matches": ["http://*.photobucket.com/*"],
+            "js": ["plugins/photobucket.js"],
 			"run_at": "document_start"
         }
 	]

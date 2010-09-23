@@ -3,15 +3,15 @@
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
-	name: 'JeuxVideo.com',
+	name: 'Tinypic',
 	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'a img[src$=.gif]',
-			/gif$/,
-			'jpg'
-		);		
+			'a img[src*=_th.]',
+			'_th.',
+			'.'
+		);
 		callback($(res));
 	}
 });
