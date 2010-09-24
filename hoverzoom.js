@@ -131,7 +131,6 @@ var hoverZoom = {
 			hoverZoomImg.stop(true, true).fadeOut(now ? 0 : options.fadeDuration, function() {
 				hoverZoomCaption = null;
 				hoverZoomImg.empty();
-				showFlashObjects(true);
 			});
 		}
 
@@ -220,7 +219,6 @@ var hoverZoom = {
 						if (options.addToHistory && !chrome.extension.inIncognitoTab) {
 							chrome.extension.sendRequest({action : 'addUrlToHistory', url: imgSrc});
 						}
-						showFlashObjects(false);
 					}
 				}
 				
@@ -388,16 +386,6 @@ var hoverZoom = {
 			webSiteExcluded = false;
 			return false;
 		}
-
-		var flashObjects = null;
-		function showFlashObjects(visible) {
-			if (!visible) {
-				flashObjects = $('object:visible, embed:visible, iframe[src*=flickr.com/apps], iframe.media-embed, iframe.youtube-player');
-				flashObjects.css('visibility', 'hidden');
-			} else if (flashObjects) {
-				flashObjects.css('visibility', 'visible');
-			}
-		}
 		
 		function loadOptions() {
 			chrome.extension.sendRequest({action : 'getOptions'}, function(result) {
@@ -414,9 +402,12 @@ var hoverZoom = {
 		}
 		
 		function windowOnDOMNodeInserted(event) {
-			if (event.srcElement && (event.srcElement.nodeName == 'A' || event.srcElement.nodeName == 'IMG' || $(event.srcElement).find('a, img').length || $(event.srcElement).parents('a, img').length)) {
-				prepareImgLinksAsync();
-			}
+			if (event.srcElement) {
+				if (event.srcElement.nodeName == 'A' || event.srcElement.nodeName == 'IMG' || $(event.srcElement).find('a, img').length || $(event.srcElement).parents('a, img').length) {
+					prepareImgLinksAsync();
+				} else if (event.srcElement.nodeName == 'EMBED' || event.srcElement.nodeName == 'OBJECT')
+					fixFlash();
+				}
 		}
 		
 		function bindEvents() {
@@ -458,10 +449,28 @@ var hoverZoom = {
 			wnd.scroll(hideHoverZoomImg);
 		}
 		
+		function fixFlash() {
+			//return;
+			$('embed:not([wmode]), embed[wmode=window]').each(function() {
+				var embed = this.cloneNode(true);
+				embed.setAttribute('wmode', 'opaque');
+				$(this).replaceWith(embed);
+			});
+			$('object').filter(function() {
+				var param = $(this).children('param[name=wmode]');
+				return param.length == 0 || param.attr('value').toLowerCase() == 'window';
+			}).each(function() {
+				var object = this.cloneNode(true);
+				$('<param name="wmode" value="opaque">').appendTo(object);
+				$(this).replaceWith(object);
+			});
+		}
+		
 		function init() {
 			webSiteExcluded = null;
 			prepareImgLinks();		
 			bindEvents();
+			fixFlash();
 		}
 		
 		chrome.extension.onRequest.addListener(onRequest);		
@@ -518,3 +527,4 @@ var hoverZoom = {
 };
 
 hoverZoom.loadJQuery();
+
