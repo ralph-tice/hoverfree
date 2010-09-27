@@ -645,6 +645,11 @@
 			"matches": ["http://*.photobucket.com/*"],
             "js": ["plugins/photobucket.js"],
 			"run_at": "document_start"
+        },
+        {
+			"matches": ["http://*.backpage.com/*"],
+            "js": ["plugins/backpage.js"],
+			"run_at": "document_start"
         }
 	]
 }
