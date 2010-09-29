@@ -52,16 +52,23 @@
 					case 'isExcludedSite':
 						callback(isExcludedSite(request.url));
 						break;				
+					/*case 'createWindow':
+						chrome.windows.create(request.createData, callback);
+						break;
+					case 'updateWindow':
+						chrome.windows.update(request.windowId, request.updateInfo);
+						break;
+					case 'removeWindow':
+						chrome.windows.remove(request.windowId);
+						break;*/
 				}
 			};
 			
 			function showPageAction(tab) {
 				if (!options.extensionEnabled || isExcludedSite(tab.url)) {
 					chrome.pageAction.setIcon({tabId: tab.id, path: 'images/icon19d.png'});
-					//chrome.pageAction.setTitle({tabId: tab.id, title: 'Hover Zoom\nClick to enable automatic image zooming'});
 				} else {
 					chrome.pageAction.setIcon({tabId: tab.id, path: 'images/icon19.png'});
-					//chrome.pageAction.setTitle({tabId: tab.id, title: 'Hover Zoom\nClick to disable automatic image zooming'});
 				}
 				chrome.pageAction.show(tab.id);
 			}
@@ -121,7 +128,6 @@
 
 				// Bind events
 				chrome.extension.onRequest.addListener(onRequest);				
-				//chrome.pageAction.onClicked.addListener(pageActionOnClick);
 				
 				// Anonymous stats
 				if (navigator.appVersion.indexOf("Win") != -1) {
