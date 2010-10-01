@@ -19,8 +19,7 @@ var hoverZoom = {
 			options = {},
 			actionKeyDown = false,
 			fullZoomKeyDown = false,
-			pageActionShown = false,
-			hoverZoomWin = null;
+			pageActionShown = false;
 		
 		// Calculate optimal image position and size
 		function posImg(position) {
@@ -121,16 +120,6 @@ var hoverZoom = {
 			
 			position = {top: Math.round(position.top), left: Math.round(position.left)};
 			hoverZoomImg.css(position);
-			
-			/*if (hoverZoomWin) {
-				hoverZoomImg.css({top: -9999, left: -9999, height: 'auto', width: 'auto'});
-				chrome.extension.sendRequest({action : 'updateWindow', windowId: hoverZoomWin.id, updateInfo: {
-					top: position.top,
-					left: window.screenLeft + position.left,
-					width: imgFullSize.width(),
-					height: imgFullSize.height()
-				}});
-			}*/
 		}
 		
 		function hideHoverZoomImg(now) {
@@ -138,10 +127,6 @@ var hoverZoom = {
 				return;
 			}
 			imgFullSize = null;
-			/*if (hoverZoomWin) {
-				chrome.extension.sendRequest({action : 'removeWindow', windowId: hoverZoomWin.id });
-				hoverZoomWin = null; 
-			}*/
 			if (loading) { now = true; }
 			hoverZoomImg.stop(true, true).fadeOut(now ? 0 : options.fadeDuration, function() {
 				hoverZoomCaption = null;
@@ -234,18 +219,7 @@ var hoverZoom = {
 						if (options.addToHistory && !chrome.extension.inIncognitoTab) {
 							chrome.extension.sendRequest({action : 'addUrlToHistory', url: imgSrc});
 						}
-						
-						/*chrome.extension.sendRequest({action : 'createWindow', createData: {
-							url: imgSrc, 
-							type: 'popup',
-							top: 0,
-							left: 0,
-							width: imgFullSize.width(),
-							height: imgFullSize.height(),
-							incognito: chrome.extension.inIncognitoTab
-						}}, function(popup) {
-							hoverZoomWin = popup;
-						});*/
+						chrome.extension.sendRequest({action : 'trackEvent', category: 'Actions', action: 'ImageDisplayedOnSite', label: document.location.host});
 					}
 				}
 				
@@ -477,7 +451,6 @@ var hoverZoom = {
 		}
 		
 		function fixFlash() {
-			//return;
 			$('embed:not([wmode]), embed[wmode=window]').each(function() {
 				var embed = this.cloneNode(true);
 				embed.setAttribute('wmode', 'opaque');

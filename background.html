@@ -52,15 +52,9 @@
 					case 'isExcludedSite':
 						callback(isExcludedSite(request.url));
 						break;				
-					/*case 'createWindow':
-						chrome.windows.create(request.createData, callback);
-						break;
-					case 'updateWindow':
-						chrome.windows.update(request.windowId, request.updateInfo);
-						break;
-					case 'removeWindow':
-						chrome.windows.remove(request.windowId);
-						break;*/
+					case 'trackEvent':
+						if (_gaq) { _gaq.push(['_trackEvent', request.category, request.action, request.label]); }
+						break;				
 				}
 			};
 			

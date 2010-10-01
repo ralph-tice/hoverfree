@@ -8,10 +8,18 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'a img[src*=/serve/]',
+			'img[src*=/serve/]',
 			/\/serve\/.*\//,
-			'/serve/_/'
+			'/serve/_/',
+			':not(.image, .art):eq(0)'
 		);			
+		/*
+		// Videos
+		hoverZoom.urlReplace(res, 
+			'img[src*=img.youtube.com], img[src*=i.ytimg.com]',
+			/[1-9]+\.jpg/,
+			'0.jpg'
+		);*/			
 		callback($(res));	
 	}
 });
