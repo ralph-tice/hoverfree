@@ -150,9 +150,10 @@ var hoverZoom = {
 				links = currentLink;
 			} else {
 				mousePos = {top: event.pageY, left: event.pageX};
-				links = $(event.target).parents('.hoverZoomLink');
-				if ($(event.target).hasClass('hoverZoomLink')) {
-					links = links.add($(event.target));
+				var target = $(event.target);
+				links = target.parents('.hoverZoomLink');
+				if (target.hasClass('hoverZoomLink')) {
+					links = links.add(target);
 				}
 			}
 			
@@ -185,7 +186,7 @@ var hoverZoom = {
 				} else {
 					return;
 				}			
-			} else {
+			} else if (currentLink) {
 				cancelImageLoading();
 			}
 		}
@@ -407,7 +408,9 @@ var hoverZoom = {
 		
 		function windowOnDOMNodeInserted(event) {
 			if (event.srcElement) {
-				if (event.srcElement.nodeName == 'A' || event.srcElement.nodeName == 'IMG' || $(event.srcElement).find('a, img').length || $(event.srcElement).parents('a, img').length) {
+				var srcElement = $(event.srcElement);
+				if (srcElement.parents('#hoverZoomImg').length) { return; }
+				if (event.srcElement.nodeName == 'A' || event.srcElement.nodeName == 'IMG' || srcElement.find('a, img').length || srcElement.parents('a, img').length) {
 					prepareImgLinksAsync();
 				} else if (event.srcElement.nodeName == 'EMBED' || event.srcElement.nodeName == 'OBJECT')
 					fixFlash();

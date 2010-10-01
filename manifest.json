@@ -1,6 +1,6 @@
 {
     "name": "Hover Zoom",
-    "version": "1.3",
+    "version": "1.4",
     "description": "Move the mouse cursor over a link to an image to view it in full size. Works on many sites (Facebook, Flickr, Twitter, Google, etc).",
 	"icons": {
 		"16": "images/icon16.png",
@@ -38,6 +38,7 @@
 			"matches": ["<all_urls>"],
             "js": ["plugins/imgur_a.js", 
 			       "plugins/flickr_a.js",
+				   "plugins/tumblr_a.js",
 				   "plugins/subimg.net_a.js"],
 			"run_at": "document_start",
 			"all_frames": true
