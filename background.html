@@ -53,7 +53,7 @@
 						callback(isExcludedSite(request.url));
 						break;				
 					case 'trackEvent':
-						if (_gaq) { _gaq.push(['_trackEvent', request.category, request.action, request.label]); }
+						if (_gaq) { _gaq.push(['_trackEvent', request.event.category, request.event.action, request.event.label]); }
 						break;				
 				}
 			};

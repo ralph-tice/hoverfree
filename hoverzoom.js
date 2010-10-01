@@ -12,6 +12,7 @@ var hoverZoom = {
 			imgFullSize = null,
 			imgLoading = null,
 			imgSrc = '',
+			imgHost = '',
 			currentLink = null,
 			mousePos = {},
 			loading = false,
@@ -170,6 +171,7 @@ var hoverZoom = {
 						currentLink = links;
 						if (!options.actionKey || actionKeyDown) {
 							imgSrc = links.data('hoverZoomSrc')[hoverZoomSrcIndex];
+							imgHost = getHostFromUrl(imgSrc);
 							clearTimeout(loadFullSizeImageTimeout);
 							
 							// If the action key has been pressed over an image, no delay is applied
@@ -217,9 +219,10 @@ var hoverZoom = {
 						hoverZoomImg.hide().fadeIn(options.fadeDuration);
 						setTimeout(posImg, 10);
 						if (options.addToHistory && !chrome.extension.inIncognitoTab) {
-							chrome.extension.sendRequest({action : 'addUrlToHistory', url: imgSrc});
+							chrome.extension.sendRequest({action: 'addUrlToHistory', url: imgSrc});
 						}
-						chrome.extension.sendRequest({action : 'trackEvent', category: 'Actions', action: 'ImageDisplayedOnSite', label: document.location.host});
+						chrome.extension.sendRequest({action: 'trackEvent', event: {category: 'Actions', action: 'ImageDisplayedOnSite', label: document.location.host}});
+						chrome.extension.sendRequest({action: 'trackEvent', event: {category: 'Actions', action: 'ImageDisplayedFromSite', label: imgHost}});
 					}
 				}
 				
@@ -464,6 +467,20 @@ var hoverZoom = {
 				$('<param name="wmode" value="opaque">').appendTo(object);
 				$(this).replaceWith(object);
 			});
+		}
+		
+		function getHostFromUrl(url) {
+			var host = '';
+			if (url.indexOf('://') > -1) {
+				host = url.replace(/.+:\/\/([^\/]*).*/, '$1');
+			} else {
+				host = window.location.host;
+			}
+			var aHost = host.split('.');
+			while (aHost.length > 2) {
+				aHost.shift();
+			}
+			return aHost.join('.');
 		}
 		
 		function init() {
