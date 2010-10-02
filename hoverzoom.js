@@ -241,6 +241,7 @@ var hoverZoom = {
 						} else {
 							hideHoverZoomImg();
 							console.warn('[HoverZoom] Failed to load image: ' + imgSrc);
+							chrome.extension.sendRequest({action: 'trackEvent', event: {category: 'Errors', action: 'LoadingErrorFromSite', label: imgHost}});
 						}
 					}
 				}
@@ -457,6 +458,7 @@ var hoverZoom = {
 		}
 		
 		function fixFlash() {
+			if ($('.hoverZoomLink').length == 0) { return; }
 			$('embed:not([wmode]), embed[wmode=window]').each(function() {
 				var embed = this.cloneNode(true);
 				embed.setAttribute('wmode', 'opaque');
@@ -479,8 +481,15 @@ var hoverZoom = {
 			} else {
 				host = window.location.host;
 			}
-			var aHost = host.split('.');
-			while (aHost.length > 2) {
+			var aHost = host.split('.'),
+				maxItems = 2;
+			if (aHost.length > 2) {
+				var preTld = aHost[aHost.length - 2];
+				if (preTld == 'co' || preTld == 'com' || preTld == 'net' || preTld == 'org') {
+					maxItems = 3;
+				}
+			}
+			while (aHost.length > maxItems) {
 				aHost.shift();
 			}
 			return aHost.join('.');
