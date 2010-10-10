@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Hover Zoom Options</title>
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.0/themes/base/jquery-ui.css" />
+		<link rel="stylesheet" href="common.css" />
+		<style type="text/css">
+			#body { margin: 0 auto; width: 40em; }
+			#container {float: left; margin: 1em;}
+			#icon { float: left; margin-top: 2em }
+			#tabs { width: 25em; }
+			#tabs li { font-size: 10pt; }
+			#title { font-size: 1.5em }
+			#selExcludedSites, #txtAddExcludedSite { width: 23em; }
+			#excludedSites button { width: 5em; }
+			#messages { padding: 1em; max-width: 28em; height: 3em; }
+			#saved { display: none; background-color: #ffd; padding:.5em; }
+			#saved p { font-size: 9pt; }
+			#title, #buttons, #about p, #messages p { text-align: center }
+			#delays p, #delays input { text-align: right }
+			.notice { font-size: 8pt; }
+		</style>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"></script>
+		<script src="common.js"></script>
+		<script>
+			var options;
+			
+			function getMilliseconds(ctrl) {
+				var value = parseFloat(ctrl.val());
+				value = isNaN(value) ? 0 : value * 1000;
+				ctrl.val(value / 1000);
+				return value;
+			}
+			
+			function loadKeys(sel) {
+				for (var i=65; i<91; i++) {
+					$('<option value="' + i + '">&#' + i + ';</option>').appendTo(sel);
+				}
+			}
+
+			// Saves options to localStorage.
+			function saveOptions() {
+				options.extensionEnabled = $('#chkExtensionEnabled')[0].checked;
+				options.pageActionEnabled = $('#chkPageActionEnabled')[0].checked;
+				options.showCaptions = $('#chkShowCaptions')[0].checked;
+				options.showHighRes = $('#chkShowHighRes')[0].checked;
+				options.actionKey = parseInt($('#selActionKey').val());
+				options.fullZoomKey = parseInt($('#selFullZoomKey').val());
+				options.addToHistory = $('#chkAddToHistory')[0].checked;
+				options.displayDelay = getMilliseconds($('#txtDisplayDelay'));
+				options.fadeDuration = getMilliseconds($('#txtFadeDuration'));				
+				
+				// Excluded sites
+				options.excludedSites = [];
+				$('#selExcludedSites option').each(function() {
+					options.excludedSites.push($(this).text());
+				});
+				
+				localStorage.options = JSON.stringify(options);
+				enableControls(false);
+				sendOptions(options);
+				restoreOptions();
+				$('#saved').clearQueue().fadeIn(100).delay(5000).fadeOut(600);			
+			}
+
+			// Restores options from localStorage.
+			function restoreOptions() {
+				options = loadOptions();
+								
+				$('#chkExtensionEnabled')[0].checked = options.extensionEnabled;
+				$('#chkPageActionEnabled')[0].checked = options.pageActionEnabled;
+				$('#chkShowCaptions')[0].checked = options.showCaptions;
+				$('#chkShowHighRes')[0].checked = options.showHighRes;
+				$('#chkAddToHistory')[0].checked = options.addToHistory;
+				$('#txtDisplayDelay').val((options.displayDelay || 0) / 1000);
+				$('#txtFadeDuration').val((options.fadeDuration || 0) / 1000);
+				$('#selActionKey').val(options.actionKey);
+				$('#selFullZoomKey').val(options.fullZoomKey);	
+				
+				$('#selExcludedSites').empty();
+				for (var i = 0; i < options.excludedSites.length; i++) {
+					$('<option>' + options.excludedSites[i] + '</option>').appendTo('#selExcludedSites');
+				}
+				
+				enableControls(false);
+			}
+			
+			function btnAddExcludedSiteOnClick() {
+				var site = $('#txtAddExcludedSite').val().trim().toLowerCase().replace(/.*:\/\//, '')
+				if (site)
+					$('<option>' + site + '</option>').appendTo('#selExcludedSites');
+				$('#txtAddExcludedSite').val('');
+			}
+			
+			function btnRemoveExcludedSiteOnClick() {
+				$('#selExcludedSites option:selected').remove();
+			}
+			
+			function selFullZoomKeyOnChange() {
+				if ($('#selFullZoomKey').val() != '0' && $('#selFullZoomKey').val() == $('#selActionKey').val()) {
+					$('#selActionKey').val('0').effect("highlight", {color: 'red'}, 2000);
+				}
+			}
+			
+			function selActionKeyOnChange() {
+				if ($('#selActionKey').val() != '0' && $('#selFullZoomKey').val() == $('#selActionKey').val()) {
+					$('#selFullZoomKey').val('0').effect("highlight", {color: 'red'}, 2000);
+				}
+			}
+			
+			function enableControls(enabled) {
+				enabled = enabled || false;
+				$('#buttons button').attr('disabled', !enabled);
+			}
+			
+			function onRequest(request, sender, callback) {
+				switch(request.action) {
+					case 'optionsChanged':
+						restoreOptions();
+						break;				
+				}
+			}		
+			
+			$(function() {
+				loadKeys($('#selActionKey, #selFullZoomKey'));
+				$('input, select, textarea').change(enableControls).keydown(enableControls);
+				$('#btnSave').click(saveOptions);
+				$('#btnReset').click(restoreOptions);
+				$('#tabs').tabs({ selected: 0 });
+				restoreOptions();
+				chrome.extension.onRequest.addListener(onRequest);
+			});
+		</script>
+	</head>
+	<body>
+		<div id="body">
+			<!--<div style="border: 2px solid red; color: red; text-align: center; padding: 0.5em;">This version of Hover Zoom is for testing purpose only. It won't update automatically. 
+			Please install Hover Zoom from the <a href="https://chrome.google.com/extensions/detail/nonjdcjchghhkdoolnlbekcfllmednbl">Chrome Extension Gallery</a> for everyday use.</div>-->
+			<img id="icon" src="images/icon128.png">
+			<div id="container">
+				<h1 id="title">Hover Zoom Options</h1>
+				<div id="tabs">
+					<ul>
+						<li><a href="#optionTab1">General</a></li>
+						<li><a href="#optionTab2">Sites</a></li>
+						<li><a href="#optionTab3">Action keys</a></li>
+					</ul>
+					<div id="optionTab1">
+						<p><input type="checkbox" id="chkExtensionEnabled"> <label for="chkExtensionEnabled">Enable extension</label></p>
+						<h2>View</h2>
+						<p><input type="checkbox" id="chkPageActionEnabled"> <label for="chkPageActionEnabled">Show extension icon in address bar</label></p>
+						<p><input type="checkbox" id="chkShowCaptions"> <label for="chkShowCaptions">Show pictures captions</label></p>
+						<p><input type="checkbox" id="chkShowHighRes"> <label for="chkShowHighRes">Show high resolution pictures when available<br>
+							<span style="font-size: 8pt; padding-left: 25px">(Pictures may take more time to load)</span></label></p>
+						<h2>Delays</h2>
+						<div id="delays">
+						<p><label for="txtDisplayDelay">Delay before displaying a picture</label>: <input type="textbox" id="txtDisplayDelay" size="1"> sec.</p>
+						<p><label for="txtFadeDuration">Fading animation duration</label>: <input type="textbox" id="txtFadeDuration" size="1"> sec.</p>
+						</div>
+						<h2>Advanced</h2>
+						<p><input type="checkbox" id="chkAddToHistory"> <label for="chkAddToHistory">Add viewed pictures to the browser's history</label></p>
+					</div>
+					<div id="optionTab2">
+						<h2>Disable Hover Zoom for specific sites</h2>
+						<p>Enter domains for which Hover Zoom must be disabled.</p>
+						<p><i>Examples: facebook.com, picasaweb.google.com</i></p>
+						<table id="excludedSites"><tr><td><input type="text" id="txtAddExcludedSite"></td>
+						<td><button id="btnAddExcludedSite" onclick="btnAddExcludedSiteOnClick()">Add</button></td></tr>
+						<tr><td><select id="selExcludedSites" size="12"></select></td>
+						<td><button id="btnRemoveExcludedSite" onclick="btnRemoveExcludedSiteOnClick()">Remove</button></td></tr></table>
+						<p class="notice">Be aware that domain filters can overlap. Example: if you have filtered "picasaweb.google.com" and "google.com", removing "picasaweb.google.com" will not reactivate Picasa Web Albums, as it will still be excluded by the "google.com" filter.</p>
+					</div>
+					<div id="optionTab3">
+						<h2>Activate Hover Zoom</h2>
+						<p>If a key is set, Hover Zoom will be active only when this key is held down.</p>
+						<p>Key to activate Hover Zoom:
+							<select id="selActionKey" onchange="selActionKeyOnChange()">
+								<option value="0">None</option>
+								<option value="16">Shift</option>
+								<option value="17">Ctrl</option>
+							</select>
+						</p>
+						<h2>Activate full zoom</h2>
+						<p>When this key is held down, the picture is displayed using all available space. Useful for high resolution pictures only.</p>
+						<p>Key to activate full zoom:
+							<select id="selFullZoomKey" onchange="selFullZoomKeyOnChange()">
+								<option value="0">None</option>
+								<option value="16">Shift</option>
+								<option value="17">Ctrl</option>
+							</select>
+						</p>
+					</div>
+				</div>
+				<div id="buttons">
+					<button id="btnSave">Save</button>
+					<button id="btnReset">Reset</button>
+				</div>
+				<div id="messages">
+					<div id="saved"><p>Options saved.<br>Some settings may need a page refresh.</p></div>
+				</div>
+				<div id="about">
+					<p><a href="http://code.google.com/p/romanito/wiki/HoverZoom">Home page</a> - 
+					<a href="http://code.google.com/p/romanito/issues/entry">Report a bug</a> - 
+					<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FHover-Zoom%2F121453051234637&amp;layout=button_count&amp;show_faces=false&amp;width=100&amp;action=like&amp;colorscheme=light&amp;height=21&amp;ref=options_page" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px; vertical-align: middle;" allowTransparency="true"></iframe>
+					</p>
+					<p>Like this extension? 
+					<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=C8VC69MYY8AZG&lc=US&item_name=Romain%20Vallet&item_number=Hover%20Zoom&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted">Buy me a beer!</a>
+					</p>
+					<p>&copy; 2010 Romain Vallet</p>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

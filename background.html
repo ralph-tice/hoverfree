@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+	<body>
+		<script src="common.js"></script>
+		<script type="text/javascript">
+			var options;
+			var _gaq;
+
+			// Converts a string to a boolean value
+			function toBool(str) {
+				return "false" == str ? false : true;
+			}
+
+			// Performs an ajax GET request
+			function ajaxGet(url, callback) {
+				var xhr = new XMLHttpRequest();
+				xhr.onreadystatechange = function(data) {
+					if (xhr.readyState == 4) {
+						if (xhr.status == 200) {
+							callback(xhr.responseText);
+						} else {
+							callback(null);
+						}
+					}
+				}
+				xhr.open('GET', url, true);
+				xhr.send();
+			};
+
+			function onRequest(request, sender, callback) {
+				switch(request.action) {
+					case 'ajaxGet':
+						ajaxGet(request.url, callback);
+						break;
+					case 'showPageAction':
+						showPageAction(sender.tab);
+						callback();
+						break;
+					case 'addUrlToHistory':
+						chrome.history.addUrl({url: request.url});
+						break;
+					case 'getOptions':
+						callback(options);
+						break;
+					case 'optionsChanged':
+						options = request.options;
+						break;				
+					case 'saveOptions':
+						localStorage.options = JSON.stringify(request.options);
+						sendOptions(request.options);
+						break;				
+					case 'isExcludedSite':
+						callback(isExcludedSite(request.url));
+						break;				
+					case 'trackEvent':
+						if (_gaq) { _gaq.push(['_trackEvent', request.event.category, request.event.action, request.event.label]); }
+						break;				
+				}
+			};
+			
+			function showPageAction(tab) {
+				if (!options.extensionEnabled || isExcludedSite(tab.url)) {
+					chrome.pageAction.setIcon({tabId: tab.id, path: 'images/icon19d.png'});
+				} else {
+					chrome.pageAction.setIcon({tabId: tab.id, path: 'images/icon19.png'});
+				}
+				chrome.pageAction.show(tab.id);
+			}
+			
+			function pageActionOnClick(tab) {
+				// Store new state
+				options.extensionEnabled = !options.extensionEnabled;
+				localStorage.options = JSON.stringify(options);
+				
+				sendOptions(options);
+			}
+			
+			// Sets up anonymous stats
+			function setUpStats(){
+				_gaq = _gaq || [];
+				_gaq.push(['_setAccount', 'UA-394270-15']);
+				_gaq.push(['_trackPageview']);
+
+				(function() {
+					var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+					ga.src = 'https://ssl.google-analytics.com/ga.js';
+					(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+				})();
+			}
+			
+			function keyCodeToKeyName(keyCode) {
+				if (keyCode == 16) {
+					return 'Shift';
+				} else if (keyCode == 17) {
+					return 'Ctrl';
+				} else if (keyCode >= 65 && keyCode <= 90) {
+					return String.fromCharCode(keyCode);
+				} else {
+					return 'None';
+				}
+			}
+			
+			// Report options stats
+			// No user data (browser history, etc) is reported
+			function optionsStats() {
+				_gaq.push(['_trackEvent', 'Options', 'extensionEnabled', options.extensionEnabled.toString()]);
+				_gaq.push(['_trackEvent', 'Options', 'pageActionEnabled', options.pageActionEnabled.toString()]);
+				_gaq.push(['_trackEvent', 'Options', 'showCaptions', options.showCaptions.toString()]);
+				_gaq.push(['_trackEvent', 'Options', 'addToHistory', options.addToHistory.toString()]);
+				_gaq.push(['_trackEvent', 'Options', 'displayDelay', options.displayDelay.toString()]);
+				_gaq.push(['_trackEvent', 'Options', 'fadeDuration', options.fadeDuration.toString()]);
+				_gaq.push(['_trackEvent', 'Options', 'actionKey', keyCodeToKeyName(options.actionKey)]);				
+				_gaq.push(['_trackEvent', 'Options', 'fullZoomKey', keyCodeToKeyName(options.fullZoomKey)]);				
+				for (var i=0; i<options.excludedSites.length; i++) {
+					_gaq.push(['_trackEvent', 'Options', 'excludedSites', options.excludedSites[i]]);				
+				}
+			}
+			
+			function init() {				
+				// Load options
+				options = loadOptions();
+
+				// Bind events
+				chrome.extension.onRequest.addListener(onRequest);				
+				
+				// Anonymous stats
+				if (navigator.appVersion.indexOf("Win") != -1) {
+					setUpStats();
+					optionsStats();
+				}
+			}
+
+			init();
+		</script>
+	</body>
+</html>
