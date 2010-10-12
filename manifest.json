@@ -29,7 +29,7 @@
 			"all_frames": true
         },
         {
-            "js": ["plugins/default.js"],
+            "js": ["jquery.min.js", "plugins/default.js"],
 			"matches": ["<all_urls>"],
 			"run_at": "document_start",
 			"all_frames": true
@@ -688,8 +688,20 @@
 			"run_at": "document_start"
         },
 		{
-			"js": [ "plugins/stern.de.js" ],
-			"matches": [ "*://*.stern.de/*" ],
+			"js": ["plugins/stern.de.js"],
+			"matches": ["*://*.stern.de/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/gawker.js"],
+			"matches": ["*://*.gawker.com/*",
+						"*://*.kotaku.com/*",
+						"*://*.io9.com/*",
+						"*://*.lifehacker.com/*",
+						"*://*.gizmodo.com/*",
+						"*://*.deadspin.com/*",
+						"*://*.jezebel.com/*",
+						"*://*.jalopnik.com/*"],
 			"run_at": "document_start"
 		}
 	]

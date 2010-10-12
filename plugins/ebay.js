@@ -17,13 +17,13 @@ hoverZoomPlugins.push( {
 	
 		// First we gather all the products on the page and we store their eBay ID and 
 		// the link that will receive the 'hoverZoomSrc' data.
-		$('a.pic, table.pic a, a.gpvi').each(function() {
+		$('a.l-tn, table.l-tn a, td.gv-gvtd a, a.pic, table.pic a, a.gpvi').each(function() {
 			var item = {link: this, id: ''};
 			var parent = $(this).parents('table:eq(0)');
-			if (parent.hasClass('pic')) {
+			if (parent.hasClass('l-tn') || parent.hasClass('gv-gvimg') || parent.hasClass('pic')) {
 				parent = parent.parents('div:eq(0)');
 			}
-			var dtlLink = parent.find('div.ittl a, div.ttl a');
+			var dtlLink = parent.find('div.l-its a, div.gv-gvitmttl a, div.ittl a, div.ttl a');
 			if (dtlLink.length > 0) {
 				item.id = dtlLink.attr('href');
 				item.id = item.id.substr(item.id.lastIndexOf('/') + 1);

@@ -20,8 +20,8 @@
 			#delays p, #delays input { text-align: right }
 			.notice { font-size: 8pt; }
 		</style>
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"></script>
+		<script src="jquery.min.js"></script>
+		<script src="jquery-ui.min.js"></script>
 		<script src="common.js"></script>
 		<script>
 			var options;
@@ -99,13 +99,13 @@
 			
 			function selFullZoomKeyOnChange() {
 				if ($('#selFullZoomKey').val() != '0' && $('#selFullZoomKey').val() == $('#selActionKey').val()) {
-					$('#selActionKey').val('0').effect("highlight", {color: 'red'}, 2000);
+					$('#selActionKey').val('0').effect("highlight", {color: 'red'}, 5000);
 				}
 			}
 			
 			function selActionKeyOnChange() {
 				if ($('#selActionKey').val() != '0' && $('#selFullZoomKey').val() == $('#selActionKey').val()) {
-					$('#selFullZoomKey').val('0').effect("highlight", {color: 'red'}, 2000);
+					$('#selFullZoomKey').val('0').effect("highlight", {color: 'red'}, 5000);
 				}
 			}
 			
@@ -135,8 +135,6 @@
 	</head>
 	<body>
 		<div id="body">
-			<!--<div style="border: 2px solid red; color: red; text-align: center; padding: 0.5em;">This version of Hover Zoom is for testing purpose only. It won't update automatically. 
-			Please install Hover Zoom from the <a href="https://chrome.google.com/extensions/detail/nonjdcjchghhkdoolnlbekcfllmednbl">Chrome Extension Gallery</a> for everyday use.</div>-->
 			<img id="icon" src="images/icon128.png">
 			<div id="container">
 				<h1 id="title">Hover Zoom Options</h1>
@@ -200,8 +198,8 @@
 					<div id="saved"><p>Options saved.<br>Some settings may need a page refresh.</p></div>
 				</div>
 				<div id="about">
-					<p><a href="http://code.google.com/p/romanito/wiki/HoverZoom">Home page</a> - 
-					<a href="http://code.google.com/p/romanito/issues/entry">Report a bug</a> - 
+					<p><a href="http://code.google.com/p/hoverzoom/">Home page</a> - 
+					<a href="http://code.google.com/p/hoverzoom/issues/list">Report a bug</a> - 
 					<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FHover-Zoom%2F121453051234637&amp;layout=button_count&amp;show_faces=false&amp;width=100&amp;action=like&amp;colorscheme=light&amp;height=21&amp;ref=options_page" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px; vertical-align: middle;" allowTransparency="true"></iframe>
 					</p>
 					<p>Like this extension? 

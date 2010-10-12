@@ -11,8 +11,8 @@ hoverZoomPlugins.push( {
 
 		hoverZoom.urlReplace(res, 
 			'.thumbnail, .zoomable_photo, .photo',
-			['_small', '_best_fit', /_[mst]\./],
-			[repl, repl, '.']
+			['_small_best_fit', '_small', '_best_fit', /_[mst]\./],
+			[repl, repl, repl, '.']
 		);			
 		
 		hoverZoom.urlReplace(res, 

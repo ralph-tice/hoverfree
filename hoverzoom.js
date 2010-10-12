@@ -312,7 +312,7 @@ var hoverZoom = {
 				titledElement.parents('[title]').andSelf().add('[title]').removeAttr('title');
 			} else {
 				var alt = link.attr('alt') || link.find('[alt]').attr('alt');
-				if (alt && alt.length > 6 && !/^[0-9]$/.test(alt)) {
+				if (alt && alt.length > 6 && !/^[0-9]+$/.test(alt)) {
 					link.data('hoverZoomCaption', alt);
 				}
 			}
@@ -548,20 +548,6 @@ var hoverZoom = {
 		loadOptions();
 	},
 	
-	loadJQuery: function() {
-		chrome.extension.sendRequest(
-			{action : 'ajaxGet', url: 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js'},
-			function(data) {
-				if (data != null) {
-					eval(data);
-					hoverZoom.loadHoverZoom();
-				} else {
-					console.warn('[HoverZoom] Failed to load jQuery');
-				}
-			}
-		);
-	},
-	
 	// Public function to be used by plugins.
 	// Search for links or images using the 'filter' parameter,
 	// process their src or href attribute using the 'search' and 'replace' values,
@@ -607,5 +593,4 @@ var hoverZoom = {
 	}
 };
 
-hoverZoom.loadJQuery();
-
+hoverZoom.loadHoverZoom();
