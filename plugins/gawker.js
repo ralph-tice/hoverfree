@@ -11,8 +11,8 @@ hoverZoomPlugins.push( {
 			var img = $(this),
 				url = hoverZoom.getThumbUrl(this);
 			if (!url) {	return;	}
-			url = url.replace(/\/([0-9]+x[0-9]*|gallery)_/, '/');
-			if (img.hasClass('avatar')) { url = url.replace(/_[0-9]+\./, '_160.'); }
+			url = url.replace(/\/(\d+x\d*|gallery)_/, '/');
+			if (img.hasClass('avatar')) { url = url.replace(/_\d+\./, '_160.'); }
 			url = url.substr(0, url.lastIndexOf('.'));
 			img.data('hoverZoomSrc', [url + '.jpg', url + '.png', url + '.gif', url]);
 			res.push(img);

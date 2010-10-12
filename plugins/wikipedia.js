@@ -21,10 +21,7 @@ hoverZoomPlugins.push( {
 				}
 				var srcs = [];
 				if (!options.showHighRes) {
-					srcs.push(src.replace(/\/[0-9]+px-/, '/800px-'));
-					srcs.push(src.replace(/\/[0-9]+px-/, '/600px-'));
-					srcs.push(src.replace(/\/[0-9]+px-/, '/400px-'));
-					srcs.push(src.replace(/\/[0-9]+px-/, '/200px-'));
+					srcs.push(src.replace(/\/\d+px-/, '/800px-'));
 				}
 				srcs.push(src.substring(0, src.indexOf(ext) + ext.length).replace(/thumb\//, ''));
 				$(this).data('hoverZoomSrc', srcs);

@@ -7,8 +7,8 @@ hoverZoomPlugins.push( {
 	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [],
-			filter1 = /^(.*)_[0-9]+x[0-9]+\.(jpg|png|gif).*$/i,
-			//filter2 = /^(.*\/cnwk\..*\/[0-9]+-[0-9]+)-[0-9]+-(.*)\.(jpg|png|gif).*$/i,
+			filter1 = /^(.*)_\d+x\d+\.(jpg|png|gif).*$/i,
+			//filter2 = /^(.*\/cnwk\..*\/\d+-\d+)-\d+-(.*)\.(jpg|png|gif).*$/i,
 			imgs = $('a img[src*=i.com.com]');
 			
 		imgs.each(function() {

@@ -312,7 +312,7 @@ var hoverZoom = {
 				titledElement.parents('[title]').andSelf().add('[title]').removeAttr('title');
 			} else {
 				var alt = link.attr('alt') || link.find('[alt]').attr('alt');
-				if (alt && alt.length > 6 && !/^[0-9]+$/.test(alt)) {
+				if (alt && alt.length > 6 && !/^\d+$/.test(alt)) {
 					link.data('hoverZoomCaption', alt);
 				}
 			}
