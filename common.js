@@ -59,3 +59,19 @@ function isExcludedSite(url) {
 	}
 	return false;
 }
+
+// Return true if the version of Chrome is superior or equal to minVersion
+function hasMinChromeVersion(minVersion) {
+	var matches = navigator.appVersion.match(/Chrome\/([^\s]+)/);
+	if (!matches || matches.length < 2) { return; }
+	var currentVersion = matches[1];
+	var aCV = currentVersion.split('.'), aMV = minVersion.split('.');
+	for (var i=0; i<aMV.length; i++) {
+		if (parseInt(aCV[i]) < parseInt(aMV[i])) {
+			return false;
+		} else if (parseInt(aCV[i]) > parseInt(aMV[i])) {
+			return true;
+		}
+	}
+	return true;
+}

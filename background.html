@@ -106,6 +106,7 @@
 				_gaq.push(['_trackEvent', 'Options', 'extensionEnabled', options.extensionEnabled.toString()]);
 				_gaq.push(['_trackEvent', 'Options', 'pageActionEnabled', options.pageActionEnabled.toString()]);
 				_gaq.push(['_trackEvent', 'Options', 'showCaptions', options.showCaptions.toString()]);
+				_gaq.push(['_trackEvent', 'Options', 'showHighRes', options.showHighRes.toString()]);
 				_gaq.push(['_trackEvent', 'Options', 'addToHistory', options.addToHistory.toString()]);
 				_gaq.push(['_trackEvent', 'Options', 'displayDelay', options.displayDelay.toString()]);
 				_gaq.push(['_trackEvent', 'Options', 'fadeDuration', options.fadeDuration.toString()]);
@@ -124,7 +125,8 @@
 				chrome.extension.onRequest.addListener(onRequest);				
 				
 				// Anonymous stats
-				if (navigator.appVersion.indexOf("Win") != -1) {
+				// There was a bug before Chrome version 8.0.551.0 on Linux and Mac (Chromium issue 43400)
+				if (hasMinChromeVersion('8.0.551.0') || navigator.appVersion.indexOf("Win") != -1) {
 					setUpStats();
 					optionsStats();
 				}
