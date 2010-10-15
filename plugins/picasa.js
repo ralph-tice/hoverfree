@@ -14,9 +14,8 @@ hoverZoomPlugins.push({
 		function prepareImgLink() {
 			var _this = $(this);
 			var src = _this.find('img')[0].src;
-			src = src.replace(/\/(s128|s144-c)\//, '/s800/');
+			src = src.replace(/\/s\d+(-c?|\/)/, options.showHighRes ? '/' : '/s800/');
 			_this.data('hoverZoomSrc', [src]);
-			_this.addClass('hoverZoomLink');
 			
 			var tooltip = _this.parent().find('.goog-icon-list-icon-meta:eq(0)');
 			if (tooltip.length) {
@@ -25,7 +24,7 @@ hoverZoomPlugins.push({
 		}
 	
 		var links = $("a.goog-icon-list-icon-link,div.gphoto-grid-cell a");
-		links.each(prepareImgLink).mouseenter(prepareImgLink);
+		links.mouseenter(prepareImgLink);
 		callback(links);
 	}
 });

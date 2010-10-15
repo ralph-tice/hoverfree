@@ -302,9 +302,9 @@ var hoverZoom = {
 			if (link.attr('title')) {
 				titledElement = link;
 			} else {
-				titledElement = link.find('[title]:eq(0)');
+				titledElement = link.find('[title]');
 				if (!titledElement.length) {
-					titledElement = link.parents('[title]:eq(0)');
+					titledElement = link.parents('[title]');
 				}
 			}
 			if (titledElement && titledElement.length) {
@@ -566,7 +566,6 @@ var hoverZoom = {
 			} else {
 				link = _this;
 			}
-			if (link.data('hoverZoomSrc')) { return; }
 			url = hoverZoom.getThumbUrl(this);
 			if (!url) {	return;	}
 			if (Array.isArray(search)) {
@@ -576,7 +575,13 @@ var hoverZoom = {
 			} else {
 				url = url.replace(search, replace);
 			}
-			link.data('hoverZoomSrc', [url]);
+			var data = link.data('hoverZoomSrc');
+			if (Object.prototype.toString.call(data) === '[object Array]') {
+				data.splice(0, 0, url);
+			} else {
+				data = [url];
+			}
+			link.data('hoverZoomSrc', data);
 			res.push(link);
 		});
 	},
