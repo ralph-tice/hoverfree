@@ -3,13 +3,9 @@
 	<body>
 		<script src="common.js"></script>
 		<script type="text/javascript">
+			var extensionVersion = "1.7";
 			var options;
 			var _gaq;
-
-			// Converts a string to a boolean value
-			function toBool(str) {
-				return "false" == str ? false : true;
-			}
 
 			// Performs an ajax GET request
 			function ajaxGet(url, callback) {
@@ -44,20 +40,17 @@
 						break;
 					case 'optionsChanged':
 						options = request.options;
-						break;				
+						break;
 					case 'saveOptions':
 						localStorage.options = JSON.stringify(request.options);
 						sendOptions(request.options);
-						break;				
-					case 'isExcludedSite':
-						callback(isExcludedSite(request.url));
-						break;				
+						break;
 					case 'trackEvent':
 						if (_gaq) { _gaq.push(['_trackEvent', request.event.category, request.event.action, request.event.label]); }
-						break;				
+						break;
 				}
 			};
-			
+
 			function showPageAction(tab) {
 				if (!options.extensionEnabled || isExcludedSite(tab.url)) {
 					chrome.pageAction.setIcon({tabId: tab.id, path: 'images/icon19d.png'});
@@ -66,15 +59,7 @@
 				}
 				chrome.pageAction.show(tab.id);
 			}
-			
-			function pageActionOnClick(tab) {
-				// Store new state
-				options.extensionEnabled = !options.extensionEnabled;
-				localStorage.options = JSON.stringify(options);
-				
-				sendOptions(options);
-			}
-			
+
 			// Sets up anonymous stats
 			function setUpStats(){
 				_gaq = _gaq || [];
@@ -87,7 +72,7 @@
 					(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
 				})();
 			}
-			
+
 			function keyCodeToKeyName(keyCode) {
 				if (keyCode == 16) {
 					return 'Shift';
@@ -99,7 +84,7 @@
 					return 'None';
 				}
 			}
-			
+
 			// Report options stats
 			// No user data (browser history, etc) is reported
 			function optionsStats() {
@@ -110,20 +95,27 @@
 				_gaq.push(['_trackEvent', 'Options', 'addToHistory', options.addToHistory.toString()]);
 				_gaq.push(['_trackEvent', 'Options', 'displayDelay', options.displayDelay.toString()]);
 				_gaq.push(['_trackEvent', 'Options', 'fadeDuration', options.fadeDuration.toString()]);
-				_gaq.push(['_trackEvent', 'Options', 'actionKey', keyCodeToKeyName(options.actionKey)]);				
-				_gaq.push(['_trackEvent', 'Options', 'fullZoomKey', keyCodeToKeyName(options.fullZoomKey)]);				
+				_gaq.push(['_trackEvent', 'Options', 'actionKey', keyCodeToKeyName(options.actionKey)]);
+				_gaq.push(['_trackEvent', 'Options', 'fullZoomKey', keyCodeToKeyName(options.fullZoomKey)]);
 				for (var i=0; i<options.excludedSites.length; i++) {
-					_gaq.push(['_trackEvent', 'Options', 'excludedSites', options.excludedSites[i]]);				
+					_gaq.push(['_trackEvent', 'Options', 'excludedSites', options.excludedSites[i]]);
 				}
+				_gaq.push(['_trackEvent', 'Options', 'whiteListMode', options.whiteListMode.toString()]);
 			}
-			
-			function init() {				
+
+			// Report miscellaneous stats
+			// No user data (browser history, etc) is reported
+			function miscStats() {
+				_gaq.push(['_trackEvent', 'Misc', 'extensionVersion', extensionVersion]);
+			}
+
+			function init() {
 				// Load options
 				options = loadOptions();
 
 				// Bind events
-				chrome.extension.onRequest.addListener(onRequest);				
-				
+				chrome.extension.onRequest.addListener(onRequest);
+
 				// Anonymous stats
 				// There was a bug before Chrome version 8.0.551.0 on Linux and Mac (Chromium issue 43400)
 				if (hasMinChromeVersion('8.0.551.0') || navigator.appVersion.indexOf("Win") != -1) {

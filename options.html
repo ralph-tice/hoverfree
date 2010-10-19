@@ -8,7 +8,7 @@
 			#body { margin: 0 auto; width: 40em; }
 			#container {float: left; margin: 1em;}
 			#icon { float: left; margin-top: 2em }
-			#tabs { width: 25em; }
+			#tabs { width: 25em; min-height: 19em; }
 			#tabs li { font-size: 10pt; }
 			#title { font-size: 1.5em }
 			#selExcludedSites, #txtAddExcludedSite { width: 23em; }
@@ -56,6 +56,7 @@
 				$('#selExcludedSites option').each(function() {
 					options.excludedSites.push($(this).text());
 				});
+				options.whiteListMode = $('#chkWhiteListMode')[0].checked;
 				
 				localStorage.options = JSON.stringify(options);
 				enableControls(false);
@@ -76,12 +77,13 @@
 				$('#txtDisplayDelay').val((options.displayDelay || 0) / 1000);
 				$('#txtFadeDuration').val((options.fadeDuration || 0) / 1000);
 				$('#selActionKey').val(options.actionKey);
-				$('#selFullZoomKey').val(options.fullZoomKey);	
+				$('#selFullZoomKey').val(options.fullZoomKey);
 				
 				$('#selExcludedSites').empty();
 				for (var i = 0; i < options.excludedSites.length; i++) {
 					$('<option>' + options.excludedSites[i] + '</option>').appendTo('#selExcludedSites');
 				}
+				$('#chkWhiteListMode')[0].checked = options.whiteListMode;
 				
 				enableControls(false);
 			}
@@ -90,11 +92,17 @@
 				var site = $('#txtAddExcludedSite').val().trim().toLowerCase().replace(/.*:\/\//, '')
 				if (site)
 					$('<option>' + site + '</option>').appendTo('#selExcludedSites');
-				$('#txtAddExcludedSite').val('');
+				$('#txtAddExcludedSite').val('').focus();
 			}
 			
 			function btnRemoveExcludedSiteOnClick() {
 				$('#selExcludedSites option:selected').remove();
+			}
+			
+			function btnClearExcludedSitesOnClick() {
+				if (confirm('This will remove all sites from the list.\nContinue?')) {
+					$('#selExcludedSites option').remove();
+				}
 			}
 			
 			function selFullZoomKeyOnChange() {
@@ -106,6 +114,16 @@
 			function selActionKeyOnChange() {
 				if ($('#selActionKey').val() != '0' && $('#selFullZoomKey').val() == $('#selActionKey').val()) {
 					$('#selFullZoomKey').val('0').effect("highlight", {color: 'red'}, 5000);
+				}
+			}
+			
+			function chkWhiteListModeOnChange() {
+				if ($('#chkWhiteListMode')[0].checked) {
+					$('#Dis-enable').text('Enable');
+					$('#Dis-enabled').text('enabled');
+				} else {
+					$('#Dis-enable').text('Disable');
+					$('#Dis-enabled').text('disabled');
 				}
 			}
 			
@@ -127,6 +145,7 @@
 				$('input, select, textarea').change(enableControls).keydown(enableControls);
 				$('#btnSave').click(saveOptions);
 				$('#btnReset').click(restoreOptions);
+				$('#chkWhiteListMode').change(chkWhiteListModeOnChange);
 				$('#tabs').tabs({ selected: 0 });
 				restoreOptions();
 				chrome.extension.onRequest.addListener(onRequest);
@@ -143,6 +162,7 @@
 						<li><a href="#optionTab1">General</a></li>
 						<li><a href="#optionTab2">Sites</a></li>
 						<li><a href="#optionTab3">Action keys</a></li>
+						<li><a href="#optionTab4">Advanced</a></li>
 					</ul>
 					<div id="optionTab1">
 						<p><input type="checkbox" id="chkExtensionEnabled"> <label for="chkExtensionEnabled">Enable extension</label></p>
@@ -156,18 +176,19 @@
 						<p><label for="txtDisplayDelay">Delay before displaying a picture</label>: <input type="textbox" id="txtDisplayDelay" size="1"> sec.</p>
 						<p><label for="txtFadeDuration">Fading animation duration</label>: <input type="textbox" id="txtFadeDuration" size="1"> sec.</p>
 						</div>
-						<h2>Advanced</h2>
-						<p><input type="checkbox" id="chkAddToHistory"> <label for="chkAddToHistory">Add viewed pictures to the browser's history</label></p>
 					</div>
 					<div id="optionTab2">
-						<h2>Disable Hover Zoom for specific sites</h2>
-						<p>Enter domains for which Hover Zoom must be disabled.</p>
-						<p><i>Examples: facebook.com, picasaweb.google.com</i></p>
+						<h2><span id="Dis-enable">Disable</span> Hover Zoom for specific sites</h2>
+						<p>Enter URLs for which Hover Zoom must be <span id="Dis-enabled">disabled</span>.</p>
+						<p><i>Examples: facebook.com, google.com/reader</i></p>
 						<table id="excludedSites"><tr><td><input type="text" id="txtAddExcludedSite"></td>
 						<td><button id="btnAddExcludedSite" onclick="btnAddExcludedSiteOnClick()">Add</button></td></tr>
-						<tr><td><select id="selExcludedSites" size="12"></select></td>
-						<td><button id="btnRemoveExcludedSite" onclick="btnRemoveExcludedSiteOnClick()">Remove</button></td></tr></table>
+						<tr><td><select id="selExcludedSites" size="8"></select></td>
+						<td><button id="btnRemoveExcludedSite" onclick="btnRemoveExcludedSiteOnClick()">Remove</button><br>
+						<button id="btnClearExcludedSites" onclick="btnClearExcludedSitesOnClick()">Clear</button></td></tr></table>
 						<p class="notice">Be aware that domain filters can overlap. Example: if you have filtered "picasaweb.google.com" and "google.com", removing "picasaweb.google.com" will not reactivate Picasa Web Albums, as it will still be excluded by the "google.com" filter.</p>
+						<h2><input type="checkbox" id="chkWhiteListMode"> <label for="chkWhiteListMode">White list mode</label></h2>
+						<p>If this box is checked, Hover Zoom will be enabled <em>only</em> for the sites listed above.</p>
 					</div>
 					<div id="optionTab3">
 						<h2>Activate Hover Zoom</h2>
@@ -188,6 +209,10 @@
 								<option value="17">Ctrl</option>
 							</select>
 						</p>
+					</div>
+					<div id="optionTab4">
+						<h2>Advanced options</h2>
+						<p><input type="checkbox" id="chkAddToHistory"> <label for="chkAddToHistory">Add viewed pictures to the browser's history</label></p>
 					</div>
 				</div>
 				<div id="buttons">

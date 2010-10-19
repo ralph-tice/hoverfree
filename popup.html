@@ -7,7 +7,7 @@
 			#footer { font-size: 8pt; text-align: right }
 			#siteDomain { color: #0e774a }
 		</style>
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+		<script src="jquery.min.js"></script>
 		<script src="common.js"></script>
 		<script type="text/javascript">
 			var options;
@@ -16,6 +16,7 @@
 			function init() {				
 				// Load options
 				options = loadOptions();
+				$('#Dis-enable').text(options.whiteListMode ? 'Enable' : 'Disable');
 
 				chrome.tabs.getSelected(null, function(tab) {				
 					siteDomain = tab.url.split('/', 3)[2];
@@ -58,8 +59,6 @@
 					if (excludedSiteIndex > -1)
 						options.excludedSites.splice(excludedSiteIndex, 1);
 				}
-				
-				console.log(options.excludedSites);
 
 				saveOptions();
 			}
@@ -73,7 +72,7 @@
 	<body onload="init()">
 		<h2>Hover Zoom</h2>
 		<table><tr><td><input type="checkbox" id="chkExtensionDisabled" onclick="chkExtensionDisabledOnClick()"></td><td><label for="chkExtensionDisabled">Disable for all sites</label></td></tr>
-		<tr><td><input type="checkbox" id="chkExcludeSite" onclick="chkExcludeSiteOnClick()"></td><td><label for="chkExcludeSite">Disable for <span id="siteDomain"></span></label></td></tr></table>
+		<tr><td><input type="checkbox" id="chkExcludeSite" onclick="chkExcludeSiteOnClick()"></td><td><label for="chkExcludeSite"><span id="Dis-enable">Disable</span> for <span id="siteDomain"></span></label></td></tr></table>
 		<p id="footer"><a href="options.html" target="_blank">More options</a></p>
 	</body>
 </html>

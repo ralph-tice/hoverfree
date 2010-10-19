@@ -39,6 +39,7 @@
 			       "plugins/flickr_a.js",
 				   "plugins/tumblr_a.js",
 				   "plugins/picasa_a.js",
+				   "plugins/skyrock_a.js",
 				   "plugins/subimg.net_a.js"],
 			"matches": ["<all_urls>"],
 			"run_at": "document_start",
@@ -680,7 +681,11 @@
         },
         {
             "js": ["plugins/viedemerde.js"],
-			"matches": ["*://*.viedemerde.fr/*"],
+			"matches": ["*://*.viedemerde.fr/*",
+						"*://*.fmylife.com/*",
+						"*://*.vitadimerda.it/*",
+						"*://*.vayamierdadevida.com/*",
+						"*://*.fanformittliv.com/*"],
 			"run_at": "document_start"
         },
         {
@@ -708,6 +713,11 @@
 		{
 			"js": ["plugins/nintendolife.js"],
 			"matches": ["*://*.nintendolife.com/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/skyrock.js"],
+			"matches": ["*://*.skyrock.com/*"],
 			"run_at": "document_start"
 		}
 	]

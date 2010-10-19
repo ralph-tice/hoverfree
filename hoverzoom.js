@@ -422,17 +422,27 @@ var hoverZoom = {
 				return webSiteExcluded;
 			}
 			
-			var siteHost = document.location.href.split('/', 3)[2];
+			var excluded = !options.whiteListMode;
+			var siteAddress = location.href.substr(location.protocol.length+2);
+			if (siteAddress.substr(0, 4) == 'www.') {
+				siteAddress = siteAddress.substr(4);
+			}
 			for (var i = 0; i < options.excludedSites.length; i++) {
-				if (options.excludedSites[i] && options.excludedSites[i].length <= siteHost.length) {
-					if (siteHost == options.excludedSites[i] || siteHost.substr(siteHost.length - options.excludedSites[i].length - 1) == '.' + options.excludedSites[i]) {
-						webSiteExcluded = true;
-						return true;
+				var es = options.excludedSites[i];
+				if (es.substr(0, 4) == 'www.') {
+					es = es.substr(4);
+				}
+				if (es && es.length <= siteAddress.length) {
+					if (siteAddress.substr(0, es.length) == es) {
+						webSiteExcluded = excluded;
+						//console.log('CS isExcludedSite: ' + excluded);
+						return excluded;
 					}
 				}
 			}
-			webSiteExcluded = false;
-			return false;
+			webSiteExcluded = !excluded;
+			//console.log('CS isExcludedSite: ' + excluded);
+			return !excluded;
 		}
 		
 		function loadOptions() {

@@ -18,6 +18,7 @@ function loadOptions() {
 	options.displayDelay = options.hasOwnProperty('displayDelay') ? options.displayDelay : 100;
 	options.fadeDuration = options.hasOwnProperty('fadeDuration') ? options.fadeDuration : 200;
 	options.excludedSites = options.hasOwnProperty('excludedSites') ? options.excludedSites : [];
+	options.whiteListMode = options.hasOwnProperty('whiteListMode') ? options.whiteListMode : false;
 	
 	// Action keys
 	options.actionKey = options.hasOwnProperty('actionKey') ? options.actionKey : 0;
@@ -49,15 +50,25 @@ function sendOptions(options) {
 
 // Return true is the url is part of an excluded site
 function isExcludedSite(url) {
-	var siteHost = url.split('/', 3)[2];
+	var excluded = !options.whiteListMode;
+	var siteAddress = url.substr(url.indexOf('://') + 3);
+	if (siteAddress.substr(0, 4) == 'www.') {
+		siteAddress = siteAddress.substr(4);
+	}
 	for (var i = 0; i < options.excludedSites.length; i++) {
-		if (options.excludedSites[i] && options.excludedSites[i].length <= siteHost.length) {
-			if (siteHost == options.excludedSites[i] || siteHost.substr(siteHost.length - options.excludedSites[i].length - 1) == '.' + options.excludedSites[i]) {
-				return true;
+		var es = options.excludedSites[i];
+		if (es.substr(0, 4) == 'www.') {
+			es = es.substr(4);
+		}
+		if (es && es.length <= siteAddress.length) {
+			if (siteAddress.substr(0, es.length) == es) {
+				//console.log('BG isExcludedSite: ' + excluded);
+				return excluded;
 			}
 		}
 	}
-	return false;
+	//console.log('BG isExcludedSite: ' + excluded);
+	return !excluded;
 }
 
 // Return true if the version of Chrome is superior or equal to minVersion
