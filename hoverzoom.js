@@ -23,7 +23,8 @@ var hoverZoom = {
 			fullZoomKeyDown = false,
 			pageActionShown = false,
 			lastImgWidth = 0,
-			skipFadeIn = false;
+			skipFadeIn = false,
+			titledElements = null;
 		
 		// Calculate optimal image position and size
 		function posImg(position) {
@@ -145,6 +146,25 @@ var hoverZoom = {
 			}
 		}
 		
+		// Remove the 'title' attribute from all elements to prevent a tooltip from appearing above the zoomed image.
+		// Titles are saved so they can be restored later.
+		function removeTitles() {
+			if (titledElements) { return; }
+			titledElements = $('[title]');
+			titledElements.each(function() {
+				$(this).data('hoverZoomTitle', this.getAttribute('title')).removeAttr('title');
+			});
+		}
+		
+		// Restore the 'title' attributes
+		function restoreTitles() {
+			if (!titledElements) { return; }
+			titledElements.each(function() {
+				this.setAttribute('title', $(this).data('hoverZoomTitle'));
+			});
+			titledElements = null;
+		}
+		
 		function hideHoverZoomImg(now) {
 			if (!now && !imgFullSize || !hoverZoomImg || fullZoomKeyDown) {
 				return;
@@ -155,6 +175,7 @@ var hoverZoom = {
 				hoverZoomCaption = null;
 				imgLoading = null;
 				hoverZoomImg.empty();
+				restoreTitles();
 			});
 		}
 
@@ -188,11 +209,14 @@ var hoverZoom = {
 					// Happens when the mouse goes from an image to another without hovering the page background
 					if (links.data('hoverZoomSrc')[hoverZoomSrcIndex] != imgSrc) {
 						hideHoverZoomImg();
-					}				
+					}
+					
+					removeTitles();
 					
 					// Is the image source has not been set yet
 					if (!imgFullSize) {
 						currentLink = links;
+						currentLink.mousedown(restoreTitles);
 						if (!options.actionKey || actionKeyDown) {
 							imgSrc = links.data('hoverZoomSrc')[hoverZoomSrcIndex];
 							imgHost = getHostFromUrl(imgSrc);
@@ -210,7 +234,8 @@ var hoverZoom = {
 					return;
 				}			
 			} else if (currentLink) {
-				cancelImageLoading();
+					cancelImageLoading();
+				}
 			}
 		}
 		
@@ -221,7 +246,7 @@ var hoverZoom = {
 				// Full size image container
 				hoverZoomImg = hoverZoomImg || $('<div id="hoverZoomImg"></div>').appendTo(document.body);			
 				hoverZoomImg.empty();
-				hoverZoomImg.stop(true, true).fadeIn(options.fadeDuration);
+				hoverZoomImg.stop(true, true).fadeTo(options.fadeDuration, options.picturesOpacity);
 				
 				// Loading image container
 				imgLoading = imgLoading || $('<img class="loading" src="' + chrome.extension.getURL('images/loading.gif') + '"/>');
@@ -251,7 +276,7 @@ var hoverZoom = {
 							hoverZoomCaption = $('<div/>', {id: 'hoverZoomCaption', text: currentLink.data('hoverZoomCaption')}).appendTo(hoverZoomImg);
 						}
 						if (!skipFadeIn) {
-							hoverZoomImg.hide().fadeIn(options.fadeDuration);
+							hoverZoomImg.hide().fadeTo(options.fadeDuration, options.picturesOpacity);
 						}
 						setTimeout(posImg, 10);
 						if (options.addToHistory && !chrome.extension.inIncognitoTab) {
@@ -309,7 +334,7 @@ var hoverZoom = {
 			}
 			if (titledElement && titledElement.length) {
 				link.data('hoverZoomCaption', titledElement.attr('title'));
-				titledElement.parents('[title]').andSelf().add('[title]').removeAttr('title');
+				//titledElement.parents('[title]').andSelf().add('[title]').removeAttr('title');
 			} else {
 				var alt = link.attr('alt') || link.find('[alt]').attr('alt');
 				if (alt && alt.length > 6 && !/^\d+$/.test(alt)) {

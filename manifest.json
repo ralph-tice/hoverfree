@@ -8,6 +8,7 @@
 		"48": "images/icon48.png",
 		"128": "images/icon128.png"
 	},
+	"minimum_chrome_version": "6",
 	"background_page": "background.html",
 	"options_page": "options.html",
 	"page_action": {

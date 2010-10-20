@@ -15,7 +15,6 @@ hoverZoomPlugins.push( {
 			var tooltip = link.find('[title], [alt]').add(link.parent('[title], [alt]')).add(link);
 			var tooltipText = tooltip.attr('title') || tooltip.attr('alt');
 			if (tooltipText) {
-				tooltip.removeAttr('title');
 				return tooltipText;
 			}
 			tooltip = link.find('.uiTooltipText:eq(0)');

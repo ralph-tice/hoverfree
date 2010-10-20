@@ -10,19 +10,20 @@ function loadOptions() {
 	}
 	options = JSON.parse(localStorage.options);
 	
-	options.extensionEnabled = options.hasOwnProperty('extensionEnabled') ? options.extensionEnabled : true;
+	options.extensionEnabled = 	options.hasOwnProperty('extensionEnabled') ? options.extensionEnabled : true;
 	options.pageActionEnabled = options.hasOwnProperty('pageActionEnabled') ? options.pageActionEnabled : true;
-	options.showCaptions = options.hasOwnProperty('showCaptions') ? options.showCaptions : true;
-	options.showHighRes = options.hasOwnProperty('showHighRes') ? options.showHighRes : false;
-	options.addToHistory = options.hasOwnProperty('addToHistory') ? options.addToHistory : false;
-	options.displayDelay = options.hasOwnProperty('displayDelay') ? options.displayDelay : 100;
-	options.fadeDuration = options.hasOwnProperty('fadeDuration') ? options.fadeDuration : 200;
-	options.excludedSites = options.hasOwnProperty('excludedSites') ? options.excludedSites : [];
-	options.whiteListMode = options.hasOwnProperty('whiteListMode') ? options.whiteListMode : false;
+	options.showCaptions = 		options.hasOwnProperty('showCaptions') ? options.showCaptions : true;
+	options.showHighRes = 		options.hasOwnProperty('showHighRes') ? options.showHighRes : false;
+	options.addToHistory = 		options.hasOwnProperty('addToHistory') ? options.addToHistory : false;
+	options.displayDelay = 		options.hasOwnProperty('displayDelay') ? options.displayDelay : 100;
+	options.fadeDuration = 		options.hasOwnProperty('fadeDuration') ? options.fadeDuration : 200;
+	options.excludedSites = 	options.hasOwnProperty('excludedSites') ? options.excludedSites : [];
+	options.whiteListMode = 	options.hasOwnProperty('whiteListMode') ? options.whiteListMode : false;
+	options.picturesOpacity = 	options.hasOwnProperty('picturesOpacity') ? options.picturesOpacity : 1;
 	
 	// Action keys
-	options.actionKey = options.hasOwnProperty('actionKey') ? options.actionKey : 0;
-	options.fullZoomKey = options.hasOwnProperty('fullZoomKey') ? options.fullZoomKey : 0;
+	options.actionKey = 		options.hasOwnProperty('actionKey') ? options.actionKey : 0;
+	options.fullZoomKey = 		options.hasOwnProperty('fullZoomKey') ? options.fullZoomKey : 0;
 	
 	localStorage.options = JSON.stringify(options);
 	
