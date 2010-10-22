@@ -31,17 +31,31 @@ hoverZoomPlugins.push( {
 		});		
 		callback($(res));
 		
-		var rgHl = $('#rg_hl')
 		function prepareRgHl() {
-			rgHl.addClass('hoverZoomLink').data('hoverZoomSrc', [getSrc(rgHl)]);
-			$(document).mousemove();
+			var _this = $(this);
+			if (_this.data('hoverZoomSrc')) { return; }
+			var src = getSrc(_this);
+			if (src) {
+				_this.addClass('hoverZoomLink').data('hoverZoomSrc', [src]);
+			}
 		}		
 		
-		var toto;
-		rgHl.mousemove(prepareRgHl);
-		$('.rg_l').mousemove(function() {
-			clearTimeout(toto);
-			toto = setTimeout(prepareRgHl, 1000);
-		});
+		$('#rg_hl').mousemove(prepareRgHl);
+		
+		/*$('.rg_l').mousemove(prepareRgHl);
+		$(window).bind('DOMNodeInserted', function(event) {
+			var el = event.srcElement
+			if (el && el.getAttribute && el.getAttribute('id') == 'rg_h') {
+				setTimeout(function() {
+					prepareRgHl();
+					console.log('appel de mousemove');
+					$(document).trigger('mousemove');
+					//$(document).mousemove();
+					//var evt = document.createEvent("MouseEvents");
+					//evt.initEvent("mousemove", true, true);
+					//document.getElementById('rg_hl').dispatchEvent(evt);
+				}, 1000);
+			}
+		});*/
 	}
 });

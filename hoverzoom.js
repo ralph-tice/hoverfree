@@ -150,7 +150,7 @@ var hoverZoom = {
 		// Titles are saved so they can be restored later.
 		function removeTitles() {
 			if (titledElements) { return; }
-			titledElements = $('[title]');
+			titledElements = $('[title]').not('.lightbox, [rel^=lightbox]');
 			titledElements.each(function() {
 				$(this).data('hoverZoomTitle', this.getAttribute('title')).removeAttr('title');
 			});
@@ -183,7 +183,7 @@ var hoverZoom = {
 			if (!options.extensionEnabled || isExcludedSite()) {			
 				return;
 			}
-			
+
 			// Test if the action key was pressed without moving the mouse
 			var staticActionKeyPressed = ((options.actionKey || options.fullZoomKey) && event.pageY == undefined);
 
@@ -216,7 +216,6 @@ var hoverZoom = {
 					// Is the image source has not been set yet
 					if (!imgFullSize) {
 						currentLink = links;
-						currentLink.mousedown(restoreTitles);
 						if (!options.actionKey || actionKeyDown) {
 							imgSrc = links.data('hoverZoomSrc')[hoverZoomSrcIndex];
 							imgHost = getHostFromUrl(imgSrc);
@@ -234,8 +233,7 @@ var hoverZoom = {
 					return;
 				}			
 			} else if (currentLink) {
-					cancelImageLoading();
-				}
+				cancelImageLoading();
 			}
 		}
 		
@@ -334,7 +332,6 @@ var hoverZoom = {
 			}
 			if (titledElement && titledElement.length) {
 				link.data('hoverZoomCaption', titledElement.attr('title'));
-				//titledElement.parents('[title]').andSelf().add('[title]').removeAttr('title');
 			} else {
 				var alt = link.attr('alt') || link.find('[alt]').attr('alt');
 				if (alt && alt.length > 6 && !/^\d+$/.test(alt)) {
@@ -460,13 +457,11 @@ var hoverZoom = {
 				if (es && es.length <= siteAddress.length) {
 					if (siteAddress.substr(0, es.length) == es) {
 						webSiteExcluded = excluded;
-						//console.log('CS isExcludedSite: ' + excluded);
 						return excluded;
 					}
 				}
 			}
 			webSiteExcluded = !excluded;
-			//console.log('CS isExcludedSite: ' + excluded);
 			return !excluded;
 		}
 		
@@ -485,18 +480,24 @@ var hoverZoom = {
 		}
 		
 		function windowOnDOMNodeInserted(event) {
+			//console.log(event.srcElement);
 			if (event.srcElement) {
 				var srcElement = $(event.srcElement);
 				if (srcElement.parents('#hoverZoomImg').length) { return; }
 				if (event.srcElement.nodeName == 'A' || event.srcElement.nodeName == 'IMG' || srcElement.find('a, img').length || srcElement.parents('a, img').length) {
 					prepareImgLinksAsync();
-				} else if (event.srcElement.nodeName == 'EMBED' || event.srcElement.nodeName == 'OBJECT')
+				} else if (event.srcElement.nodeName == 'EMBED' || event.srcElement.nodeName == 'OBJECT') {
 					fixFlash();
 				}
+			}
 		}
 		
 		function bindEvents() {
-			$(document).mousemove(documentMouseMove).mouseleave(cancelImageLoading);
+			$(document).mousemove(documentMouseMove).mouseleave(cancelImageLoading).mousedown(restoreTitles);
+
+			wnd.bind('DOMNodeInserted', windowOnDOMNodeInserted);
+			wnd.load(prepareImgLinksAsync);
+			wnd.scroll(hideHoverZoomImg);
 			
 			if (options.actionKey || options.fullZoomKey) {
 				$(document).keydown(function(event) {
@@ -527,11 +528,7 @@ var hoverZoom = {
 						$(this).mousemove();
 					}
 				});
-			}
-			
-			wnd.bind('DOMNodeInserted', windowOnDOMNodeInserted);
-			wnd.load(prepareImgLinksAsync);
-			wnd.scroll(hideHoverZoomImg);
+			}		
 		}
 		
 		function fixFlash() {
