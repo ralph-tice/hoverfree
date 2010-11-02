@@ -4,7 +4,7 @@
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	name: 'Facebook',
-	version: '0.6',
+	version: '0.7',
 	prepareImgLinks: function(callback) {
 	
 		function srcReplace(src) {
@@ -86,14 +86,24 @@ hoverZoomPlugins.push( {
 			}
 			
 			srcs.push(src);
-			img.data('hoverZoomSrc', srcs);
 			
-			var tooltip = getTooltip(img.parents('a:eq(0)'));
+			var tooltip;
+			
+			var uiFacepileItem = img.parents('.uiFacepileItem');
+			if (uiFacepileItem.length) {
+				img = uiFacepileItem.find('a');
+				tooltip = getTooltip(img.parents('li:eq(0)'));
+			} else {
+				tooltip = getTooltip(img.parents('a:eq(0)'));
+			}
+			
 			if (tooltip) {
 				img.data('hoverZoomCaption', tooltip);
 			}
 			
+			img.data('hoverZoomSrc', srcs);
 			res.push(img);
+			
 		});
 		
 		// Photo albums		
@@ -125,5 +135,70 @@ hoverZoomPlugins.push( {
 		});
 		
 		callback($(res));
+		
+		/*function loadHiProfilePics() {
+			//console.log('loadHiProfilePics');
+			if (!FB) { return; }
+			FB.init({
+				appId  : '154110331291837',
+				status : true, // check login status
+				cookie : true, // enable cookies to allow the server to access the session
+				xfbml  : true  // parse XFBML
+			});
+			// We try to find a bigger version of the profile picture
+			$('.hoverZoomLink').each(function() {
+				var _this = $(this),
+					srcs = _this.data('hoverZoomSrc');
+				if (srcs[0].indexOf('/profile.') == -1) { return; }
+				var aUrl = srcs[0].split('/');
+				var id = aUrl[aUrl.length-1];
+				var aId = id.split('_');
+				if (aId.length < 2) { return; }
+				id = aId[1];
+				//console.log('id:'+id);
+				FB.api(id + '/albums', function(albums) {
+					for (var i=0; i<albums.data.length; i++) {
+						var album = albums.data[i];
+						console.log(album);
+						if (album.type == 'profile') {
+							window.FB.api(album.id + '/photos', function(photos) {
+								for (var j=0; j<photos.data.length; j++) {
+									var photo = photos.data[j];
+									console.log(photo);
+									if (photo.position == 1) {
+										if (photo.source) {
+											srcs.splice(0, 0, photo.source);
+											_this.data('hoverZoomSrc', srcs);
+										}
+										return;
+									}
+								}
+							});
+							return;
+						}
+					}
+				});
+			});
+		}
+		
+		//console.log(typeof(FB));
+		if (typeof(FB) != 'undefined') {
+			loadHiProfilePics();
+		} else {
+			var fbRoot = $('#fb-root');
+			if (!fbRoot.length) {
+				fbRoot = $('<div id="fb-root"></div>').appendTo(document.body);
+			}
+			var sdkUrl = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+			//console.log(sdkUrl);
+			chrome.extension.sendRequest(
+				{action: 'ajaxGet', url: sdkUrl},
+				function(data) {
+					//console.log(data);
+					eval(data);
+					loadHiProfilePics();
+				}
+			);
+		}*/
 	}
 });
