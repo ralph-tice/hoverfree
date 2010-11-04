@@ -3,14 +3,14 @@
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
-	name: 'Picasa Web Albums (a)',
+	name: 'Le bon coin',
 	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'a[href*=.ggpht.com], a img[src*=.ggpht.com]',
-			/\/s\d+(-c)?\//,
-			options.showHighRes ? '/' : '/s800/'
+			'img[src*=thumbs]',
+			'thumbs',
+			'images'
 		);
 		callback($(res));	
 	}

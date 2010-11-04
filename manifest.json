@@ -726,9 +726,14 @@
 			"matches": ["*://*.tagged.com/*"],
 			"run_at": "document_start"
 		},
-		{
+		/*{
 			"js": ["plugins/zing.vn.js"],
 			"matches": ["*://*.zing.vn/*"],
+			"run_at": "document_start"
+		},*/
+		{
+			"js": ["plugins/leboncoin.fr.js"],
+			"matches": ["*://*.leboncoin.fr/*"],
 			"run_at": "document_start"
 		}
 	]

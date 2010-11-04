@@ -17,7 +17,7 @@ hoverZoomPlugins.push( {
 	
 		// First we gather all the products on the page and we store their eBay ID and 
 		// the link that will receive the 'hoverZoomSrc' data.
-		$('a.l-tn, table.l-tn a, td.gv-gvtd a, a.pic, table.pic a, a.gpvi').each(function() {
+		$('a.l-tn, table.l-tn a, td.gv-gvtd a, a.pic, table.pic a, a.gpvi, a.img').each(function() {
 			var item = {link: this, id: ''};
 			var parent = $(this).parents('table:eq(0)');
 			if (parent.hasClass('l-tn') || parent.hasClass('gv-gvimg') || parent.hasClass('pic')) {

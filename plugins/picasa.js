@@ -14,8 +14,8 @@ hoverZoomPlugins.push({
 		function prepareImgLink() {
 			var _this = $(this);
 			var src = _this.find('img')[0].src;
-			src = src.replace(/\/s\d+(-c?|\/)/, options.showHighRes ? '/' : '/s800/');
-			_this.data('hoverZoomSrc', [src]);
+			src = src.replace(/\/s\d+(-c)?\//, options.showHighRes ? '/' : '/s800/');
+			_this.data('hoverZoomSrc', [src]).addClass('hoverZoomLink');
 			
 			var tooltip = _this.parent().find('.goog-icon-list-icon-meta:eq(0)');
 			if (tooltip.length) {
@@ -24,7 +24,7 @@ hoverZoomPlugins.push({
 		}
 	
 		var links = $("a.goog-icon-list-icon-link,div.gphoto-grid-cell a");
-		links.mouseenter(prepareImgLink);
+		links.live('mouseover', prepareImgLink);
 		callback(links);
 	}
 });

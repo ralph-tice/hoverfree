@@ -63,12 +63,10 @@ function isExcludedSite(url) {
 		}
 		if (es && es.length <= siteAddress.length) {
 			if (siteAddress.substr(0, es.length) == es) {
-				//console.log('BG isExcludedSite: ' + excluded);
 				return excluded;
 			}
 		}
 	}
-	//console.log('BG isExcludedSite: ' + excluded);
 	return !excluded;
 }
 

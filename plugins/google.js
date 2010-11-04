@@ -40,7 +40,7 @@ hoverZoomPlugins.push( {
 			}
 		}		
 		
-		$('#rg_hl').mousemove(prepareRgHl);
+		$('#rg_hta').mousemove(prepareRgHl);
 		
 		/*$('.rg_l').mousemove(prepareRgHl);
 		$(window).bind('DOMNodeInserted', function(event) {
