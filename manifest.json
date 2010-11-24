@@ -1,6 +1,6 @@
 {
     "name": "Hover Zoom",
-    "version": "1.7",
+    "version": "1.8",
     "description": "Move the mouse cursor over a link to an image to view it in full size. Works on many sites (Facebook, Flickr, Twitter, Google, etc).",
 	"icons": {
 		"16": "images/icon16.png",
@@ -41,7 +41,7 @@
 				   "plugins/tumblr_a.js",
 				   "plugins/picasa_a.js",
 				   "plugins/skyrock_a.js",
-				   "plugins/subimg.net_a.js"],
+				   "plugins/twitpic_a.js"],
 			"matches": ["<all_urls>"],
 			"run_at": "document_start",
 			"all_frames": true
@@ -491,11 +491,6 @@
 			"run_at": "document_start"
         },
         {
-            "js": ["plugins/twitpic.js"],
-			"matches": ["*://*.twitpic.com/*"],
-			"run_at": "document_start"
-        },
-        {
             "js": ["plugins/gamekult.js"],
 			"matches": ["*://*.gamekult.com/*"],
 			"run_at": "document_start"
@@ -734,6 +729,28 @@
 		{
 			"js": ["plugins/leboncoin.fr.js"],
 			"matches": ["*://*.leboncoin.fr/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/linkedin.js"],
+			"matches": ["*://*.linkedin.com/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/subimg.net.js"],
+			"matches": ["*://*.subimg.net/*",
+						"*://*.reddit.com/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/phapit.js"],
+			"matches": ["*://*.phapit.com/*",
+						"*://*.reddit.com/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/pixiv.js"],
+			"matches": ["*://*.pixiv.net/*"],
 			"run_at": "document_start"
 		}
 	]

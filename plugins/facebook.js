@@ -8,7 +8,7 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 	
 		function srcReplace(src) {
-			return src.replace(/photos-\w/, 'sphotos').replace(/_[sqta]\./, '_n.').replace(/\/[sqta](\d)/, '/n$1');
+			return src.replace(/_[sqta]\./, '_n.').replace(/\/[sqta](\d)/, '/n$1');
 		}
 		
 		function getTooltip(link) {
@@ -86,7 +86,7 @@ hoverZoomPlugins.push( {
 			}
 			
 			// Picasa hosted images
-			if (src.indexOf('ggpht.com') > -1) {
+			if (src.indexOf('ggpht.com') > -1 || src.indexOf('blogspot.com') > -1) {
 				srcs.push(src.replace(/\/s\d+(-c)?\//, options.showHighRes ? '/' : '/s800/'));				
 			}
 			
@@ -117,7 +117,7 @@ hoverZoomPlugins.push( {
 			var i = _this.find('i:eq(0)');
 			var src = i.attr('style');
 			if (src) {
-				src = src.substring(src.indexOf('http:'), src.lastIndexOf(')'));
+				src = src.substring(src.indexOf('http'), src.lastIndexOf(')'));
 				src = srcReplace(src);
 				_this.data('hoverZoomSrc', [src]);
 				res.push(_this);
@@ -132,7 +132,7 @@ hoverZoomPlugins.push( {
 			var div = _this.parent();
 			var src = div.attr('style');
 			if (src) {
-				src = src.substring(src.indexOf('http:'), src.lastIndexOf(')'));
+				src = src.substring(src.indexOf('http'), src.lastIndexOf(')'));
 				src = srcReplace(src);
 				_this.data('hoverZoomSrc', [src]);
 				res.push(_this);

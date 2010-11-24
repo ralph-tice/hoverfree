@@ -3,17 +3,18 @@
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
-	name: 'Picasa Web Albums (a)',
+	name: 'Pixiv',
 	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [],
-			filter = 'a[href*=.ggpht.com], a img[src*=.ggpht.com], a img[src*=.blogspot.com]',
-			search = /\/s\d+(-[ch])?\//;
+			filter = 'a img[src*=pixiv.net/img/]',
+			search = [/_(s|\d+(ms)?)\./, '/mobile/'];
 			
-		hoverZoom.urlReplace(res, filter, search, '/s800/');		
+		hoverZoom.urlReplace(res, filter, search, ['_m.', '/']);		
 		if (options.showHighRes) {
-			hoverZoom.urlReplace(res, filter, search, '/');
+			hoverZoom.urlReplace(res, filter, search, ['.', '/']);
 		}
+		hoverZoom.urlReplace(res, 'a img[src*=pixiv.net/profile/]', search, ['.', '/']);
 		
 		callback($(res));	
 	}

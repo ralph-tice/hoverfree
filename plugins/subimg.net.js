@@ -3,7 +3,7 @@
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
-	name: 'Subimg.net (a)',
+	name: 'Subimg.net',
 	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [],
@@ -13,7 +13,7 @@ hoverZoomPlugins.push( {
 		}
 		hoverZoom.urlReplace(res, 
 			filter,
-			/([^\/]+)\?id=(.*)/,
+			/([^\/]+)\?id=([^&]*).*/,
 			'$2.$1'
 		);
 		if (res.length) { callback($(res));	}

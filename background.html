@@ -3,14 +3,14 @@
 	<body>
 		<script src="common.js"></script>
 		<script type="text/javascript">
-			var extensionVersion = '1.7';
+			var extensionVersion = '1.8';
 			var options;
 			var _gaq;
 
 			// Performs an ajax GET request
 			function ajaxGet(url, callback) {
 				var xhr = new XMLHttpRequest();
-				xhr.onreadystatechange = function(data) {
+				xhr.onreadystatechange = function() {
 					if (xhr.readyState == 4) {
 						if (xhr.status == 200) {
 							callback(xhr.responseText);

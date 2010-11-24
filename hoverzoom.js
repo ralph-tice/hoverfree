@@ -9,7 +9,9 @@ var hoverZoom = {
 
 	loadHoverZoom: function() {
 		var wnd = $(window),
+			body = $(document.body),
 			hoverZoomImg = null,
+			hoverZoomResizedImg = null,
 			hoverZoomCaption = null,
 			imgFullSize = null,
 			imgLoading = null,
@@ -25,7 +27,7 @@ var hoverZoom = {
 			lastImgWidth = 0,
 			skipFadeIn = false,
 			titledElements = null;
-		
+
 		// Calculate optimal image position and size
 		function posImg(position) {
 			if (!imgFullSize) {
@@ -39,6 +41,7 @@ var hoverZoom = {
 				wndHeight = wnd.height(),
 				wndScrollLeft = wnd.scrollLeft(),
 				wndScrollTop = wnd.scrollTop(),
+				bodyWidth = body.width(),
 				displayOnRight = (position.left - wndScrollLeft < wndWidth / 2);
 			
 			function posCaption() {
@@ -100,8 +103,7 @@ var hoverZoom = {
 					if (naturalWidth + padding > position.left) {
 						imgFullSize.width(position.left - padding - wndScrollLeft);
 					}			
-				}
-				
+				}				
 				
 				// Height adjustment
 				if (hoverZoomImg.height() > wndHeight) {
@@ -127,6 +129,9 @@ var hoverZoom = {
 				}
 				
 			}
+
+			// This fixes positioning when the body's width is not 100%
+			position.left -= (wndWidth - bodyWidth) / 2;
 			
 			position = {top: Math.round(position.top), left: Math.round(position.left)};
 			hoverZoomImg.css(position);
@@ -218,7 +223,6 @@ var hoverZoom = {
 						currentLink = links;
 						if (!options.actionKey || actionKeyDown) {
 							imgSrc = links.data('hoverZoomSrc')[hoverZoomSrcIndex];
-							imgHost = getHostFromUrl(imgSrc);
 							clearTimeout(loadFullSizeImageTimeout);
 							
 							// If the action key has been pressed over an image, no delay is applied
@@ -250,7 +254,8 @@ var hoverZoom = {
 				imgLoading = imgLoading || $('<img class="loading" src="' + chrome.extension.getURL('images/loading.gif') + '"/>');
 				imgLoading.appendTo(hoverZoomImg);
 				
-				imgFullSize = $('<img/>').appendTo(hoverZoomImg).load(imgFullSizeOnLoad).error(imgFullSizeOnError).attr('src', imgSrc);
+				imgFullSize = $('<img />').appendTo(hoverZoomImg).load(imgFullSizeOnLoad).error(imgFullSizeOnError).attr('src', imgSrc);
+				imgHost = getHostFromUrl(imgSrc);
 				
 				skipFadeIn = false;
 				var showWhileLoading = imgSrc.substr(-4).toLowerCase() == '.gif';
@@ -272,6 +277,9 @@ var hoverZoom = {
 						imgFullSize.removeClass('progress').appendTo(hoverZoomImg).mousemove(imgFullSizeOnMouseMove);
 						if (options.showCaptions && currentLink && currentLink.data('hoverZoomCaption')) {
 							hoverZoomCaption = $('<div/>', {id: 'hoverZoomCaption', text: currentLink.data('hoverZoomCaption')}).appendTo(hoverZoomImg);
+							/*EXIF.getData(imgFullSize[0], function() {
+								$('<div>' + EXIF.getTag(imgFullSize[0], "Make") + '</div>').appendTo(hoverZoomCaption);								
+							});*/
 						}
 						if (!skipFadeIn) {
 							hoverZoomImg.hide().fadeTo(options.fadeDuration, options.picturesOpacity);
@@ -404,6 +412,31 @@ var hoverZoom = {
 			for (var i = 0; i < hoverZoomPlugins.length; i++) {
 				hoverZoomPlugins[i].prepareImgLinks(imgLinksPrepared);
 			}
+			//prepareResizedImages();
+		}
+		
+		function prepareResizedImages() {
+			$('img').filter(function() {
+				return this.getAttribute('width') || this.getAttribute('height') || 
+					this.style && (this.style.width || this.style.height || this.style.maxWidth || this.style.maxHeight);
+			}).mouseenter(function() {
+				var img = $(this),
+					widthAttr = parseInt(this.getAttribute('width') || this.style.width || this.style.maxWidth),
+					heightAttr = parseInt(this.getAttribute('height') || this.style.height || this.style.maxHeight);
+				if (!img.hasClass('hoverZoomLink')) {
+					if (hoverZoomResizedImg) { hoverZoomResizedImg.remove(); }
+					hoverZoomResizedImg = $('<img id="hoverZoomResizedImg">').appendTo(document.body);
+					hoverZoomResizedImg.load(function() {
+							//console.log(this.complete);
+							//console.log('Original: ' + hoverZoomResizedImg.width() + 'x' + hoverZoomResizedImg.height() + ' - Resized: ' + widthAttr + 'x' + heightAttr);
+						if (hoverZoomResizedImg.height() > heightAttr + 10 || hoverZoomResizedImg.width() > widthAttr + 10) {
+							img.data('hoverZoomSrc', [img.attr('src')]).addClass('hoverZoomLink');
+							hoverZoomResizedImg.attr('src', '');
+						}
+					}).attr('src', this.src);
+				}
+				$(document).mousemove();
+			});
 		}
 		
 		var prepareImgLinksDelay = 500, prepareImgLinksTimeout;
@@ -574,6 +607,7 @@ var hoverZoom = {
 			prepareImgLinks();		
 			bindEvents();
 			fixFlash();
+			//console.log('document.body=' + $(document.body).width() + ' - window=' + $(window).width());
 		}
 		
 		chrome.extension.onRequest.addListener(onRequest);		

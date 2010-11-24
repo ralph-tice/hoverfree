@@ -17,7 +17,10 @@ hoverZoomPlugins.push( {
 			if (aHref.length < minSplitLength) { return; }
 			var excl = ['delete', 'forum', 'removalrequest', 'contact', 'upgrade', 'tools', 'stats', 'logout', 'signin', 'register', 'blog'];
 			if (excl.indexOf(aHref[minSplitLength - 1]) > -1) { return; }
-			var hash = aHref.pop().trim();
+			var hash;
+			while (!hash) {
+				hash = aHref.pop().trim();
+			}
 			if (hash.length < 5) { return; }
 			var i = hash.indexOf('?');
 			if (i > -1) {
@@ -29,11 +32,19 @@ hoverZoomPlugins.push( {
 			}
 			excl.push('gallery');
 			if (excl.indexOf(hash) > -1) { return; }
+			i = hash.indexOf('/');
+			if (i > -1) {
+				hash = hash.substr(0, i);
+			}
+			var srcs;
 			if (hash.indexOf('.') == -1) {
 				var url = 'http://i.imgur.com/' + hash;
-				link.data('hoverZoomSrc', [url + '.jpg', url + '.png', url + '.gif']);
-				res.push(link);
+				srcs = [url + '.jpg', url + '.png', url + '.gif'];
+			} else {
+				srcs = ['http://i.imgur.com/' + hash];
 			}
+			link.data('hoverZoomSrc', srcs);
+			res.push(link);
 		}
 	
 		// Every sites

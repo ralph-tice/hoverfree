@@ -31,16 +31,18 @@ hoverZoomPlugins.push( {
 		});		
 		callback($(res));
 		
-		function prepareRgHl() {
+		
+		
+		$('#rg_hta').mousemove(function() {
 			var _this = $(this);
 			if (_this.data('hoverZoomSrc')) { return; }
 			var src = getSrc(_this);
 			if (src) {
 				_this.addClass('hoverZoomLink').data('hoverZoomSrc', [src]);
 			}
-		}		
-		
-		$('#rg_hta').mousemove(prepareRgHl);
+		}).mouseleave(function() {
+			$(this).removeData('hoverZoomSrc');
+		});
 		
 		/*$('.rg_l').mousemove(prepareRgHl);
 		$(window).bind('DOMNodeInserted', function(event) {
