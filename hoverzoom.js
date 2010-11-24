@@ -415,7 +415,8 @@ var hoverZoom = {
 			//prepareResizedImages();
 		}
 		
-		function prepareResizedImages() {
+		// Not finished
+		/*function prepareResizedImages() {
 			$('img').filter(function() {
 				return this.getAttribute('width') || this.getAttribute('height') || 
 					this.style && (this.style.width || this.style.height || this.style.maxWidth || this.style.maxHeight);
@@ -437,7 +438,7 @@ var hoverZoom = {
 				}
 				$(document).mousemove();
 			});
-		}
+		}*/
 		
 		var prepareImgLinksDelay = 500, prepareImgLinksTimeout;
 		function prepareImgLinksAsync(dontResetDelay) {
