@@ -25,6 +25,11 @@ hoverZoomPlugins.push( {
 				res.push(link);
 			}
 		});
+		hoverZoom.urlReplace(res, 
+			'a[href*=tumblr.com/photo/]',
+			'',
+			''
+		);		
 		callback($(res));
 	}
 });

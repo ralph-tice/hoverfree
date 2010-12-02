@@ -3,23 +3,18 @@
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
-	name: 'Subimg.net',
+	name: 'Fukung.net',
 	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [],
-			filter = 'a[href*=subimg.net/]';
-		if (document.location.hostname == 'subimg.net') {
-			filter = 'a[href*=?id=], a[href*=?i=]';
+			filter = 'a[href*=/fukung.net/v/]';
+		if (document.location.hostname == 'fukung.net') {
+			filter = 'a[href^=/v/]';
 		}
 		hoverZoom.urlReplace(res, 
 			filter,
-			/[^\/]+\?i=([^&]*).*/,
-			'$1.jpg'
-		);
-		hoverZoom.urlReplace(res, 
-			filter,
-			/([^\/]+)\?id=([^&]*).*/,
-			'$2.$1'
+			/^.*\/v\//,
+			'http://media.fukung.net/images/'
 		);
 		if (res.length) { callback($(res));	}
 	}

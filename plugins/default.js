@@ -8,7 +8,7 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = [];
 		$('a[href]').filter(function() {
-			return this.href.match(/^\w*(:\/\/)?[^\?:]*\.(jpg|jpeg|gif|png|svg|bmp|ico|xbm)([\?#].*)?$/i);
+			return this.href.match(/\.(?:jpe?g|gif|png|svg|bmp|ico|xbm)(?:[\?#].*)?$/i);
 		}).each(function() {
 			var _this = $(this);
 			if (!_this.data('hoverZoomSrc')) {

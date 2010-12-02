@@ -42,6 +42,7 @@
 				   "plugins/picasa_a.js",
 				   "plugins/imageshack_a.js",
 				   "plugins/skyrock_a.js",
+				   "plugins/fukung_a.js",
 				   "plugins/twitpic_a.js"],
 			"matches": ["<all_urls>"],
 			"run_at": "document_start",

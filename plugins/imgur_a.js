@@ -17,11 +17,13 @@ hoverZoomPlugins.push( {
 			if (aHref.length < minSplitLength) { return; }
 			var excl = ['delete', 'forum', 'removalrequest', 'contact', 'upgrade', 'tools', 'stats', 'logout', 'signin', 'register', 'blog'];
 			if (excl.indexOf(aHref[minSplitLength - 1]) > -1) { return; }
-			var hash;
-			while (!hash) {
-				hash = aHref.pop().trim();
-			}
-			if (hash.length < 5) { return; }
+			var hash = '';
+			try {
+				while (!hash) {
+					hash = aHref.pop().trim();
+				}
+			} catch(e) {}
+			if (aHref.length < minSplitLength - 1 || hash.length < 5) { return; }
 			var i = hash.indexOf('?');
 			if (i > -1) {
 				hash = hash.substr(0, i);
@@ -48,7 +50,7 @@ hoverZoomPlugins.push( {
 		}
 	
 		// Every sites
-		$('a[href*=/imgur.com], a[href*=/i.imgur.com]').each(prepareImgLink);
+		$('a[href*=/imgur.com/], a[href*=/i.imgur.com/]').each(prepareImgLink);
 		
 		// On imgur.com (galleries, etc)
 		if (window.location.host.indexOf('imgur.com') > -1) {
