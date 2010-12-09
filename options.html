@@ -19,6 +19,7 @@
 			#title, #buttons, #about p, #messages p { text-align: center }
 			#delays p, #delays input, #txtPicturesOpacity { text-align: right }
 			.notice { font-size: 8pt; }
+			.hint { font-size: 8pt; padding-left: 25px }
 			#sliderPicturesOpacity { font-size: 0.7em; margin-bottom: 0.5em }
 			hr { margin: 0.7em 0 }
 		</style>
@@ -190,12 +191,14 @@
 						<li><a href="#optionTab4">Advanced</a></li>
 					</ul>
 					<div id="optionTab1">
-						<p><input type="checkbox" id="chkExtensionEnabled"> <label for="chkExtensionEnabled">Enable extension</label></p>
+						<p><input type="checkbox" id="chkExtensionEnabled"> <label for="chkExtensionEnabled">Enable Hover Zoom</label></p>
 						<h2>View</h2>
-						<p><input type="checkbox" id="chkPageActionEnabled"> <label for="chkPageActionEnabled">Show extension icon in address bar</label></p>
-						<p><input type="checkbox" id="chkShowCaptions"> <label for="chkShowCaptions">Show pictures captions</label></p>
+						<p><input type="checkbox" id="chkPageActionEnabled"> <label for="chkPageActionEnabled">Show icon in address bar<br>
+							<span class="hint">(Only when images can be zoomed)</span></label></p>
+						<p><input type="checkbox" id="chkShowCaptions"> <label for="chkShowCaptions">Show pictures captions<br>
+							<span class="hint">(When available)</span></label></p>
 						<p><input type="checkbox" id="chkShowHighRes"> <label for="chkShowHighRes">Show high resolution pictures when available<br>
-							<span style="font-size: 8pt; padding-left: 25px">(Pictures may take more time to load)</span></label></p>
+							<span class="hint">(Pictures may take more time to load)</span></label></p>
 						<hr>
 						<p><label for="txtPicturesOpacity">Zoomed pictures opacity</label>: <input type="text" id="txtPicturesOpacity" size="1"> %
 						<div id="sliderPicturesOpacity"></div>

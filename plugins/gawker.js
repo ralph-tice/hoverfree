@@ -7,11 +7,17 @@ hoverZoomPlugins.push( {
 	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [];
-		$('a img[src*=/assets/]').each(function() {
+		$('a img[src*=/assets]').each(function() {
 			var img = $(this),
 				url = hoverZoom.getThumbUrl(this);
 			if (!url) {	return;	}
-			url = url.replace(/\/(\d+x\d*|gallery)_/, '/');
+			if (url.indexOf('gizmodo.jp') > -1) {
+				url = url.replace(/^.*\/([^\/]*)-thumb-.*$/, 'http://img.gizmodo.jp/upload_files2/$1.jpg');
+			/*} else if (url.indexOf('lifehacker.jp') > -1) {
+				url = url.replace('/assets_c', '').replace(/-thumb-.*(\..*)$/, '$1');*/
+			} else {
+				url = url.replace(/\/(\d+x\d*|gallery)_/, '/');
+			}
 			if (img.hasClass('avatar')) { url = url.replace(/_\d+\./, '_160.'); }
 			url = url.substr(0, url.lastIndexOf('.'));
 			img.data('hoverZoomSrc', [url + '.jpg', url + '.png', url + '.gif', url]);
@@ -21,6 +27,16 @@ hoverZoomPlugins.push( {
 			'a img.FB_profile_pic',
 			/_[sqta]\./, 
 			'_n.'
+		);
+		hoverZoom.urlReplace(res, 
+			'img[src*=/wp/], img[src*=/wp-content/]',
+			/-\d+x\d+\./, 
+			'.'
+		);
+		hoverZoom.urlReplace(res, 
+			'img[src*=_thumb.]',
+			'_thumb.', 
+			'.'
 		);
 		callback($(res));	
 	}

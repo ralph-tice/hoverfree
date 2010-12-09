@@ -98,10 +98,10 @@
 				_gaq.push(['_trackEvent', 'Options', 'picturesOpacity', options.picturesOpacity.toString()]);
 				_gaq.push(['_trackEvent', 'Options', 'actionKey', keyCodeToKeyName(options.actionKey)]);
 				_gaq.push(['_trackEvent', 'Options', 'fullZoomKey', keyCodeToKeyName(options.fullZoomKey)]);
+				_gaq.push(['_trackEvent', 'Options', 'whiteListMode', options.whiteListMode.toString()]);
 				for (var i=0; i<options.excludedSites.length; i++) {
 					_gaq.push(['_trackEvent', 'Options', 'excludedSites', options.excludedSites[i]]);
 				}
-				_gaq.push(['_trackEvent', 'Options', 'whiteListMode', options.whiteListMode.toString()]);
 			}
 
 			// Report miscellaneous stats
@@ -119,10 +119,10 @@
 
 				// Anonymous stats
 				// There was a bug before Chrome version 8.0.551.0 on Linux and Mac (Chromium issue 43400)
-				if (hasMinChromeVersion('8.0.551.0') || navigator.appVersion.indexOf("Win") != -1) {
+				if (navigator.appVersion.indexOf("Win") != -1 || hasMinChromeVersion('8.0.551.0')) {
 					setUpStats();
-					optionsStats();
 					miscStats();
+					optionsStats();
 				}
 			}
 

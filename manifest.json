@@ -8,7 +8,7 @@
 		"48": "images/icon48.png",
 		"128": "images/icon128.png"
 	},
-	"minimum_chrome_version": "6",
+	"minimum_chrome_version": "6.0.472.63",
 	"background_page": "background.html",
 	"options_page": "options.html",
 	"page_action": {
@@ -25,7 +25,6 @@
 	"content_scripts": [
         {
             "js": ["hoverzoom.js"],
-			"css": ["hoverzoom.css"],
 			"matches": ["<all_urls>"],
 			"all_frames": true
         },
@@ -40,7 +39,6 @@
 			       "plugins/flickr_a.js",
 				   "plugins/tumblr_a.js",
 				   "plugins/picasa_a.js",
-				   "plugins/imageshack_a.js",
 				   "plugins/skyrock_a.js",
 				   "plugins/fukung_a.js",
 				   "plugins/twitpic_a.js"],
@@ -530,7 +528,8 @@
 						"*://*.amazon.fr/*",
 						"*://*.amazon.de/*",
 						"*://*.amazon.co.jp/*",
-						"*://*.amazon.co.uk/*"],
+						"*://*.amazon.co.uk/*",
+						"*://*.gizmodo.jp/*"],
 			"run_at": "document_start"
         },
         {
@@ -703,6 +702,10 @@
 						"*://*.io9.com/*",
 						"*://*.lifehacker.com/*",
 						"*://*.gizmodo.com/*",
+						"*://*.gizmodo.jp/*",
+						"*://*.gizmodo.de/*",
+						"*://*.gizmodo.com.au/*",
+						"*://*.gizmodo.pl/*",
 						"*://*.deadspin.com/*",
 						"*://*.jezebel.com/*",
 						"*://*.jalopnik.com/*"],
@@ -759,6 +762,11 @@
 			"js": ["plugins/rakuten.js"],
 			"matches": ["*://*.rakuten.co.jp/*",
 						"*://*.rakuten.com/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/copainsdavant.js"],
+			"matches": ["*://copainsdavant.linternaute.com/*"],
 			"run_at": "document_start"
 		}
 	]

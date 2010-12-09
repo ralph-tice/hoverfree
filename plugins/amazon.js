@@ -4,11 +4,11 @@
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	name: 'Amazon',
-	version: '0.2',
+	version: '0.3',
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'a img[src*=.images-amazon.com]:not([src*=g-ecx.images-amazon.com]), a img[src*=/img.amazon.], .iv_thumb_image',
+			'img[src*=.images-amazon.com]:not([src*=g-ecx.images-amazon.com]), img[src*=/img.amazon.], .iv_thumb_image',
 			/\._.*\./,
 			'.'
 		);		

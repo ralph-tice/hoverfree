@@ -50,7 +50,7 @@ hoverZoomPlugins.push( {
 		}
 	
 		// Every sites
-		$('a[href*=/imgur.com/], a[href*=/i.imgur.com/]').each(prepareImgLink);
+		$('a[href*=//imgur.com/], a[href*=//i.imgur.com/]').each(prepareImgLink);
 		
 		// On imgur.com (galleries, etc)
 		if (window.location.host.indexOf('imgur.com') > -1) {
