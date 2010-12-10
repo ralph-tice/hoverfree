@@ -3,15 +3,15 @@
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
-	name: 'Tagged',
-	version: '0.1',
+	name: 'ImageShack (a)',
+	version: '0.2',
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'a img, #meetme_imagediv img, #friends_thumbs img',
-			/\/\d([^\/]+)$/,
-			'/0$1'
+			'a img[src*=imageshack.us]',
+			'.th',
+			''
 		);	
-		callback($(res));	
+		callback($(res));
 	}
 });
