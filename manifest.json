@@ -777,6 +777,11 @@
 						"*://*.switched.com/*",
 						"*://*.tuaw.com/*"],
 			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/1x.js"],
+			"matches": ["*://*.1x.com/*"],
+			"run_at": "document_start"
 		}
 	]
 }

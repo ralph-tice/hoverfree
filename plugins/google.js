@@ -29,6 +29,17 @@ hoverZoomPlugins.push( {
 				}
 			}
 		});		
+		$('img.O-L-K2').live('mousemove', function() {
+			var _this = $(this);
+			var src = _this.attr('src');
+			console.log(src);
+			var urlIndex = href.indexOf('url=');
+			if (imgUrlIndex > -1) {
+				src = decodeURIComponent(src.substring(imgUrlIndex + 4, src.indexOf('&', imgUrlIndex)));		
+				_this.addClass('hoverZoomLink').data('hoverZoomSrc', [src]);
+				//res.push(_this);
+			}
+		});
 		callback($(res));
 		
 		
