@@ -111,6 +111,14 @@ hoverZoomPlugins.push( {
 			
 		});
 		
+		// Chat images
+		$('#fbChatBuddyListParent a img').each(function() {
+			var img = $(this);
+			img.data('hoverZoomSrc', [srcReplace(img.attr('src'))]);
+			img.data('hoverZoomCaption', img.parent().find('span').text());
+			res.push(img);
+		});
+		
 		// Photo albums		
 		function preparePhotoAlbumLink() {
 			var _this = $(this);

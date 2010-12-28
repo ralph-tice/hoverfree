@@ -507,7 +507,7 @@
 			"run_at": "document_start"
         },
         {
-            "js": ["plugins/image.aspx.js"],
+            "js": ["plugins/image_aspx.js"],
 			"matches": ["*://manager.co.th/*"],
 			"run_at": "document_start"
         },
@@ -602,12 +602,12 @@
 			"run_at": "document_start"
         },
         {
-            "js": ["plugins/jeuxvideo.com.js"],
+            "js": ["plugins/jeuxvideo_com.js"],
 			"matches": ["*://*.jeuxvideo.com/*"],
 			"run_at": "document_start"
         },
         {
-            "js": ["plugins/beautify.it.js"],
+            "js": ["plugins/beautify_it.js"],
 			"matches": ["*://*.beautify.it/*"],
 			"run_at": "document_start"
         },
@@ -653,12 +653,12 @@
 			"run_at": "document_start"
         },
         {
-            "js": ["plugins/wretch.cc.js"],
+            "js": ["plugins/wretch_cc.js"],
 			"matches": ["*://*.wretch.cc/*"],
 			"run_at": "document_start"
         },
         {
-            "js": ["plugins/events-gallery.ch.js"],
+            "js": ["plugins/events-gallery_ch.js"],
 			"matches": ["*://*.events-gallery.ch/*"],
 			"run_at": "document_start"
         },
@@ -692,7 +692,7 @@
 			"run_at": "document_start"
         },
 		{
-			"js": ["plugins/stern.de.js"],
+			"js": ["plugins/stern_de.js"],
 			"matches": ["*://*.stern.de/*"],
 			"run_at": "document_start"
 		},
@@ -728,12 +728,12 @@
 			"run_at": "document_start"
 		},
 		/*{
-			"js": ["plugins/zing.vn.js"],
+			"js": ["plugins/zing_vn.js"],
 			"matches": ["*://*.zing.vn/*"],
 			"run_at": "document_start"
 		},*/
 		{
-			"js": ["plugins/leboncoin.fr.js"],
+			"js": ["plugins/leboncoin_fr.js"],
 			"matches": ["*://*.leboncoin.fr/*"],
 			"run_at": "document_start"
 		},
@@ -743,7 +743,7 @@
 			"run_at": "document_start"
 		},
 		{
-			"js": ["plugins/subimg.net.js"],
+			"js": ["plugins/subimg_net.js"],
 			"matches": ["*://*.subimg.net/*",
 						"*://*.reddit.com/*"],
 			"run_at": "document_start"
@@ -779,9 +779,20 @@
 			"run_at": "document_start"
 		},
 		{
+			"js": ["plugins/badoo.js"],
+			"matches": ["*://*.badoo.com/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/steam.js"],
+			"matches": ["*://*.steamcommunity.com/*",
+						"*://*.steampowered.com/*"],
+			"run_at": "document_start"
+		}/*,
+		{
 			"js": ["plugins/1x.js"],
 			"matches": ["*://*.1x.com/*"],
 			"run_at": "document_start"
-		}
+		}*/
 	]
 }
