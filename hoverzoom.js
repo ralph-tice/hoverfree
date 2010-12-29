@@ -11,7 +11,7 @@ var hoverZoom = {
 		var wnd = $(window),
 			body = $(document.body),
 			hoverZoomImg = null,
-			hoverZoomResizedImg = null,
+			//hoverZoomResizedImg = null,
 			hoverZoomCaption = null,
 			imgFullSize = null,
 			imgLoading = null,
@@ -66,7 +66,7 @@ var hoverZoom = {
 			'text-align': 'center',
 			'max-height': '27px',
 			'overflow': 'hidden',
-			'vertical-align': 'top',
+			'vertical-align': 'top'
 		};
 
 		// Calculate optimal image position and size
@@ -328,9 +328,6 @@ var hoverZoom = {
 						imgFullSize.css(imgFullSizeCss).appendTo(hoverZoomImg).mousemove(imgFullSizeOnMouseMove);
 						if (options.showCaptions && currentLink && currentLink.data('hoverZoomCaption')) {
 							hoverZoomCaption = $('<div/>', {id: 'hoverZoomCaption', text: currentLink.data('hoverZoomCaption')}).css(hoverZoomCaptionCss).appendTo(hoverZoomImg);
-							/*EXIF.getData(imgFullSize[0], function() {
-								$('<div>' + EXIF.getTag(imgFullSize[0], "Make") + '</div>').appendTo(hoverZoomCaption);								
-							});*/
 						}
 						if (!skipFadeIn) {
 							hoverZoomImg.hide().fadeTo(options.fadeDuration, options.picturesOpacity);
