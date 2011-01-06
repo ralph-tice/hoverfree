@@ -3,27 +3,25 @@
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
-	name: 'Last.fm',
+	name: 'Wired',
 	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'img[src*=/serve/]',
-			/\/serve\/.*\//,
-			'/serve/_/'
-		);	
-		hoverZoom.urlReplace(res, 
-			'.albumCover img[src*=/serve/]',
-			/\/serve\/.*\//,
-			'/serve/_/',
-			':eq(0)'
-		);	
-		hoverZoom.urlReplace(res, 
-			'.albumCover img[src*=amazon.com]',
-			/(\/[^\.]+)[^\/]+\.(\w+)$/,
-			'$1.$2',
-			':eq(0)'
+			'img',
+			/-\d+x\d+\./,
+			'.'
 		);
-		callback($(res));	
+		hoverZoom.urlReplace(res, 
+			'img[src*=/thumbs/]',
+			'thumbs/thumbs_',
+			''
+		);
+		hoverZoom.urlReplace(res, 
+			'img[src*=_w]',
+			/_wd?\./,
+			'_bg.'
+		);
+		callback($(res));
 	}
 });
