@@ -1,7 +1,7 @@
 {
     "name": "Hover Zoom",
     "version": "2.1",
-    "description": "Move the mouse cursor over a link to an image to view it in full size. Works on many sites (Facebook, Flickr, Twitter, Google, etc).",
+    "description": "Enlarge thumbnails on mouse over. Works on many sites (Facebook, Twitter, Google, Flickr, Reddit, Amazon, etc).",
 	"icons": {
 		"16": "images/icon16.png",
 		"32": "images/icon32.png",
@@ -797,6 +797,49 @@
 		{
 			"js": ["plugins/wired.js"],
 			"matches": ["*://*.wired.com/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/maxmodels.js"],
+			"matches": ["*://*.maxmodels.pl/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/blip.js"],
+			"matches": ["*://*.blip.pl/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/digart.js"],
+			"matches": ["*://*.digart.pl/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/picplz.js"],
+			"matches": ["*://*.picplz.com/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/twimg.js"],
+			"matches": ["*://*.favstar.fm/*",
+						"*://*.tweetmeme.com/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/cyworld.js"],
+			"matches": ["*://*.cyworld.com/*",
+						"*://*.cyworld.co.kr/*",
+						"*://*.cyworld.co.cn/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/fotolog.js"],
+			"matches": ["*://*.fotolog.com/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/panoramio.js"],
+			"matches": ["*://*.panoramio.com/*"],
 			"run_at": "document_start"
 		}
 	]

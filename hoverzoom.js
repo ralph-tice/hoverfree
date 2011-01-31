@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2010 Romain Vallet
+﻿// Copyright (c) 2011 Romain Vallet
 // Licensed under the MIT license, read license.txt
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
@@ -257,11 +257,10 @@ var hoverZoom = {
 					links = links.add(target);
 				}
 			}
-
 			if (target.hasClass('hoverZoomDownscaled')) {
-				var widthAttr = parseInt(event.target.getAttribute('width') || event.target.style.width || event.target.style.maxWidth),
-					heightAttr = parseInt(event.target.getAttribute('height') || event.target.style.height || event.target.style.maxHeight);
 				if (!target.hasClass('hoverZoomLink')) {
+					var widthAttr = parseInt(event.target.getAttribute('width') || event.target.style.width || event.target.style.maxWidth),
+						heightAttr = parseInt(event.target.getAttribute('height') || event.target.style.height || event.target.style.maxHeight);
 					if (hzDownscaledImg) { hzDownscaledImg.remove(); }
 					hzDownscaledImg = $('<img id="hzDownscaledImg">').css(hzDownscaledImgCss).load(function () {
 						//console.log('Original: ' + hzDownscaledImg.width() + 'x' + hzDownscaledImg.height() + ' - Resized: ' + widthAttr + 'x' + heightAttr + ' - ' + hzDownscaledImg.attr('src'));
@@ -484,11 +483,11 @@ var hoverZoom = {
 			for (var i = 0; i < hoverZoomPlugins.length; i++) {
 				hoverZoomPlugins[i].prepareImgLinks(imgLinksPrepared);
 			}
-			prepareResizedImages();
+			prepareScaledImages();
 		}
 		
 		// Not finished
-		function prepareResizedImages() {
+		function prepareScaledImages() {
 			$('img').filter(function () {
 				return this.getAttribute('width') || this.getAttribute('height') || 
 					this.style && (this.style.width || this.style.height || this.style.maxWidth || this.style.maxHeight);
@@ -639,6 +638,7 @@ var hoverZoom = {
 		function fixFlash() {
 			if ($('.hoverZoomLink').length == 0) { return; }
 			$('embed:not([wmode]), embed[wmode=window]').each(function () {
+				if (this.type.toLowerCase() != 'application/x-shockwave-flash') { return; }
 				var embed = this.cloneNode(true);
 				embed.setAttribute('wmode', 'opaque');
 				$(this).replaceWith(embed);
@@ -676,11 +676,11 @@ var hoverZoom = {
 		
 		function init() {
 			webSiteExcluded = null;
-			body100pct = body.css('padding-left') == '0px' && body.css('padding-right') == '0px' && body.css('margin-left') == '0px' && body.css('margin-right') == '0px';
+			body100pct = (body.css('position') != 'static') || 
+						 (body.css('padding-left') == '0px' && body.css('padding-right') == '0px' && body.css('margin-left') == '0px' && body.css('margin-right') == '0px');
 			prepareImgLinks();		
 			bindEvents();
 			fixFlash();
-			//console.log('document.body=' + $(document.body).width() + ' - window=' + $(window).width());
 		}
 		
 		chrome.extension.onRequest.addListener(onRequest);		
@@ -694,17 +694,6 @@ var hoverZoom = {
 	urlReplace: function (res, filter, search, replace, parentFilter) {
 		$(filter).each(function () {
 			var _this = $(this), link, url;
-			/*if (this.src) {
-				if (!parentFilter) {
-					parentFilter = 'a:eq(0)';
-				}
-				link = _this.parents(parentFilter);
-				if (!link.length) {
-					link = _this;
-				}
-			} else {
-				link = _this;
-			}*/
 			if (parentFilter) {
 				link = _this.parents(parentFilter);
 			} else {

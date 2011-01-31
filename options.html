@@ -37,6 +37,9 @@
 			}
 			
 			function loadKeys(sel) {
+				if (navigator.appVersion.indexOf('Macintosh') > -1) {
+					$('<option value="91">Command</option>').appendTo(sel);
+				}
 				for (var i=65; i<91; i++) {
 					$('<option value="' + i + '">&#' + i + ';</option>').appendTo(sel);
 				}
