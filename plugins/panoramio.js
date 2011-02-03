@@ -6,22 +6,22 @@ hoverZoomPlugins.push( {
 	name: 'Panoramio',
 	version: '0.1',
 	prepareImgLinks: function(callback) {
-		var res = [];
-		// not finished
+		var res = [],
+			search = 'img[src*=/photos/]';
 		hoverZoom.urlReplace(res, 
-			'img[src*=mw-panoramio]',
-			/(square|thumbnail)/,
+			search,
+			/(square|thumbnail|small)/,
 			'medium'
 		);
 		hoverZoom.urlReplace(res, 
-			'img[src*=mw-panoramio]',
-			'medium',
+			search,
+			/(square|thumbnail|small|medium)/,
 			'large'
 		);
 		if (options.showHighRes) {
 			hoverZoom.urlReplace(res, 
-				'img[src*=mw-panoramio]',
-				/(.*)(square|thumbnail|medium)/,
+				search,
+				/(.*)(square|thumbnail|small|medium)/,
 				'http://static.panoramio.com/photos/original'
 			);
 		}

@@ -101,7 +101,7 @@ var hoverZoom = {
 					// This is looped 10x max just in case something 
 					// goes wrong, to avoid freezing the process.
 					var i = 0;
-					while (hzImg.height() > wndHeight && i++ < 10) {
+					while (hzImg.height() > wndHeight - statusBarHeight && i++ < 10) {
 						imgFullSize.height(wndHeight - padding - statusBarHeight - hzCaption.height()).width('auto');
 						hzCaption.css('max-width', imgFullSize.width());
 					}
