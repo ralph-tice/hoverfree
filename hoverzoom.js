@@ -675,6 +675,7 @@ var hoverZoom = {
 		}
 		
 		function init() {
+			if (!window.innerHeight || !window.innerWidth) { return; }
 			webSiteExcluded = null;
 			body100pct = (body.css('position') != 'static') || 
 						 (body.css('padding-left') == '0px' && body.css('padding-right') == '0px' && body.css('margin-left') == '0px' && body.css('margin-right') == '0px');

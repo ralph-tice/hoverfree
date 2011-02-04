@@ -30,13 +30,14 @@ var hoverZoomPluginFlickerA = {
 		callback($(res));
 		
 		// Links to flickr pages. Requires API calls.
-		var filter = 'a[href*=flickr.com/photos/]';
+		// Disabled for the moment (API key expired).
+		/*var filter = 'a[href*=flickr.com/photos/]';
 		if (document.location.hostname == 'www.flickr.com') {
 			filter = 'a[href*=/photos/]';
 		}
 		$(filter).each(function() {
 			hoverZoomPluginFlickerA.prepareImgLinkFromHref($(this), callback);
-		});
+		});*/
 	},
 	
 	// Get details from this URL: http://www.flickr.com/photos/{user-id}/{photo-id}
@@ -94,6 +95,5 @@ var hoverZoomPluginFlickerA = {
 			});
 		}
 	}
-	
 };
 hoverZoomPlugins.push(hoverZoomPluginFlickerA);
