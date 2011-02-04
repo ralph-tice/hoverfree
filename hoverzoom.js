@@ -257,7 +257,9 @@ var hoverZoom = {
 					links = links.add(target);
 				}
 			}
-			if (target.hasClass('hoverZoomDownscaled')) {
+			
+			// Not finished
+			/*if (target.hasClass('hoverZoomDownscaled')) {
 				if (!target.hasClass('hoverZoomLink')) {
 					var widthAttr = parseInt(event.target.getAttribute('width') || event.target.style.width || event.target.style.maxWidth),
 						heightAttr = parseInt(event.target.getAttribute('height') || event.target.style.height || event.target.style.maxHeight);
@@ -271,7 +273,7 @@ var hoverZoom = {
 						}
 					}).attr('src', event.target.src).appendTo(document.body);
 				}
-			}
+			}*/
 
 			
 			if (links && links.length > 0) {
@@ -483,7 +485,7 @@ var hoverZoom = {
 			for (var i = 0; i < hoverZoomPlugins.length; i++) {
 				hoverZoomPlugins[i].prepareImgLinks(imgLinksPrepared);
 			}
-			prepareScaledImages();
+			//prepareScaledImages();
 		}
 		
 		// Not finished

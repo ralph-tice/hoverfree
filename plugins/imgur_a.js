@@ -1,10 +1,10 @@
-﻿// Copyright (c) 2010 Romain Vallet
+﻿// Copyright (c) 2011 Romain Vallet
 // Licensed under the MIT license, read license.txt
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	name: 'Imgur',
-	version: '0.2',
+	version: '0.3',
 	prepareImgLinks: function(callback) {
 	
 		var res = [],

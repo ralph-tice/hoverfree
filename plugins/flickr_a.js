@@ -1,10 +1,10 @@
-﻿// Copyright (c) 2010 Romain Vallet
+﻿// Copyright (c) 2011 Romain Vallet
 // Licensed under the MIT license, read license.txt
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 var hoverZoomPluginFlickerA = {
 	name: 'Flickr (a)',
-	version: '0.1',
+	version: '0.2',
 	prepareImgLinks: function(callback) {
 		var res = [];
 		
