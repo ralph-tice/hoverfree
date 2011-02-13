@@ -639,7 +639,7 @@ var hoverZoom = {
 		
 		function fixFlash() {
 			if ($('.hoverZoomLink').length == 0) { return; }
-			$('embed:not([wmode]), embed[wmode=window]').each(function () {
+			$('embed:not([wmode]), embed[wmode=window], object[type=application/x-shockwave-flash]').each(function () {
 				if (this.type.toLowerCase() != 'application/x-shockwave-flash') { return; }
 				var embed = this.cloneNode(true);
 				embed.setAttribute('wmode', 'opaque');
