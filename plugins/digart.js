@@ -4,11 +4,11 @@
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	name: 'DigArt',
-	version: '0.1',
+	version: '0.2',
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'img[src^=http://digart.img.digart.pl]',
+			'img[src*=digart.img.digart.pl]',
 			/(miniaturki|SQmin)(\d+)/,
 			'download'
 		);

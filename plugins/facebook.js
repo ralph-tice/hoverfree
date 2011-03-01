@@ -45,8 +45,9 @@ hoverZoomPlugins.push( {
 	
 		var res = [];
 		
-		$('a img.img, a img.UIProfileImage, .itemsbox a img').each(function() {			
+		$('a img.img, a img.UIProfileImage, .itemsbox a img, a img.photo, .UIImageBlockTemplate_Image a img').each(function() {			
 			var img = $(this);
+			if (img.data('hoverZoomSrc')) { return; }
 			if (img.parents('.uiSideNav').length) { return; }
 			
 			// Thumbnail URL
@@ -90,10 +91,13 @@ hoverZoomPlugins.push( {
 				srcs.push(src.replace(/\/s\d+(-c)?\//, options.showHighRes ? '/' : '/s800/'));				
 			}
 			
+			if (options.showHighRes) {
+				srcs.push(src.replace('_n.', '_o.'));
+				console.log(src.replace('_n.', '_o.'));
+			}
 			srcs.push(src);
 			
 			var tooltip;
-			
 			var uiFacepileItem = img.parents('.uiFacepileItem');
 			if (uiFacepileItem.length) {
 				img = uiFacepileItem.find('a');
@@ -114,6 +118,7 @@ hoverZoomPlugins.push( {
 		// Chat images
 		$('#fbChatBuddyListParent a img').each(function() {
 			var img = $(this);
+			if (img.data('hoverZoomSrc')) { return; }
 			img.data('hoverZoomSrc', [srcReplace(img.attr('src'))]);
 			img.data('hoverZoomCaption', img.parent().find('span').text());
 			res.push(img);
@@ -121,14 +126,21 @@ hoverZoomPlugins.push( {
 		
 		// Photo albums		
 		function preparePhotoAlbumLink() {
-			var _this = $(this);
-			var i = _this.find('i:eq(0)');
-			var src = i.attr('style');
-			if (src) {
-				src = src.substring(src.indexOf('http'), src.lastIndexOf(')'));
-				src = srcReplace(src);
+			var _this = $(this), src;
+			if (_this.data('hoverZoomSrc')) { return; }
+			if (_this.attr('data-src')) {
+				src = srcReplace(_this.attr('data-src'));
 				_this.data('hoverZoomSrc', [src]);
-				res.push(_this);
+				res.push(_this);				
+			} else {
+				var i = _this.find('i:eq(0)'),
+					src = i.attr('style');
+				if (src) {
+					src = src.substring(src.indexOf('http'), src.lastIndexOf(')'));
+					src = srcReplace(src);
+					_this.data('hoverZoomSrc', [src]);
+					res.push(_this);
+				}
 			}
 		}
 		
@@ -137,6 +149,7 @@ hoverZoomPlugins.push( {
 		// Photo albums covers
 		$('.album_thumb a.album_link').each(function() {
 			var _this = $(this);
+			if (_this.data('hoverZoomSrc')) { return; }
 			var div = _this.parent();
 			var src = div.attr('style');
 			if (src) {
