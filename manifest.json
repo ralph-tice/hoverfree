@@ -1,6 +1,6 @@
 {
     "name": "Hover Zoom",
-    "version": "2.1",
+    "version": "2.2",
     "description": "Enlarge thumbnails on mouse over. Works on many sites (Facebook, Twitter, Google, Flickr, Reddit, Amazon, etc).",
 	"icons": {
 		"16": "images/icon16.png",
@@ -20,7 +20,8 @@
 		"tabs",
 		"history",
 		"http://ajax.googleapis.com/",
-		"http://open.api.ebay.com/"
+		"http://open.api.ebay.com/",
+		"http://vk.com/"
 	],
 	"content_scripts": [
         {
@@ -840,6 +841,33 @@
 		{
 			"js": ["plugins/panoramio.js"],
 			"matches": ["*://*.panoramio.com/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/imagefap.js"],
+			"matches": ["*://*.imagefap.com/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/oxd_in.js"],
+			"matches": ["*://*.oxd.in/*",
+						"*://*.reddit.com/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/vk.js"],
+			"matches": ["*://*.vk.com/*",
+						"*://*.vkontakte.ru/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/plurk.js"],
+			"matches": ["*://*.plurk.com/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/vimeo.js"],
+			"matches": ["*://*.vimeo.com/*"],
 			"run_at": "document_start"
 		}
 	]

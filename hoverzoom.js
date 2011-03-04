@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2011 Romain Vallet
+﻿// Copyright (c) 2011 Romain Vallet <romain.vallet@gmail.com>
 // Licensed under the MIT license, read license.txt
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
@@ -6,18 +6,31 @@ var hoverZoomPlugins = hoverZoomPlugins || [];
 var hoverZoom = {
 	
 	options: {},
-
+	currentLink: null,
+	hzImg: null,
+	hzImgCss: {
+		'border': '1px solid #444', 
+		'line-height': 0,
+		'overflow': 'hidden',
+		'padding': '2px',
+		'margin': 0,
+		'position': 'absolute',
+		'z-index': 2147483647,
+		'border-radius': '3px',
+		'background': '-webkit-gradient(linear, left top, right bottom, from(#ffffff), to(#ededed), color-stop(0.5, #ffffff))',
+		'-webkit-box-shadow': '2px 3px 12px rgba(0,0,0,0.6)'
+	},
+	imgLoading: null,
+		
 	loadHoverZoom: function () {
-		var wnd = $(window),
+		var hz = hoverZoom,
+			wnd = $(window),
 			body = $(document.body),
-			hzImg = null,
 			hzDownscaledImg = null,
 			hzCaption = null,
 			imgFullSize = null,
-			imgLoading = null,
 			imgSrc = '',
 			imgHost = '',
-			currentLink = null,
 			mousePos = {},
 			loading = false,
 			loadFullSizeImageTimeout,
@@ -29,19 +42,7 @@ var hoverZoom = {
 			titledElements = null,
 			body100pct = true;
 			
-		var hzImgCss = {
-			'border': '1px solid #444', 
-			'line-height': 0,
-			'overflow': 'hidden',
-			'padding': '2px',
-			'margin': 0,
-			'position': 'absolute',
-			'z-index': 2147483647,
-			'border-radius': '3px',
-			'background': '-webkit-gradient(linear, left top, right bottom, from(#ffffff), to(#ededed), color-stop(0.5, #ffffff))',
-			'-webkit-box-shadow': '2px 2px 8px #444'
-		},
-		progressCss = {
+		var progressCss = {
 			'opacity': '0.5',
 			'position': 'absolute',
 			'height': '22px',
@@ -101,7 +102,7 @@ var hoverZoom = {
 					// This is looped 10x max just in case something 
 					// goes wrong, to avoid freezing the process.
 					var i = 0;
-					while (hzImg.height() > wndHeight - statusBarHeight && i++ < 10) {
+					while (hz.hzImg.height() > wndHeight - statusBarHeight && i++ < 10) {
 						imgFullSize.height(wndHeight - padding - statusBarHeight - hzCaption.height()).width('auto');
 						hzCaption.css('max-width', imgFullSize.width());
 					}
@@ -114,7 +115,7 @@ var hoverZoom = {
 				position.left -= offset;
 			}
 			
-			if (imgLoading) {
+			if (hz.imgLoading) {
 				position.top -= 10;
 				if (!displayOnRight) {
 					position.left -= 25;
@@ -123,12 +124,12 @@ var hoverZoom = {
 			} else if (fullZoomKeyDown) {
 			
 				imgFullSize.width(wndWidth - padding).height('auto');				
-				if (hzImg.height() > wndHeight) {
+				if (hz.hzImg.height() > wndHeight) {
 					imgFullSize.height(wndHeight - padding - statusBarHeight).width('auto');
 					position.top = wndScrollTop;
-					position.left = wndScrollLeft + wndWidth / 2 - hzImg.width() / 2;
+					position.left = wndScrollLeft + wndWidth / 2 - hz.hzImg.width() / 2;
 				} else {
-					position.top = wndScrollTop + wndHeight / 2 - hzImg.height() / 2;
+					position.top = wndScrollTop + wndHeight / 2 - hz.hzImg.height() / 2;
 					position.left = wndScrollLeft;
 				}
 
@@ -157,21 +158,21 @@ var hoverZoom = {
 				}				
 				
 				// Height adjustment
-				if (hzImg.height() > wndHeight - padding - statusBarHeight) {
+				if (hz.hzImg.height() > wndHeight - padding - statusBarHeight) {
 					imgFullSize.height(wndHeight - padding - statusBarHeight).width('auto');
 				}
 
 				posCaption();
 				
-				position.top -= hzImg.height() / 2;
+				position.top -= hz.hzImg.height() / 2;
 
 				// Display image on the left side if the mouse is on the right
 				if (!displayOnRight) {
-					position.left -= hzImg.width() + padding;
+					position.left -= hz.hzImg.width() + padding;
 				}
 					
 				// Vertical position adjustments
-				var maxTop = wndScrollTop + wndHeight - hzImg.height() - padding - statusBarHeight;
+				var maxTop = wndScrollTop + wndHeight - hz.hzImg.height() - padding - statusBarHeight;
 				if (position.top > maxTop) {
 					position.top = maxTop;
 				}
@@ -186,15 +187,15 @@ var hoverZoom = {
 				position.left -= (wndWidth - bodyWidth) / 2;
 			}
 			
-			hzImg.css({top: Math.round(position.top), left: Math.round(position.left)});
+			hz.hzImg.css({top: Math.round(position.top), left: Math.round(position.left)});
 		}
 		
 		function posWhileLoading() {
 			if (loading) {
 				posImg();
-				if (imgLoading && hzImg.width() > 40) {
-					imgLoading.remove();
-					imgLoading = null;
+				if (hz.imgLoading && hz.hzImg.width() > 40) {
+					hz.imgLoading.remove();
+					hz.imgLoading = null;
 					posImg();
 					setTimeout(function () { skipFadeIn = true; }, 200);
 				} else {
@@ -223,15 +224,15 @@ var hoverZoom = {
 		}
 		
 		function hideHoverZoomImg(now) {
-			if (!now && !imgFullSize || !hzImg || fullZoomKeyDown) {
+			if (!now && !imgFullSize || !hz.hzImg || fullZoomKeyDown) {
 				return;
 			}
 			imgFullSize = null;
 			if (loading) { now = true; }
-			hzImg.stop(true, true).fadeOut(now ? 0 : options.fadeDuration, function () {
+			hz.hzImg.stop(true, true).fadeOut(now ? 0 : options.fadeDuration, function () {
 				hzCaption = null;
-				imgLoading = null;
-				hzImg.empty();
+				hz.imgLoading = null;
+				hz.hzImg.empty();
 				restoreTitles();
 			});
 		}
@@ -242,14 +243,14 @@ var hoverZoom = {
 			}
 
 			// Test if the action key was pressed without moving the mouse
-			var staticActionKeyPressed = ((options.actionKey || options.fullZoomKey) && event.pageY == undefined);
+			var explicitCall = event.pageY == undefined;
 
 			// If so, the MouseMove event was triggered programmaticaly and we don't have details
 			// about the mouse position and the event target, so we use the last saved ones.
 			var links,
 				target = $(event.target);
-			if (staticActionKeyPressed) {
-				links = currentLink;
+			if (explicitCall) {
+				links = hz.currentLink;
 			} else {
 				mousePos = {top: event.pageY, left: event.pageX};
 				links = target.parents('.hoverZoomLink');
@@ -283,6 +284,8 @@ var hoverZoom = {
 					links.data('hoverZoomSrc')[hoverZoomSrcIndex] != 'undefined') {
 					// Happens when the mouse goes from an image to another without hovering the page background
 					if (links.data('hoverZoomSrc')[hoverZoomSrcIndex] != imgSrc) {
+						//console.log('data:   ' + links.data('hoverZoomSrc')[hoverZoomSrcIndex]);
+						//console.log('imgSrc: ' + imgSrc);
 						hideHoverZoomImg();
 					}
 					
@@ -290,13 +293,13 @@ var hoverZoom = {
 					
 					// Is the image source has not been set yet
 					if (!imgFullSize) {
-						currentLink = links;
+						hz.currentLink = links;
 						if (!options.actionKey || actionKeyDown) {
 							imgSrc = links.data('hoverZoomSrc')[hoverZoomSrcIndex];
 							clearTimeout(loadFullSizeImageTimeout);
 							
 							// If the action key has been pressed over an image, no delay is applied
-							var delay = staticActionKeyPressed ? 0 : options.displayDelay;
+							var delay = explicitCall ? 0 : options.displayDelay;
 							loadFullSizeImageTimeout = setTimeout(loadFullSizeImage, delay);
 							loading = true;
 						}
@@ -306,7 +309,7 @@ var hoverZoom = {
 				} else {
 					return;
 				}			
-			} else if (currentLink) {
+			} else if (hz.currentLink) {
 				cancelImageLoading();
 			}
 		}
@@ -320,23 +323,16 @@ var hoverZoom = {
 			// If no image is currently displayed...
 			if (!imgFullSize) {
 				
-				// Full size image container
-				hzImg = hzImg || $('<div id="hzImg"></div>').appendTo(document.body);			
-				hzImg.css(hzImgCss);
-				hzImg.empty();
-				hzImg.stop(true, true).fadeTo(options.fadeDuration, options.picturesOpacity);
+				hz.createHzImg();
+				hz.createImgLoading();
 				
-				// Loading image container
-				imgLoading = imgLoading || $('<img src="' + chrome.extension.getURL('images/loading.gif') + '" style="opacity: 0.8" />');
-				imgLoading.appendTo(hzImg);
-				
-				imgFullSize = $('<img style="border: none" />').appendTo(hzImg).load(imgFullSizeOnLoad).error(imgFullSizeOnError).attr('src', imgSrc);
+				imgFullSize = $('<img style="border: none" />').appendTo(hz.hzImg).load(imgFullSizeOnLoad).error(imgFullSizeOnError).attr('src', imgSrc);
 				imgHost = getHostFromUrl(imgSrc);
 				
 				skipFadeIn = false;
 				var showWhileLoading = imgSrc.substr(-4).toLowerCase() == '.gif';
 				if (showWhileLoading) {
-					lastImgWidth = hzImg.width();
+					lastImgWidth = hz.hzImg.width();
 					posWhileLoading();
 				} else {
 					imgFullSize.css(progressCss);
@@ -346,16 +342,16 @@ var hoverZoom = {
 					// Only the last hovered link gets displayed
 					if (imgSrc == $(imgFullSize).attr('src')) {
 						loading = false;
-						hzImg.stop(true, true);
-						hzImg.offset({top:-9000, left:-9000});	// hides the image while making it available for size calculations
-						hzImg.empty();
-						imgLoading = null;
-						imgFullSize.css(imgFullSizeCss).appendTo(hzImg).mousemove(imgFullSizeOnMouseMove);
-						if (options.showCaptions && currentLink && currentLink.data('hoverZoomCaption')) {
-							hzCaption = $('<div/>', {id: 'hzCaption', text: currentLink.data('hoverZoomCaption')}).css(hzCaptionCss).appendTo(hzImg);
+						hz.hzImg.stop(true, true);
+						hz.hzImg.offset({top:-9000, left:-9000});	// hides the image while making it available for size calculations
+						hz.hzImg.empty();
+						hz.imgLoading = null;
+						imgFullSize.css(imgFullSizeCss).appendTo(hz.hzImg).mousemove(imgFullSizeOnMouseMove);
+						if (options.showCaptions && hz.currentLink && hz.currentLink.data('hoverZoomCaption')) {
+							hzCaption = $('<div/>', {id: 'hzCaption', text: hz.currentLink.data('hoverZoomCaption')}).css(hzCaptionCss).appendTo(hz.hzImg);
 						}
 						if (!skipFadeIn) {
-							hzImg.hide().fadeTo(options.fadeDuration, options.picturesOpacity);
+							hz.hzImg.hide().fadeTo(options.fadeDuration, options.picturesOpacity);
 						}
 						setTimeout(posImg, 10);
 						if (options.addToHistory && !chrome.extension.inIncognitoTab) {
@@ -368,15 +364,15 @@ var hoverZoom = {
 				
 				function imgFullSizeOnError() {
 					if (imgSrc == $(this).attr('src')) {
-						var hoverZoomSrcIndex = currentLink ? currentLink.data('hoverZoomSrcIndex') : 0;
-						if (currentLink && hoverZoomSrcIndex < currentLink.data('hoverZoomSrc').length - 1) {
+						var hoverZoomSrcIndex = hz.currentLink ? hz.currentLink.data('hoverZoomSrcIndex') : 0;
+						if (hz.currentLink && hoverZoomSrcIndex < hz.currentLink.data('hoverZoomSrc').length - 1) {
 							// If the link has several possible sources, we try to load the next one
 							imgFullSize.remove();
 							imgFullSize = null;
 							hoverZoomSrcIndex++;
-							currentLink.data('hoverZoomSrcIndex', hoverZoomSrcIndex);
+							hz.currentLink.data('hoverZoomSrcIndex', hoverZoomSrcIndex);
 							console.info('[HoverZoom] Failed to load image: ' + imgSrc + '\nTrying next one...');
-							imgSrc = currentLink.data('hoverZoomSrc')[hoverZoomSrcIndex];
+							imgSrc = hz.currentLink.data('hoverZoomSrc')[hoverZoomSrcIndex];
 							setTimeout(loadFullSizeImage, 100);
 						} else {
 							hideHoverZoomImg();
@@ -396,7 +392,7 @@ var hoverZoom = {
 		}
 
 		function cancelImageLoading() {
-			currentLink = null;
+			hz.currentLink = null;
 			clearTimeout(loadFullSizeImageTimeout);
 			hideHoverZoomImg();
 		}
@@ -480,11 +476,13 @@ var hoverZoom = {
 		}
 		
 		function prepareImgLinks() {
+			//console.log('prepareImgLinks');
 			pageActionShown = false;
 			$('.hoverZoomLink').removeClass('hoverZoomLink').removeData('hoverZoomSrc');
 			for (var i = 0; i < hoverZoomPlugins.length; i++) {
 				hoverZoomPlugins[i].prepareImgLinks(imgLinksPrepared);
 			}
+			prepareImgLinksTimeout = null;
 			//prepareScaledImages();
 		}
 		
@@ -588,7 +586,6 @@ var hoverZoom = {
 		}
 		
 		function windowOnDOMNodeInserted(event) {
-			//console.log(event.srcElement);
 			if (event.srcElement) {
 				var srcElement = $(event.srcElement);
 				if (srcElement.parents('#hzImg').length) { return; }
@@ -638,7 +635,7 @@ var hoverZoom = {
 		}
 		
 		function fixFlash() {
-			if ($('.hoverZoomLink').length == 0) { return; }
+			//if ($('.hoverZoomLink').length == 0) { return; }
 			$('embed:not([wmode]), embed[wmode=window], object[type=application/x-shockwave-flash]').each(function () {
 				if (this.type.toLowerCase() != 'application/x-shockwave-flash') { return; }
 				var embed = this.cloneNode(true);
@@ -677,7 +674,7 @@ var hoverZoom = {
 		}
 		
 		function init() {
-			if (!window.innerHeight || !window.innerWidth) { return; }
+			if (!window.innerHeight || !window.innerWidth) { console.warn('[HoverZoom] small window:' + window.name + ' - url: ' + window.location.href); return; }
 			webSiteExcluded = null;
 			body100pct = (body.css('position') != 'static') || 
 						 (body.css('padding-left') == '0px' && body.css('padding-right') == '0px' && body.css('margin-left') == '0px' && body.css('margin-right') == '0px');
@@ -690,7 +687,9 @@ var hoverZoom = {
 		loadOptions();
 	},
 	
-	// Public function to be used by plugins.
+	// __________________________________________________________________
+	// Public functions
+	
 	// Search for links or images using the 'filter' parameter,
 	// process their src or href attribute using the 'search' and 'replace' values,
 	// store the result in the link and add the link to the 'res' array.
@@ -722,7 +721,6 @@ var hoverZoom = {
 		});
 	},
 	
-	// Public function
 	// Extract a thumbnail url from an element, whether it be a link, 
 	// an image or a element with a background image.
 	getThumbUrl: function (el) {
@@ -731,7 +729,28 @@ var hoverZoom = {
 		} else {
 			return el.src || el.href;
 		}
-	}
+	},
+	
+	// Simulates a mousemove event to force a zoom call
+	displayPicFromElement: function (el) {
+		hoverZoom.currentLink = el;
+		$(document).mousemove();
+	},
+	
+	// Create and displays the zoomed image container
+	createHzImg: function () {
+		hoverZoom.hzImg = hoverZoom.hzImg || $('<div id="hzImg"></div>').appendTo(document.body);			
+		hoverZoom.hzImg.css(hoverZoom.hzImgCss);
+		hoverZoom.hzImg.empty();
+		hoverZoom.hzImg.stop(true, true).fadeTo(options.fadeDuration, options.picturesOpacity);
+	},
+	
+	// Create and displays the loading image container
+	createImgLoading: function () {
+		hoverZoom.imgLoading = hoverZoom.imgLoading || $('<img src="' + chrome.extension.getURL('images/loading.gif') + '" style="opacity: 0.8" />');
+		hoverZoom.imgLoading.appendTo(hoverZoom.hzImg);
+	},
+	
 };
 
 hoverZoom.loadHoverZoom();

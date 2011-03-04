@@ -3,14 +3,19 @@
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
-	name: 'Twimg.com',
+	name: 'Vimeo',
 	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'img[src*=twimg.com]',
-			/_(normal|mini)/,
-			''
+			'img[src*=/ps/]',
+			/_\d+\./,
+			'_300.'
+		);			
+		hoverZoom.urlReplace(res, 
+			'img[src*=/ts/]',
+			/_\d+\./,
+			'_640.'
 		);			
 		callback($(res));
 	}

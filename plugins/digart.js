@@ -1,4 +1,4 @@
-// Copyright (c) 2011 Maciej Nowakowski <macnow@gmail.com>
+// Copyright (c) 2011 Maciej Nowakowski <macnow@gmail.com> and Romain Vallet <romain.vallet@gmail.com>
 // Licensed under the MIT license, read license.txt
 
 var hoverZoomPlugins = hoverZoomPlugins || [];

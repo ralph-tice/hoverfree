@@ -4,7 +4,7 @@
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	name: 'Gawker',
-	version: '0.1',
+	version: '0.2',
 	prepareImgLinks: function(callback) {
 		var res = [];
 		$('a img[src*=/assets]').each(function() {
@@ -13,10 +13,8 @@ hoverZoomPlugins.push( {
 			if (!url) {	return;	}
 			if (url.indexOf('gizmodo.jp') > -1) {
 				url = url.replace(/^.*\/([^\/]*)-thumb-.*$/, 'http://img.gizmodo.jp/upload_files2/$1.jpg');
-			/*} else if (url.indexOf('lifehacker.jp') > -1) {
-				url = url.replace('/assets_c', '').replace(/-thumb-.*(\..*)$/, '$1');*/
 			} else {
-				url = url.replace(/\/(\d+x\d*|gallery)_/, '/');
+				url = url.replace(/\/(\d+x\d*|gallery|medium|small|xsmall)_/, '/');
 			}
 			if (img.hasClass('avatar')) { url = url.replace(/_\d+\./, '_160.'); }
 			url = url.substr(0, url.lastIndexOf('.'));

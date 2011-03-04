@@ -3,14 +3,14 @@
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
-	name: 'Twimg.com',
+	name: 'Plurk',
 	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'img[src*=twimg.com]',
-			/_(normal|mini)/,
-			''
+			'img[src*=avatars.plurk.com]',
+			[/(small|medium)/, '.gif'],
+			['big', '.jpg']
 		);			
 		callback($(res));
 	}
