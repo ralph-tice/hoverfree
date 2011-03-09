@@ -70,7 +70,7 @@ var hoverZoomPluginFlickerA = {
 		if (storedUrl) {
 			link.data('hoverZoomSrc', [storedUrl]).addClass('hoverZoomLink');
 		} else {
-			link.mousemove(function() {
+			link.mouseenter(function() {
 				if (link.data('hoverZoomFlickrApiCalled')) { return; }
 				link.data('hoverZoomFlickrApiCalled', true);
 				var apiKey = '0bb8ac4ab9a737b644c407ba8f59e9e7';

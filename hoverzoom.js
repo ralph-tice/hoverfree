@@ -597,10 +597,16 @@ var hoverZoom = {
 			}
 		}
 		
+		function windowOnLoad(event) {
+			prepareImgLinksAsync();
+			//setTimeout(1000, hz.preloadImages);
+			hz.preloadImages();
+		}
+		
 		function bindEvents() {
 			$(document).mousemove(documentMouseMove).mouseleave(cancelImageLoading).mousedown(documentMouseDown);
 
-			wnd.bind('DOMNodeInserted', windowOnDOMNodeInserted).load(prepareImgLinksAsync).scroll(cancelImageLoading);
+			wnd.bind('DOMNodeInserted', windowOnDOMNodeInserted).load(windowOnLoad).scroll(cancelImageLoading);
 			
 			if (options.actionKey || options.fullZoomKey) {
 				$(document).keydown(function (event) {
@@ -751,6 +757,33 @@ var hoverZoom = {
 		hoverZoom.imgLoading.appendTo(hoverZoom.hzImg);
 	},
 	
+	preloadImages: function() {
+		
+		var hzPreload = $('#hzPreload'),
+			links = $('.hoverZoomLink'),
+			preloadIndex = 0;
+		if (!hzPreload.length) {
+			hzPreload = $('<div id="hzPreload" style="display: none"></div>').appendTo(document.body);
+		}
+	
+		function preloadNextImage() {
+			if (preloadIndex >= links.length) { return; }
+			var link = links.eq(preloadIndex++);
+			var hoverZoomSrcIndex = link.data('hoverZoomSrcIndex') || 0;
+			console.log('Preload: ' + link.data('hoverZoomSrc')[hoverZoomSrcIndex]);
+			$('<img src="' + link.data('hoverZoomSrc')[hoverZoomSrcIndex] + '">').appendTo(hzPreload).load(function() {
+				setTimeout(preloadNextImage, 200);
+			}).error(function() {
+				if (hoverZoomSrcIndex < link.data('hoverZoomSrc').length - 1) {
+					link.data('hoverZoomSrcIndex', hoverZoomSrcIndex + 1);
+					preloadIndex--;
+				}
+				setTimeout(preloadNextImage, 200);
+			});
+		}
+	
+		preloadNextImage();
+	}
 };
 
 hoverZoom.loadHoverZoom();
