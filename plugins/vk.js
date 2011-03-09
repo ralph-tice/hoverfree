@@ -13,8 +13,6 @@ hoverZoomPlugins.push( {
 				try {
 					photos = JSON.parse(data.match(/<!json>(.*)<!>/)[1]);
 				} catch(e) {
-					//console.log('photoId: ' + photoId);
-					//console.log(data);
 					return; 
 				}
 				for (var i in photos) {
@@ -37,7 +35,7 @@ hoverZoomPlugins.push( {
 			if (this.onclick) {
 				var onclick = this.onclick.toString();
 				if (onclick.indexOf('x_src:') > -1) {
-					link.data('hoverZoomSrc', [onclick.match(/x_src\s*:\s*"(.*)"/)[1]]).addClass('hoverZoomLink');
+					link.data('hoverZoomSrc', [onclick.match(/x_src\s*:\s*"([^"]*)"/)[1]]).addClass('hoverZoomLink');
 				}
 			}
 			if (link.data('hoverZoomSrc') || link.data('hoverZoomRequested')) { return; }
@@ -58,13 +56,11 @@ hoverZoomPlugins.push( {
 			if (img.data('hoverZoomRequested') || img.data('hoverZoomSrc')) { return; }
 			img.data('hoverZoomRequested', true);
 			var userId = this.src.match(/\/u(\d+)\//)[1];
-			//console.log('userId: ' + userId);
 			chrome.extension.sendRequest({action: 'ajaxGet', url: 'http://vk.com/al_profile.php?al=1&act=get_profile_photos&offset=0&skip_one=0&id=' + userId}, function(data) {
 				var photos;
 				try {
 					photos = JSON.parse(data.match(/<!json>(.*)$/)[1]);
 				} catch(e) {
-					//console.log(data);
 					return; 
 				}
 				if (photos.length) {

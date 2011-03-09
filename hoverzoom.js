@@ -759,19 +759,15 @@ var hoverZoom = {
 	
 	preloadImages: function() {
 		
-		var hzPreload = $('#hzPreload'),
-			links = $('.hoverZoomLink'),
+		var links = $('.hoverZoomLink'),
 			preloadIndex = 0;
-		if (!hzPreload.length) {
-			hzPreload = $('<div id="hzPreload" style="display: none"></div>').appendTo(document.body);
-		}
 	
 		function preloadNextImage() {
 			if (preloadIndex >= links.length) { return; }
 			var link = links.eq(preloadIndex++);
 			var hoverZoomSrcIndex = link.data('hoverZoomSrcIndex') || 0;
 			console.log('Preload: ' + link.data('hoverZoomSrc')[hoverZoomSrcIndex]);
-			$('<img src="' + link.data('hoverZoomSrc')[hoverZoomSrcIndex] + '">').appendTo(hzPreload).load(function() {
+			$('<img src="' + link.data('hoverZoomSrc')[hoverZoomSrcIndex] + '">').load(function() {
 				setTimeout(preloadNextImage, 200);
 			}).error(function() {
 				if (hoverZoomSrcIndex < link.data('hoverZoomSrc').length - 1) {
@@ -782,7 +778,7 @@ var hoverZoom = {
 			});
 		}
 	
-		preloadNextImage();
+		setTimeout(preloadNextImage, 200);
 	}
 };
 
