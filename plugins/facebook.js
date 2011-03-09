@@ -1,4 +1,4 @@
-// Copyright (c) 2010 Romain Vallet
+// Copyright (c) 2011 Romain Vallet <romain.vallet@gmail.com>
 // Licensed under the MIT license, read license.txt
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
@@ -91,10 +91,6 @@ hoverZoomPlugins.push( {
 				srcs.push(src.replace(/\/s\d+(-c)?\//, options.showHighRes ? '/' : '/s800/'));				
 			}
 			
-			if (options.showHighRes) {
-				srcs.push(src.replace('_n.', '_o.'));
-				console.log(src.replace('_n.', '_o.'));
-			}
 			srcs.push(src);
 			
 			var tooltip;

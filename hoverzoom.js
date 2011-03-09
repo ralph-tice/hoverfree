@@ -238,7 +238,7 @@ var hoverZoom = {
 		}
 
 		function documentMouseMove(event) {
-			if (!options.extensionEnabled || isExcludedSite() || wnd.height() < 30 || wnd.width() < 30) {
+			if (!options.extensionEnabled || fullZoomKeyDown || isExcludedSite() || wnd.height() < 30 || wnd.width() < 30) {
 				return;
 			}
 
@@ -674,7 +674,7 @@ var hoverZoom = {
 		}
 		
 		function init() {
-			if (!window.innerHeight || !window.innerWidth) { console.warn('[HoverZoom] small window:' + window.name + ' - url: ' + window.location.href); return; }
+			if (!window.innerHeight || !window.innerWidth) { /*console.warn('[HoverZoom] small window:' + window.name + ' - url: ' + window.location.href);*/ return; }
 			webSiteExcluded = null;
 			body100pct = (body.css('position') != 'static') || 
 						 (body.css('padding-left') == '0px' && body.css('padding-right') == '0px' && body.css('margin-left') == '0px' && body.css('margin-right') == '0px');

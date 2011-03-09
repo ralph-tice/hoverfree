@@ -869,6 +869,21 @@
 			"js": ["plugins/vimeo.js"],
 			"matches": ["*://*.vimeo.com/*"],
 			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/bebo.js"],
+			"matches": ["*://*.bebo.com/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/okcupid.js"],
+			"matches": ["*://*.okcupid.com/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/paheal.js"],
+			"matches": ["*://*.paheal.net/*"],
+			"run_at": "document_start"
 		}
 	]
 }
