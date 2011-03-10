@@ -19,9 +19,7 @@
 	"permissions": [
 		"tabs",
 		"history",
-		"http://ajax.googleapis.com/",
-		"http://open.api.ebay.com/",
-		"http://vk.com/"
+		"http://*/*"
 	],
 	"content_scripts": [
         {
@@ -883,6 +881,11 @@
 		{
 			"js": ["plugins/paheal.js"],
 			"matches": ["*://*.paheal.net/*"],
+			"run_at": "document_start"
+		},
+		{
+			"matches": ["*://*.reddit.com/*"],
+			"js": ["plugins/slutcapades.js"],
 			"run_at": "document_start"
 		}
 	]

@@ -48,6 +48,10 @@
 					case 'trackEvent':
 						if (_gaq) { _gaq.push(['_trackEvent', request.event.category, request.event.action, request.event.label]); }
 						break;
+					case 'preloadProgress':
+						localStorage.preloadingValue = request.value;
+						localStorage.preloadingMax = request.max;
+						break;				
 				}
 			};
 

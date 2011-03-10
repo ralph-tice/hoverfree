@@ -34,6 +34,7 @@ var hoverZoom = {
 			mousePos = {},
 			loading = false,
 			loadFullSizeImageTimeout,
+			preloadTimeout,
 			actionKeyDown = false,
 			fullZoomKeyDown = false,
 			pageActionShown = false,
@@ -483,6 +484,14 @@ var hoverZoom = {
 				hoverZoomPlugins[i].prepareImgLinks(imgLinksPrepared);
 			}
 			prepareImgLinksTimeout = null;
+			
+			if (options.alwaysPreload) {
+				clearTimeout(preloadTimeout);
+				preloadTimeout = setTimeout(hz.preloadImages, 800);
+			} else {
+				chrome.extension.sendRequest({action : 'preloadAvailable'});
+			}
+			
 			//prepareScaledImages();
 		}
 		
@@ -599,8 +608,6 @@ var hoverZoom = {
 		
 		function windowOnLoad(event) {
 			prepareImgLinksAsync();
-			//setTimeout(1000, hz.preloadImages);
-			hz.preloadImages();
 		}
 		
 		function bindEvents() {
@@ -757,28 +764,37 @@ var hoverZoom = {
 		hoverZoom.imgLoading.appendTo(hoverZoom.hzImg);
 	},
 	
+	// Preloads zoomed images
 	preloadImages: function() {
 		
 		var links = $('.hoverZoomLink'),
-			preloadIndex = 0;
+			preloadIndex = 0,
+			preloadDelay = 200;
 	
 		function preloadNextImage() {
 			if (preloadIndex >= links.length) { return; }
 			var link = links.eq(preloadIndex++);
-			var hoverZoomSrcIndex = link.data('hoverZoomSrcIndex') || 0;
-			console.log('Preload: ' + link.data('hoverZoomSrc')[hoverZoomSrcIndex]);
-			$('<img src="' + link.data('hoverZoomSrc')[hoverZoomSrcIndex] + '">').load(function() {
-				setTimeout(preloadNextImage, 200);
-			}).error(function() {
-				if (hoverZoomSrcIndex < link.data('hoverZoomSrc').length - 1) {
-					link.data('hoverZoomSrcIndex', hoverZoomSrcIndex + 1);
-					preloadIndex--;
-				}
-				setTimeout(preloadNextImage, 200);
-			});
+			if (link.data('hoverZoomPreloaded')) {
+				preloadNextImage();
+				chrome.extension.sendRequest({action: 'preloadProgress', value: preloadIndex, max: links.length});
+			} else {
+				var hoverZoomSrcIndex = link.data('hoverZoomSrcIndex') || 0;
+				$('<img src="' + link.data('hoverZoomSrc')[hoverZoomSrcIndex] + '">').load(function() {
+					//console.log('Preloaded: ' + this.src);
+					link.data('hoverZoomPreloaded', true);
+					setTimeout(preloadNextImage, preloadDelay);
+					chrome.extension.sendRequest({action: 'preloadProgress', value: preloadIndex, max: links.length});
+				}).error(function() {
+					if (hoverZoomSrcIndex < link.data('hoverZoomSrc').length - 1) {
+						link.data('hoverZoomSrcIndex', hoverZoomSrcIndex + 1);
+						preloadIndex--;
+					}
+					setTimeout(preloadNextImage, preloadDelay);
+				});
+			}
 		}
 	
-		setTimeout(preloadNextImage, 200);
+		setTimeout(preloadNextImage, preloadDelay);
 	}
 };
 

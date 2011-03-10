@@ -4,25 +4,36 @@
 		<link rel="stylesheet" href="common.css" />
 		<style type="text/css">
 			body { width: 15em; }
-			#footer { font-size: 8pt; text-align: right }
+			#preload { font-size: 8pt; float: left }
+			#footer { font-size: 8pt; float: right }
 			#siteDomain { color: #0e774a }
 		</style>
 		<script src="jquery.min.js"></script>
 		<script src="common.js"></script>
 		<script type="text/javascript">
-			var options;
-			var siteDomain;
+			var options,
+				siteDomain,
+				prgPreloading, lblPreloading, aPreload;
 			
 			function init() {				
 				// Load options
 				options = loadOptions();
 				$('#Dis-enable').text(options.whiteListMode ? 'Enable' : 'Disable');
+				prgPreloading = $('#prgPreloading');
+				lblPreloading = $('#lblPreloading');
+				aPreload = $('#aPreload');
+				
+				if (!options.alwaysPreload) {
+					aPreload.css('display', 'inline');
+				}
+				/*if (localStorage.preloadingValue < localStorage.preloadingMax) {
+					aPreload.css('display', 'none');
+					prgPreloading.attr('value', localStorage.preloadingValue).attr('max', localStorage.preloadingMax);
+					lblPreloading.css('display', 'inline');
+				}*/
 
 				chrome.tabs.getSelected(null, function(tab) {				
 					siteDomain = tab.url.split('/', 3)[2];
-					/*if (siteDomain.substr(0, 4) == 'www.') {
-						siteDomain = siteDomain.substr(4);
-					}*/
 					$('#siteDomain').text(siteDomain);
 					
 					$('#chkExtensionDisabled')[0].checked = !options.extensionEnabled;
@@ -34,6 +45,7 @@
 						}
 					}
 				});
+				chrome.extension.onRequest.addListener(onRequest);				
 			}
 			
 			function chkExtensionDisabledOnClick() {
@@ -67,12 +79,40 @@
 				localStorage.options = JSON.stringify(options);
 				sendOptions(options);
 			}
+			
+			function onRequest(request, sender, callback) {
+				switch(request.action) {
+					case 'preloadAvailable':
+						aPreload.css('display', 'inline');
+						break;				
+					case 'preloadProgress':
+						prgPreloading.attr('value', request.value).attr('max', request.max);
+						lblPreloading.css('display', request.value < request.max ? 'inline' : 'none');
+						if (request.value < request.max) {
+							aPreload.css('display', 'none');
+						}
+						break;				
+				}
+			}					
+			
+			function btnPreloadOnClick() {
+				chrome.tabs.executeScript(null, {code: 'if (hoverZoom) { hoverZoom.preloadImages(); }'});
+				aPreload.css('display', 'none');
+				/*localStorage.preloadingValue = 0;
+				localStorage.preloadingMax = 1;*/
+			}
 		</script>
 	</head>
 	<body onload="init()">
 		<h2>Hover Zoom</h2>
 		<table><tr><td><input type="checkbox" id="chkExtensionDisabled" onclick="chkExtensionDisabledOnClick()"></td><td><label for="chkExtensionDisabled">Disable for all sites</label></td></tr>
-		<tr><td><input type="checkbox" id="chkExcludeSite" onclick="chkExcludeSiteOnClick()"></td><td><label for="chkExcludeSite"><span id="Dis-enable">Disable</span> for <span id="siteDomain"></span></label></td></tr></table>
+		<tr><td><input type="checkbox" id="chkExcludeSite" onclick="chkExcludeSiteOnClick()"></td><td><label for="chkExcludeSite"><span id="Dis-enable">Disable</span> for <span id="siteDomain"></span></label></td></tr>
+		<tr><td colspan="2">
+		</td></tr></table>
+		<p id="preload">
+			<a href="#" id="aPreload" onclick="btnPreloadOnClick()" style="display: none">Preload zoomed images</a>
+			<span id="lblPreloading" style="display: none">Preloading... <progress id="prgPreloading" style="width: 6em;"></progress></span>
+		</p>
 		<p id="footer"><a href="options.html" target="_blank">More options</a></p>
 	</body>
 </html>
