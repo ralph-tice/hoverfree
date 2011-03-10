@@ -660,6 +660,7 @@ var hoverZoom = {
 				return param.length == 0 || param.attr('value').toLowerCase() == 'window';
 			}).each(function () {
 				var object = this.cloneNode(true);
+				object.children('param[name=wmode]').remove();
 				$('<param name="wmode" value="opaque">').appendTo(object);
 				$(this).replaceWith(object);
 			});
