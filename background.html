@@ -7,8 +7,8 @@
 			var options;
 			var _gaq;
 
-			// Performs an ajax GET request
-			function ajaxGet(url, callback) {
+			// Performs an ajax request
+			function ajaxRequest(request, callback) {
 				var xhr = new XMLHttpRequest();
 				xhr.onreadystatechange = function() {
 					if (xhr.readyState == 4) {
@@ -19,14 +19,20 @@
 						}
 					}
 				}
-				xhr.open('GET', url, true);
-				xhr.send();
+				xhr.open(request.method, request.url, true);
+				for (var i in request.headers) {
+					xhr.setRequestHeader(request.headers[i].header, request.headers[i].value);
+				}
+				xhr.send(request.data);
 			};
 
 			function onRequest(request, sender, callback) {
 				switch(request.action) {
 					case 'ajaxGet':
-						ajaxGet(request.url, callback);
+						ajaxRequest({url: request.url, method: 'GET'}, callback);
+						break;
+					case 'ajaxRequest':
+						ajaxRequest(request, callback);
 						break;
 					case 'showPageAction':
 						showPageAction(sender.tab);

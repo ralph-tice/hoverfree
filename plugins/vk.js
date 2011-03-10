@@ -8,25 +8,36 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 
 		function prepareFromPhotoId(link, photoId, listId) {
-			chrome.extension.sendRequest({action: 'ajaxGet', url: 'http://vk.com/al_photos.php?al=1&act=show&photo=' + photoId + '&list=' + listId}, function(data) {
-				var photos, url;
-				try {
-					photos = JSON.parse(data.match(/<!json>(.*)<!>/)[1]);
-				} catch(e) {
-					return; 
-				}
-				for (var i in photos) {
-					if (photos[i].id == photoId) {
-						link.data('hoverZoomSrc', [photos[i].x_src]).addClass('hoverZoomLink');
-					} else {
-						// in case the request fetched details on another photo on the page
-						$('a[href^=/photo' + photos[i].id + ']').data('hoverZoomSrc', [photos[i].x_src]).addClass('hoverZoomLink');
+			if (!listId) {
+				listId = 'photos' + photoId.match(/(\d+)_/)[1];
+			}
+			chrome.extension.sendRequest({action: 'ajaxRequest', 
+				url: 'http://vk.com/al_photos.php',
+				method: 'POST',
+				data: 'al=1&act=show&photo=' + photoId + '&list=' + listId, 
+				headers: [{header: 'Content-Type', value: 'application/x-www-form-urlencoded'},
+				          {header: 'X-Requested-With', value: 'XMLHttpRequest'}]}, 
+				function(data) {
+					var photos;
+					try {
+						//console.error('http://vk.com/al_photos.php?al=1&act=show&photo=' + photoId + '&list=' + listId);
+						//console.error(data);
+						photos = JSON.parse(data.match(/<!json>(.*)<!>/)[1]);
+					} catch(e) {
+						return; 
 					}
-				}
-				if (!link.data('hoverZoomMouseLeft')) {
-					hoverZoom.displayPicFromElement(link);
-				}
-			});
+					for (var i in photos) {
+						if (photos[i].id == photoId) {
+							link.data('hoverZoomSrc', [photos[i].x_src]).addClass('hoverZoomLink');
+						} else {
+							// in case the request fetched details on another photo on the page
+							$('a[href^=/photo' + photos[i].id + ']').data('hoverZoomSrc', [photos[i].x_src]).addClass('hoverZoomLink');
+						}
+					}
+					if (!link.data('hoverZoomMouseLeft')) {
+						hoverZoom.displayPicFromElement(link);
+					}
+				});
 		}
 	
 		$('a[href^=/photo]').mouseenter(function () {
