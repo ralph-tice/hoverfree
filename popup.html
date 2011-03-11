@@ -26,11 +26,6 @@
 				if (!options.alwaysPreload) {
 					aPreload.css('display', 'inline');
 				}
-				/*if (localStorage.preloadingValue < localStorage.preloadingMax) {
-					aPreload.css('display', 'none');
-					prgPreloading.attr('value', localStorage.preloadingValue).attr('max', localStorage.preloadingMax);
-					lblPreloading.css('display', 'inline');
-				}*/
 
 				chrome.tabs.getSelected(null, function(tab) {				
 					siteDomain = tab.url.split('/', 3)[2];
@@ -98,8 +93,8 @@
 			function btnPreloadOnClick() {
 				chrome.tabs.executeScript(null, {code: 'if (hoverZoom) { hoverZoom.preloadImages(); }'});
 				aPreload.css('display', 'none');
-				/*localStorage.preloadingValue = 0;
-				localStorage.preloadingMax = 1;*/
+				prgPreloading.attr('value', 0).attr('max', 1);
+				lblPreloading.css('display', 'inline');
 			}
 		</script>
 	</head>

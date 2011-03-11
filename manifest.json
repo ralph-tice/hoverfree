@@ -887,6 +887,11 @@
 			"matches": ["*://*.reddit.com/*"],
 			"js": ["plugins/slutcapades.js"],
 			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/instructables.js"],
+			"matches": ["*://*.instructables.com/*"],
+			"run_at": "document_start"
 		}
 	]
 }

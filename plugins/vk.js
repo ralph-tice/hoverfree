@@ -20,8 +20,6 @@ hoverZoomPlugins.push( {
 				function(data) {
 					var photos;
 					try {
-						//console.error('http://vk.com/al_photos.php?al=1&act=show&photo=' + photoId + '&list=' + listId);
-						//console.error(data);
 						photos = JSON.parse(data.match(/<!json>(.*)<!>/)[1]);
 					} catch(e) {
 						return; 

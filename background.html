@@ -3,9 +3,8 @@
 	<body>
 		<script src="common.js"></script>
 		<script type="text/javascript">
-			var extensionVersion = '2.3';
-			var options;
-			var _gaq;
+			var extensionVersion = '2.3',
+				options, _gaq;
 
 			// Performs an ajax request
 			function ajaxRequest(request, callback) {
@@ -54,10 +53,6 @@
 					case 'trackEvent':
 						if (_gaq) { _gaq.push(['_trackEvent', request.event.category, request.event.action, request.event.label]); }
 						break;
-					case 'preloadProgress':
-						localStorage.preloadingValue = request.value;
-						localStorage.preloadingMax = request.max;
-						break;				
 				}
 			};
 
@@ -103,6 +98,7 @@
 				_gaq.push(['_trackEvent', 'Options', 'showCaptions', options.showCaptions.toString()]);
 				_gaq.push(['_trackEvent', 'Options', 'showHighRes', options.showHighRes.toString()]);
 				_gaq.push(['_trackEvent', 'Options', 'addToHistory', options.addToHistory.toString()]);
+				_gaq.push(['_trackEvent', 'Options', 'alwaysPreload', options.alwaysPreload.toString()]);
 				_gaq.push(['_trackEvent', 'Options', 'displayDelay', options.displayDelay.toString()]);
 				_gaq.push(['_trackEvent', 'Options', 'fadeDuration', options.fadeDuration.toString()]);
 				_gaq.push(['_trackEvent', 'Options', 'picturesOpacity', options.picturesOpacity.toString()]);

@@ -421,7 +421,6 @@ var hoverZoom = {
 		// Callback function called by plugins after they finished preparing the links
 		function imgLinksPrepared(links) {	
 			var showPageAction = false;
-
 			links.each(function () {
 				var _this = $(this);
 				if (!_this.data('hoverZoomSrc')) {
@@ -429,17 +428,19 @@ var hoverZoom = {
 					prepareImgLinksAsync(true);
 			
 				} else {
-										
+								
 					// Skip if the image has the same URL as the thumbnail.
-					// Base64 embedded thumbnails are filtered to avoid a freeze.
 					try {
-						if (_this.data('hoverZoomSrc')[0] == _this.attr('src') ||
-							_this.data('hoverZoomSrc')[0].indexOf("'") == -1 && 
-							_this.find('img[src]').length && 
-							_this.find('img[src^=data]').length == 0 && 
-							_this.find('img[src="' + _this.data('hoverZoomSrc')[0] + '"]').length) {
-							return;
+						var url = _this.data('hoverZoomSrc')[0],
+							skip = (url == _this.attr('src'));
+						if (!skip) {
+							_this.find('img[src]').each(function() {
+								if (this.src == url) {
+									skip = true;
+								}
+							});
 						}
+						if (skip) { return; }
 					} catch(e) {
 						console.error(e);
 					}
@@ -477,7 +478,6 @@ var hoverZoom = {
 		}
 		
 		function prepareImgLinks() {
-			//console.log('prepareImgLinks');
 			pageActionShown = false;
 			$('.hoverZoomLink').removeClass('hoverZoomLink').removeData('hoverZoomSrc');
 			for (var i = 0; i < hoverZoomPlugins.length; i++) {
@@ -648,7 +648,7 @@ var hoverZoom = {
 		}
 		
 		function fixFlash() {
-			//if ($('.hoverZoomLink').length == 0) { return; }
+			if ($('.hoverZoomLink').length == 0) { return; }
 			$('embed:not([wmode]), embed[wmode=window], object[type=application/x-shockwave-flash]').each(function () {
 				if (this.type.toLowerCase() != 'application/x-shockwave-flash') { return; }
 				var embed = this.cloneNode(true);
@@ -688,7 +688,8 @@ var hoverZoom = {
 		}
 		
 		function init() {
-			if (!window.innerHeight || !window.innerWidth) { /*console.warn('[HoverZoom] small window:' + window.name + ' - url: ' + window.location.href);*/ return; }
+			if (!window.innerHeight || !window.innerWidth) { return; }
+			
 			webSiteExcluded = null;
 			body100pct = (body.css('position') != 'static') || 
 						 (body.css('padding-left') == '0px' && body.css('padding-right') == '0px' && body.css('margin-left') == '0px' && body.css('margin-right') == '0px');
@@ -781,7 +782,6 @@ var hoverZoom = {
 			} else {
 				var hoverZoomSrcIndex = link.data('hoverZoomSrcIndex') || 0;
 				$('<img src="' + link.data('hoverZoomSrc')[hoverZoomSrcIndex] + '">').load(function() {
-					//console.log('Preloaded: ' + this.src);
 					link.data('hoverZoomPreloaded', true);
 					setTimeout(preloadNextImage, preloadDelay);
 					chrome.extension.sendRequest({action: 'preloadProgress', value: preloadIndex, max: links.length});
