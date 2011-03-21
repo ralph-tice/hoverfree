@@ -26,7 +26,6 @@ var hoverZoom = {
 		var hz = hoverZoom,
 			wnd = $(window),
 			body = $(document.body),
-			hzDownscaledImg = null,
 			hzCaption = null,
 			imgFullSize = null,
 			imgSrc = '',
@@ -70,11 +69,6 @@ var hoverZoom = {
 			'max-height': '27px',
 			'overflow': 'hidden',
 			'vertical-align': 'top'
-		},
-		hzDownscaledImgCss = {
-			'position': 'absolute',
-			'top': '-9000px',
-			'left': '-9000px'
 		};
 
 		// Calculate optimal image position and size
@@ -260,24 +254,6 @@ var hoverZoom = {
 				}
 			}
 			
-			// Not finished
-			/*if (target.hasClass('hoverZoomDownscaled')) {
-				if (!target.hasClass('hoverZoomLink')) {
-					var widthAttr = parseInt(event.target.getAttribute('width') || event.target.style.width || event.target.style.maxWidth),
-						heightAttr = parseInt(event.target.getAttribute('height') || event.target.style.height || event.target.style.maxHeight);
-					if (hzDownscaledImg) { hzDownscaledImg.remove(); }
-					hzDownscaledImg = $('<img id="hzDownscaledImg">').css(hzDownscaledImgCss).load(function () {
-						//console.log('Original: ' + hzDownscaledImg.width() + 'x' + hzDownscaledImg.height() + ' - Resized: ' + widthAttr + 'x' + heightAttr + ' - ' + hzDownscaledImg.attr('src'));
-						if (hzDownscaledImg.height() > heightAttr + 10 || hzDownscaledImg.width() > widthAttr + 10) {
-							target.data('hoverZoomSrc', [target.attr('src')]).addClass('hoverZoomLink');
-							hzDownscaledImg.attr('src', '');
-							links = links.add(target);
-						}
-					}).attr('src', event.target.src).appendTo(document.body);
-				}
-			}*/
-
-			
 			if (links && links.length > 0) {
 				var hoverZoomSrcIndex = links.data('hoverZoomSrcIndex') || 0;
 				if (links.data('hoverZoomSrc') && links.data('hoverZoomSrc') != 'undefined' && 
@@ -354,7 +330,10 @@ var hoverZoom = {
 						if (!skipFadeIn) {
 							hz.hzImg.hide().fadeTo(options.fadeDuration, options.picturesOpacity);
 						}
+                        
+                        // The image size is not yet available in the onload so I have to delay the positioning
 						setTimeout(posImg, 10);
+                        
 						if (options.addToHistory && !chrome.extension.inIncognitoTab) {
 							chrome.extension.sendRequest({action: 'addUrlToHistory', url: imgSrc});
 						}
@@ -377,6 +356,7 @@ var hoverZoom = {
 							setTimeout(loadFullSizeImage, 100);
 						} else {
 							hideHoverZoomImg();
+							hz.currentLink.removeClass('hoverZoomLink').removeData();
 							console.warn('[HoverZoom] Failed to load image: ' + imgSrc);
 							chrome.extension.sendRequest({action: 'trackEvent', event: {category: 'Errors', action: 'LoadingErrorFromSite', label: imgHost}});
 						}
@@ -492,33 +472,35 @@ var hoverZoom = {
 				chrome.extension.sendRequest({action : 'preloadAvailable'});
 			}
 			
-			//prepareScaledImages();
+			prepareDownscaledImages();
 		}
 		
-		// Not finished
-		function prepareScaledImages() {
+		function prepareDownscaledImages() {
 			$('img').filter(function () {
-				return this.getAttribute('width') || this.getAttribute('height') || 
+				// Only images with a specified width, height, max-width or max-weight are processed.
+				var scaled = this.getAttribute('width') || this.getAttribute('height') || 
 					this.style && (this.style.width || this.style.height || this.style.maxWidth || this.style.maxHeight);
-			}).addClass('hoverZoomDownscaled');
-			/*.mouseenter(function () {
-				var img = $(this),
-					widthAttr = parseInt(this.getAttribute('width') || this.style.width || this.style.maxWidth),
-					heightAttr = parseInt(this.getAttribute('height') || this.style.height || this.style.maxHeight);
-				if (!img.hasClass('hoverZoomLink')) {
-					if (hzDownscaledImg) { hzDownscaledImg.remove(); }
-					hzDownscaledImg = $('<img id="hzDownscaledImg">').appendTo(document.body);
-					hzDownscaledImg.load(function () {
-							//console.log(this.complete);
-							//console.log('Original: ' + hzDownscaledImg.width() + 'x' + hzDownscaledImg.height() + ' - Resized: ' + widthAttr + 'x' + heightAttr);
-						if (hzDownscaledImg.height() > heightAttr + 10 || hzDownscaledImg.width() > widthAttr + 10) {
-							img.data('hoverZoomSrc', [img.attr('src')]).addClass('hoverZoomLink');
-							hzDownscaledImg.attr('src', '');
-						}
-					}).attr('src', this.src);
+				if (!scaled) {
+					var _this = $(this);
+					scaled = scaled || _this.css('width') != '0px' || _this.css('height') != '0px' || _this.css('max-width') != 'none' || _this.css('max-height') != 'none';
 				}
-				$(document).mousemove();
-			});*/
+				return scaled;
+			}).one('mouseover.hoverZoom', function () {
+				var img = $(this),
+					widthAttr = parseInt(this.getAttribute('width') || this.style.width || this.style.maxWidth || img.css('width') || img.css('max-width')),
+					heightAttr = parseInt(this.getAttribute('height') || this.style.height || this.style.maxHeight || img.css('height') || img.css('max-height')),
+					hzDownscaled = $('<img id="hzDownscaled" style="position: absolute; top: -10000px;">').appendTo(document.body);
+				hzDownscaled.load(function () {
+					setTimeout(function() {
+						if (hzDownscaled.height() > heightAttr * 1.8 || hzDownscaled.width() > widthAttr * 1.8) {
+							var srcs = img.data('hoverZoomSrc') || [];
+							srcs.unshift(img.attr('src'));
+							img.data('hoverZoomSrc', srcs).addClass('hoverZoomLink');
+						}
+						hzDownscaled.remove();
+					}, 10);
+				}).attr('src', this.src);
+			});
 		}
 		
 		var prepareImgLinksDelay = 500, prepareImgLinksTimeout;
@@ -596,8 +578,10 @@ var hoverZoom = {
 		
 		function windowOnDOMNodeInserted(event) {
 			if (event.srcElement) {
+				if (event.srcElement.id == 'hzImg' || 
+					event.srcElement.parentNode.id == 'hzImg' ||
+					event.srcElement.id == 'hzDownscaled') { return; }
 				var srcElement = $(event.srcElement);
-				if (srcElement.parents('#hzImg').length) { return; }
 				if (event.srcElement.nodeName == 'A' || event.srcElement.nodeName == 'IMG' || srcElement.find('a, img').length || srcElement.parents('a, img').length) {
 					prepareImgLinksAsync();
 				} else if (event.srcElement.nodeName == 'EMBED' || event.srcElement.nodeName == 'OBJECT') {
