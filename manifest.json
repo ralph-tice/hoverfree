@@ -1,7 +1,7 @@
-{
+﻿{
     "name": "Hover Zoom",
     "version": "2.3",
-    "description": "Enlarge thumbnails on mouse over. Works on many sites (Facebook, Twitter, Google, Flickr, Reddit, Amazon, etc).",
+    "description": "Enlarge thumbnails on mouse over. Works on many sites (Facebook, Twitter, Google™, Flickr, Reddit, Amazon, etc).",
 	"icons": {
 		"16": "images/icon16.png",
 		"32": "images/icon32.png",
@@ -891,6 +891,11 @@
 		{
 			"js": ["plugins/instructables.js"],
 			"matches": ["*://*.instructables.com/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/nofrag.js"],
+			"matches": ["*://*.nofrag.com/*"],
 			"run_at": "document_start"
 		}
 	]
