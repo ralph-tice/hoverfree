@@ -477,6 +477,10 @@ var hoverZoom = {
 		
 		function prepareDownscaledImages() {
 			$('img').filter(function () {
+			
+				// Don't process when the image is the only element on the page (well, first element).
+				if (this == document.body.firstChild) { return; }
+				
 				// Only images with a specified width, height, max-width or max-weight are processed.
 				var scaled = this.getAttribute('width') || this.getAttribute('height') || 
 					this.style && (this.style.width || this.style.height || this.style.maxWidth || this.style.maxHeight);
