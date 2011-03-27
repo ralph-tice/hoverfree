@@ -13,6 +13,7 @@ hoverZoomPlugins.push({
 	
 		function prepareImgLink() {
 			var _this = $(this);
+			if (_this.data('hoverZoomSrc')) { return; }
 			var src = _this.find('img')[0].src;
 			src = src.replace(/\/s\d+(-c)?\//, options.showHighRes ? '/' : '/s800/');
 			_this.data('hoverZoomSrc', [src]).addClass('hoverZoomLink');
