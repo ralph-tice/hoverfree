@@ -897,6 +897,11 @@
 			"js": ["plugins/nofrag.js"],
 			"matches": ["*://*.nofrag.com/*"],
 			"run_at": "document_start"
-		}
+		},
+        {
+            "js": ["plugins/pictmobi.js"],
+            "matches": ["*://*.pict.mobi/*"],
+            "run_at": "document_start"
+        }
 	]
 }
