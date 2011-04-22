@@ -3,7 +3,7 @@
 	<body>
 		<script src="common.js"></script>
 		<script type="text/javascript">
-			var extensionVersion = '2.5',
+			var extensionVersion = '2.6',
 				options, _gaq;
 
 			// Performs an ajax request
@@ -49,6 +49,15 @@
 					case 'saveOptions':
 						localStorage.options = JSON.stringify(request.options);
 						sendOptions(request.options);
+						break;
+					case 'setItem':
+						localStorage.setItem(request.id, request.data);
+						break;
+					case 'getItem':
+						callback(localStorage.getItem(request.id));
+						break;
+					case 'removeItem':
+						localStorage.removeItem(request.id);
 						break;
 					case 'trackEvent':
 						if (_gaq) { _gaq.push(['_trackEvent', request.event.category, request.event.action, request.event.label]); }
@@ -102,6 +111,7 @@
 				_gaq.push(['_trackEvent', 'Options', 'displayDelay', options.displayDelay.toString()]);
 				_gaq.push(['_trackEvent', 'Options', 'fadeDuration', options.fadeDuration.toString()]);
 				_gaq.push(['_trackEvent', 'Options', 'picturesOpacity', options.picturesOpacity.toString()]);
+				_gaq.push(['_trackEvent', 'Options', 'showWhileLoading', options.showWhileLoading.toString()]);
 				_gaq.push(['_trackEvent', 'Options', 'actionKey', keyCodeToKeyName(options.actionKey)]);
 				_gaq.push(['_trackEvent', 'Options', 'fullZoomKey', keyCodeToKeyName(options.fullZoomKey)]);
 				_gaq.push(['_trackEvent', 'Options', 'whiteListMode', options.whiteListMode.toString()]);

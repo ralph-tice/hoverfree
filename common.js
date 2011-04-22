@@ -21,10 +21,11 @@ function loadOptions() {
 	options.excludedSites = 	options.hasOwnProperty('excludedSites') ? options.excludedSites : [];
 	options.whiteListMode = 	options.hasOwnProperty('whiteListMode') ? options.whiteListMode : false;
 	options.picturesOpacity = 	options.hasOwnProperty('picturesOpacity') ? options.picturesOpacity : 1;
+	options.showWhileLoading = 	options.hasOwnProperty('showWhileLoading') ? options.showWhileLoading : false;
 	
 	// Action keys
 	options.actionKey = 		options.hasOwnProperty('actionKey') ? options.actionKey : 0;
-	options.fullZoomKey = 		options.hasOwnProperty('fullZoomKey') ? options.fullZoomKey : 0;
+	options.fullZoomKey = 		options.hasOwnProperty('fullZoomKey') ? options.fullZoomKey : 90;
 	
 	localStorage.options = JSON.stringify(options);
 	

@@ -58,6 +58,7 @@
 				options.displayDelay = getMilliseconds($('#txtDisplayDelay'));
 				options.fadeDuration = getMilliseconds($('#txtFadeDuration'));				
 				options.picturesOpacity = $('#sliderPicturesOpacity').slider('value') / 100;
+				options.showWhileLoading = $('#chkShowWhileLoading')[0].checked;
 				
 				// Excluded sites
 				options.excludedSites = [];
@@ -87,6 +88,7 @@
 				$('#txtFadeDuration').val((options.fadeDuration || 0) / 1000);
 				$('#selActionKey').val(options.actionKey);
 				$('#selFullZoomKey').val(options.fullZoomKey);
+				$('#chkShowWhileLoading')[0].checked = options.showWhileLoading;
 				
 				$('#txtPicturesOpacity').val(options.picturesOpacity * 100);
 				$('#sliderPicturesOpacity').slider('value', options.picturesOpacity * 100);
@@ -202,6 +204,7 @@
 							<span class="hint">(Only when images can be zoomed)</span></label></p>
 						<p><input type="checkbox" id="chkShowCaptions"> <label for="chkShowCaptions">Show pictures captions<br>
 							<span class="hint">(When available)</span></label></p>
+						<p><input type="checkbox" id="chkShowWhileLoading"> <label for="chkShowWhileLoading">Show zoomed pictures while loading</label></p>
 						<p><input type="checkbox" id="chkShowHighRes"> <label for="chkShowHighRes">Show high resolution pictures when available<br>
 							<span class="hint">(Pictures may take more time to load)</span></label></p>
 						<hr>
