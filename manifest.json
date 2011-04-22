@@ -1,6 +1,6 @@
 ﻿{
     "name": "Hover Zoom",
-    "version": "2.5",
+    "version": "2.6",
     "description": "Enlarge thumbnails on mouse over. Works on many sites (Facebook, Twitter, Google™, Flickr, Reddit, Amazon, etc).",
 	"icons": {
 		"16": "images/icon16.png",
@@ -41,6 +41,10 @@
 				   "plugins/skyrock_a.js",
 				   "plugins/imageshack_a.js",
 				   "plugins/fukung_a.js",
+				   "plugins/mediawiki_a.js",
+				   "plugins/wordpress_a.js",
+				   "plugins/vbulletin_a.js",
+				   "plugins/ipboard_a.js",
 				   "plugins/twitpic_a.js"],
 			"matches": ["<all_urls>"],
 			"run_at": "document_start",
@@ -49,7 +53,8 @@
         {
             "js": ["plugins/facebook.js"],
 			"matches": ["*://*.facebook.com/*"],
-			"run_at": "document_start"
+			"run_at": "document_start",
+			"all_frames": true
         },
         {
             "js": ["plugins/flickr.js"],
@@ -248,20 +253,6 @@
         {
             "js": ["plugins/deviantart.js"],
 			"matches": ["*://*.deviantart.com/*"],
-			"run_at": "document_start"
-        },
-        {
-            "js": ["plugins/wikipedia.js"],
-			"matches": ["*://*.wikipedia.org/*", 
-				        "*://*.wikimedia.org/*", 
-						"*://*.wiktionary.org/*", 
-						"*://*.wikinews.org/*", 
-						"*://*.wikiquote.org/*", 
-						"*://*.wikibooks.org/*",
-						"*://*.wikisource.org/*",
-						"*://*.wikiversity.org/*",
-						"*://*.encyclopediadramatica.com/*",
-						"*://*/wiki/*"],
 			"run_at": "document_start"
         },
 		{
