@@ -7,7 +7,7 @@ hoverZoomPlugins.push( {
 	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [],
-			search = 'img[src*=/photos/]';
+			search = 'img[src*="/photos/"]';
 		hoverZoom.urlReplace(res, 
 			search,
 			/(square|thumbnail|small)/,

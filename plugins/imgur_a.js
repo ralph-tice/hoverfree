@@ -65,12 +65,12 @@ hoverZoomPlugins.push( {
 		}
 	
 		// Every sites
-		$('a[href*=imgur.com/]').each(prepareImgLink);
+		$('a[href*="imgur.com/"]').each(prepareImgLink);
 		
 		// On imgur.com (galleries, etc)
 		if (window.location.host.indexOf('imgur.com') > -1) {
 			minSplitLength = 2;
-			$('a[href^=/]').each(prepareImgLink);			
+			$('a[href^="/"]').each(prepareImgLink);			
 		}
 		
 		if (res.length) { callback($(res));	}

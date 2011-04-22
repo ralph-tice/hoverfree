@@ -8,7 +8,7 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = [],
 			https = (document.location.protocol == 'https:'),
-			filter = https ? 'a img[src*=/th/]' : 'a img[src^=http://th]',
+			filter = https ? 'a img[src*="/th/"]' : 'a img[src^="http://th"]',
 			sizeIndex = https ? 5 : 4;
 		$(filter).each(function() {
 			var img = $(this);

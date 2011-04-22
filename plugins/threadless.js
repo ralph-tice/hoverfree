@@ -8,19 +8,19 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			//'a[href*=/product/] img[src*=threadlesskids], a.thumblink img, a[href^=/gallery/] img, img.product',
-			'img[src*=-minizoom], img[src*=-view]',
+			//'a[href*="/product/"] img[src*="threadlesskids"], a.thumblink img, a[href^="/gallery/"] img, img.product',
+			'img[src*="-minizoom"], img[src*="-view"]',
 			/product\/\d+x\d+\/(\d+)-/,
 			'product/$1/'
 		);	
 		hoverZoom.urlReplace(res, 
-			'a[href*=/product/] img',
+			'a[href*="/product/"] img',
 			/\d+x\d+/,
 			'636x460'
 		);	
 		$('td').filter(function() {
 			return this.style && this.style.backgroundImage && this.style.backgroundImage.indexOf('subs/small') > 1;
-		}).add('img[src*=subs/small]').each(function() {
+		}).add('img[src*="subs/small"]').each(function() {
 			var _this = $(this), 
 				url = hoverZoom.getThumbUrl(this);
 			url = url.replace('small', 'big').replace('t.', '.');
@@ -28,7 +28,7 @@ hoverZoomPlugins.push( {
 			_this.data('hoverZoomSrc', [url + '.jpg', url + '.png', url + '.gif']);
 			res.push(_this);
 		});		
-		$('img[src*=/profiles/]:not([src*=noimage]), img[src*=teeriffic], .product_image').each(function() {
+		$('img[src*="/profiles/"]:not([src*="noimage"]), img[src*="teeriffic"], .product_image').each(function() {
 			var _this = $(this), 
 				url = hoverZoom.getThumbUrl(this);
 			url = url.replace(/\/\d+x\d+/, '');

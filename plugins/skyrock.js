@@ -8,17 +8,17 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'a img[src*=small]',
+			'a img[src*="small"]',
 			['/small.', '_small_'],
 			['/big.', '_']
 		);
 		hoverZoom.urlReplace(res, 
-			'a img[src*=_avatar_]',
+			'a img[src*="_avatar_"]',
 			'_avatar_',
 			'_'
 		);
 		hoverZoom.urlReplace(res, 
-			'#photolist a img[src*=big]',
+			'#photolist a img[src*="big"]',
 			/\?.*$/,
 			''
 		);

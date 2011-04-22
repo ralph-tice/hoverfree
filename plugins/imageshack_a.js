@@ -8,7 +8,7 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'a img[src*=imageshack.us]',
+			'a img[src*="imageshack.us"]',
 			'.th',
 			''
 		);	

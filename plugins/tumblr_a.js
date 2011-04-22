@@ -7,7 +7,7 @@ hoverZoomPlugins.push( {
 	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [];
-		$('img[src*=media.tumblr.com]').each(function() {
+		$('img[src*="media.tumblr.com"]').each(function() {
 			var img = $(this),
 				url = img.attr('src'),
 				link = img.parents('a:eq(0)'),
@@ -27,7 +27,7 @@ hoverZoomPlugins.push( {
 			}
 		});
 		hoverZoom.urlReplace(res, 
-			'a[href*=tumblr.com/photo/]',
+			'a[href*="tumblr.com/photo/"]',
 			'',
 			''
 		);		

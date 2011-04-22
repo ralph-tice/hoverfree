@@ -10,7 +10,7 @@ var hoverZoomPluginFlickerA = {
 		
 		// Thumbnails
 		// First processing: no API calls, only medium size images
-		$('a img[src*=static.flickr.com]').filter(function() {
+		$('a img[src*="static.flickr.com"]').filter(function() {
 			return this.src.match(/_[mst]\./);
 		}).each(function() {
 			var _this = $(this),
@@ -30,9 +30,9 @@ var hoverZoomPluginFlickerA = {
 		callback($(res));
 		
 		// Links to flickr pages. Requires API calls.
-		var filter = 'a[href*=flickr.com/photos/]';
+		var filter = 'a[href*="flickr.com/photos/"]';
 		if (document.location.hostname == 'www.flickr.com') {
-			filter = 'a[href*=/photos/]';
+			filter = 'a[href*="/photos/"]';
 		}
 		$(filter).each(function() {
 			hoverZoomPluginFlickerA.prepareImgLinkFromHref($(this));

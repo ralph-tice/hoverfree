@@ -29,7 +29,7 @@ hoverZoomPlugins.push( {
 							link.data('hoverZoomSrc', [photos[i].x_src]).addClass('hoverZoomLink');
 						} else {
 							// in case the request fetched details on another photo on the page
-							$('a[href^=/photo' + photos[i].id + ']').data('hoverZoomSrc', [photos[i].x_src]).addClass('hoverZoomLink');
+							$('a[href^="/photo' + photos[i].id + '"]').data('hoverZoomSrc', [photos[i].x_src]).addClass('hoverZoomLink');
 						}
 					}
 					if (!link.data('hoverZoomMouseLeft')) {
@@ -38,7 +38,7 @@ hoverZoomPlugins.push( {
 				});
 		}
 	
-		$('a[href^=/photo]').mouseenter(function () {
+		$('a[href^="/photo"]').mouseenter(function () {
 			var link = $(this);
 			if (link.data('hoverZoomSrc')) { return; }
 			if (this.onclick) {
@@ -58,7 +58,7 @@ hoverZoomPlugins.push( {
 			$(this).data('hoverZoomMouseLeft', true);
 		});
 	
-		$('img[src*=/u]').filter(function() {
+		$('img[src*="/u"]').filter(function() {
 			return this.src.match(/\/u\d+\/[ed]_/);
 		}).mouseenter(function () {
 			var img = $(this);

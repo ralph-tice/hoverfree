@@ -8,12 +8,12 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'img[src*=/avatars/]:not([src*=_full.])',
+			'img[src*="/avatars/"]:not([src*="_full."])',
 			/(_medium)?\.(jpg|png)$/,
 			'_full.$2'
 		);
 		hoverZoom.urlReplace(res, 
-			'img[src*=.116x65.]',
+			'img[src*=".116x65."]',
 			'.116x65.',
 			'.1920x1080.'
 		);

@@ -7,7 +7,7 @@ hoverZoomPlugins.push( {
 	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [];
-		$("a img:not([src$=empty.gif]):not(.hnipimg)").each(function() {
+		$('a img:not([src$="empty.gif"]):not(.hnipimg)').each(function() {
 			var img = $(this);
 			var src = img.attr('src');
 			if (!src) return;

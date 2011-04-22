@@ -8,9 +8,9 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'a img[src*=/tn/]',
-			/tn[\/\\]+mini-/,
-			''
+			'a img[src*="/mini_"]',
+			'/mini_',
+			'/'
 		);	
 		callback($(res));
 	}

@@ -7,7 +7,7 @@ hoverZoomPlugins.push( {
 	version: '0.2',
 	prepareImgLinks: function(callback) {
 		var res = [];
-		$('a img[src*=/assets]').each(function() {
+		$('a img[src*="/assets"]').each(function() {
 			var img = $(this),
 				url = hoverZoom.getThumbUrl(this);
 			if (!url) {	return;	}
@@ -27,12 +27,12 @@ hoverZoomPlugins.push( {
 			'_n.'
 		);
 		hoverZoom.urlReplace(res, 
-			'img[src*=/wp/], img[src*=/wp-content/]',
+			'img[src*="/wp/"], img[src*="/wp-content/"]',
 			/-\d+x\d+\./, 
 			'.'
 		);
 		hoverZoom.urlReplace(res, 
-			'img[src*=_thumb.]',
+			'img[src*="_thumb."]',
 			'_thumb.', 
 			'.'
 		);

@@ -8,7 +8,7 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'img[src*=_mini.]:not([src*=default_profile_]), img[src*=_normal.]:not([src*=default_profile_]), img[src*=_bigger.]:not([src*=default_profile_])',
+			'img[src*="_mini."]:not([src*="default_profile_"]), img[src*="_normal."]:not([src*="default_profile_"]), img[src*="_bigger."]:not([src*="default_profile_"])',
 			/_(mini|normal|bigger)\./,
 			'.',
 			':eq(0)'

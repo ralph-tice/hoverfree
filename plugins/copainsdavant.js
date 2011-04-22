@@ -8,12 +8,12 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'img[src*=image-uniservice]',
+			'img[src*="image-uniservice"]',
 			/\/image\/\d+\//,
 			'/image/450/'
 		);	
 		hoverZoom.urlReplace(res, 
-			'img[src*=image-parcours]',
+			'img[src*="image-parcours"]',
 			/\/image\/\d+\//,
 			'/image/750/'
 		);	

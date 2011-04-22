@@ -8,7 +8,7 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'a[href*=twitpic.com]',
+			'a[href*="twitpic.com"]',
 			/twitpic\.com\/([^\/]*)$/,
 			'twitpic.com/show/' + (options.showHighRes ? 'full' : 'large') + '/$1'
 		);			

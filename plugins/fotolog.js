@@ -7,7 +7,7 @@ hoverZoomPlugins.push( {
 	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [],
-			filter = 'img[src*=_t.], img[src*=_m.]',
+			filter = 'img[src*="_t."], img[src*="_m."]',
 			search = /_(t|m)\./;
 		hoverZoom.urlReplace(res, filter, search, '.');			
 		hoverZoom.urlReplace(res, filter, search, '_f.');			

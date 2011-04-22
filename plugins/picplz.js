@@ -8,7 +8,7 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = [],
 			search = /(_\d+r|_t\d+s)/,
-			filter = 'img[src*=picplzthumbs.com]';
+			filter = 'img[src*="picplzthumbs.com"]';
 		hoverZoom.urlReplace(res, 
 			filter,
 			search,

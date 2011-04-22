@@ -7,9 +7,9 @@ hoverZoomPlugins.push( {
 	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [],
-			filter = 'a[href*=/fukung.net/v/]';
+			filter = 'a[href*="/fukung.net/v/"]';
 		if (document.location.hostname == 'fukung.net') {
-			filter = 'a[href^=/v/]';
+			filter = 'a[href^="/v/"]';
 		}
 		hoverZoom.urlReplace(res, 
 			filter,

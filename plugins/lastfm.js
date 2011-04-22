@@ -8,18 +8,18 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'img[src*=/serve/]',
+			'img[src*="/serve/"]',
 			/\/serve\/.*\//,
 			'/serve/_/'
 		);	
 		hoverZoom.urlReplace(res, 
-			'.albumCover img[src*=/serve/]',
+			'.albumCover img[src*="/serve/"]',
 			/\/serve\/.*\//,
 			'/serve/_/',
 			':eq(0)'
 		);	
 		hoverZoom.urlReplace(res, 
-			'.albumCover img[src*=amazon.com]',
+			'.albumCover img[src*="amazon.com"]',
 			/(\/[^\.]+)[^\/]+\.(\w+)$/,
 			'$1.$2',
 			':eq(0)'

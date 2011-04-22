@@ -9,7 +9,7 @@ hoverZoomPlugins.push( {
 		var res = [],
 			filter1 = /^(.*)_\d+x\d+\.(jpg|png|gif).*$/i,
 			//filter2 = /^(.*\/cnwk\..*\/\d+-\d+)-\d+-(.*)\.(jpg|png|gif).*$/i,
-			imgs = $('a img[src*=i.com.com]');
+			imgs = $('a img[src*="i.com.com"]');
 			
 		imgs.each(function() {
 			var img = $(this),

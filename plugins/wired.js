@@ -13,12 +13,12 @@ hoverZoomPlugins.push( {
 			'.'
 		);
 		hoverZoom.urlReplace(res, 
-			'img[src*=/thumbs/]',
+			'img[src*="/thumbs/"]',
 			'thumbs/thumbs_',
 			''
 		);
 		hoverZoom.urlReplace(res, 
-			'img[src*=_w]',
+			'img[src*="_w"]',
 			/_wd?\./,
 			'_bg.'
 		);

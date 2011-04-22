@@ -8,7 +8,7 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = []
 		hoverZoom.urlReplace(res, 
-			'a[href*=phapit.com/image/]',
+			'a[href*="phapit.com/image/"]',
 			/.*\/(phap\d*)(\/.*)?/,
 			'http://images.phapit.com/uploaded_pics/$1.jpg'
 		);

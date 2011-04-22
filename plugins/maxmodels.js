@@ -8,12 +8,12 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'img[src*=galerie][src*=/m], img[src*=galerie][src*=/k]',
+			'img[src*="galerie"][src*="/m"], img[src*="galerie"][src*="/k"]',
 			/\/(m|k)(\d+\.)/,
 			'/p$2'
 		);
 		hoverZoom.urlReplace(res, 
-			'img[src*=miniatury]',
+			'img[src*="miniatury"]',
 			'/miniatury',
 			''
 		);

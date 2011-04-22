@@ -25,7 +25,7 @@ hoverZoomPlugins.push( {
 		
 		// This second processing makes use of the Flickr API to try to get larger pictures.
 		if (options.showHighRes) {
-			$('a img[src*=static.flickr.com]').each(function() {
+			$('a img[src*="static.flickr.com"]').each(function() {
 				var _this = $(this),
 					link = _this.parents('a:eq(0)'),
 					src = _this.attr('src');

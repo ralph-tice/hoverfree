@@ -8,7 +8,7 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'img[src*=/images/]',
+			'img[src*="/images/"]',
 			/(thumb|mini)/,
 			'full'
 		);			

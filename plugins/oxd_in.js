@@ -7,9 +7,9 @@ hoverZoomPlugins.push( {
 	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [],
-			filter = 'a[href*=oxd.in/i/]';
+			filter = 'a[href*="oxd.in/i/"]';
 		if (document.location.hostname == 'oxd.in') {
-			filter = 'a[href^=/i/]';
+			filter = 'a[href^="/i/"]';
 		}
 		hoverZoom.urlReplace(res, 
 			filter,

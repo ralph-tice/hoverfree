@@ -7,7 +7,7 @@ hoverZoomPlugins.push( {
 	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [],
-			filter = 'a[href*=.ggpht.com], a img[src*=.ggpht.com], a img[src*=.blogspot.com]',
+			filter = 'a[href*=".ggpht.com"], a img[src*=".ggpht.com"], a img[src*=".blogspot.com"]',
 			search = /\/s\d+(-[ch])?\//;
 			
 		hoverZoom.urlReplace(res, filter, search, '/s800/');		

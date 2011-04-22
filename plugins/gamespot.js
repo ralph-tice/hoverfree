@@ -8,12 +8,12 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'a img[src*=_gum]:not([src*=features/]), a img[src*=_embed], a img[src*=thumb]:not([src*=features/])',
+			'a img[src*="_gum"]:not([src*="features/"]), a img[src*="_embed"], a img[src*="thumb"]:not([src*="features/"])',
 			/_\d*(gum|thumb|embed)/,
 			'_screen'
 		);
 		hoverZoom.urlReplace(res, 
-			'a:not([href*=/iphone/]):not([href*=/android/]):not([href*=/blackberry/]):not([href*=/palm-webos/]):not([href*=/windows-mobile/]) img[src*=/boxshots]',
+			'a:not([href*="/iphone/"]):not([href*="/android/"]):not([href*="/blackberry/"]):not([href*="/palm-webos/"]):not([href*="/windows-mobile/"]) img[src*="/boxshots"]',
 			[/\d+\/all\/boxshots\d/, /\/(\d+)(\d)(_\d+)\.jpg/],
 			['bigboxshots', '/$2/$1$2$3_front.jpg']
 		);		

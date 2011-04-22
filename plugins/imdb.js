@@ -8,7 +8,7 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'a img[src*=._V1.]',
+			'a img[src*="._V1."]',
 			/\._V1\..*\./,
 			options.showHighRes ? '.' : '._V1._SX600_SY600_.'
 		);

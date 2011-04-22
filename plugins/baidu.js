@@ -22,13 +22,13 @@ hoverZoomPlugins.push( {
 
 		// Encyclopedia, Space, etc
 		hoverZoom.urlReplace(res, 
-			'a img[src*=/abpic/], a img[src*=/mpic/]',
+			'a img[src*="/abpic/"], a img[src*="/mpic/"]',
 			/abpic|mpic/,
 			'pic'
 		);		
 
 		// News
-		$("a img[src*='/it/u=']").each(function() {
+		$('a img[src*="/it/u="]').each(function() {
 			var _this = $(this);
 			var src = _this.attr('src');
 			if (src) {

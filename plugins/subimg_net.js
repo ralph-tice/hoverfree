@@ -7,9 +7,9 @@ hoverZoomPlugins.push( {
 	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [],
-			filter = 'a[href*=subimg.net/]';
+			filter = 'a[href*="subimg.net/"]';
 		if (document.location.hostname == 'subimg.net') {
-			filter = 'a[href*=?id=], a[href*=?i=]';
+			filter = 'a[href*="?id="], a[href*="?i="]';
 		}
 		hoverZoom.urlReplace(res, 
 			filter,

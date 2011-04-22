@@ -8,7 +8,7 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'a img[src*=.skyrock.net]',
+			'a img[src*=".skyrock.net"]',
 			/\/(\d+)_(0|1)_(\d+)\./,
 			'/$1_2_$3.'
 		);	
