@@ -208,7 +208,7 @@ var hoverZoom = {
 		// Titles are saved so they can be restored later.
 		function removeTitles() {
 			if (titledElements) { return; }
-			titledElements = $('[title]').not('iframe, .lightbox, [rel^=lightbox]');
+			titledElements = $('[title]').not('iframe, .lightbox, [rel^="lightbox"]');
 			titledElements.each(function () {
 				$(this).data('hoverZoomTitle', this.getAttribute('title')).removeAttr('title');
 			});
@@ -653,7 +653,7 @@ var hoverZoom = {
 		
 		function fixFlash() {
 			if (window == window.top && $('.hoverZoomLink').length == 0) { return; }
-			$('embed:not([wmode]), embed[wmode=window], object[type=application/x-shockwave-flash]').each(function () {
+			$('embed:not([wmode]), embed[wmode="window"], object[type="application/x-shockwave-flash"]').each(function () {
 				if (!this.type || this.type.toLowerCase() != 'application/x-shockwave-flash') { return; }
 				var embed = this.cloneNode(true);
 				embed.setAttribute('wmode', 'opaque');
@@ -662,11 +662,11 @@ var hoverZoom = {
 				wnd.bind('DOMNodeInserted', windowOnDOMNodeInserted);
 			});
 			$('object').filter(function () {
-				var param = $(this).children('param[name=wmode]');
+				var param = $(this).children('param[name="wmode"]');
 				return param.length == 0 || param.attr('value').toLowerCase() == 'window';
 			}).each(function () {
 				var object = this.cloneNode(true);
-				$(object).children('param[name=wmode]').remove();
+				$(object).children('param[name="wmode"]').remove();
 				$('<param name="wmode" value="opaque">').appendTo(object);
 				wnd.unbind('DOMNodeInserted', windowOnDOMNodeInserted);
 				$(this).replaceWith(object);
@@ -701,7 +701,7 @@ var hoverZoom = {
 			webSiteExcluded = null;
 			body100pct = (body.css('position') != 'static') || 
 						 (body.css('padding-left') == '0px' && body.css('padding-right') == '0px' && body.css('margin-left') == '0px' && body.css('margin-right') == '0px');
-			hz.pageGenerator = $('meta[name=generator]').attr('content');
+			hz.pageGenerator = $('meta[name="generator"]').attr('content');
 			prepareImgLinks();		
 			bindEvents();
 			fixFlash();
