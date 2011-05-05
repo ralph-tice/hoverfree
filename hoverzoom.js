@@ -38,7 +38,6 @@ var hoverZoom = {
 			actionKeyDown = false,
 			fullZoomKeyDown = false,
 			pageActionShown = false,
-			lastImgWidth = 0,
 			skipFadeIn = false,
 			titledElements = null,
 			body100pct = true;
@@ -46,8 +45,8 @@ var hoverZoom = {
 		var progressCss = {
 			'opacity': '0.5',
 			'position': 'absolute',
-			'height': '22px',
-			'width': '22px',
+			'max-height': '22px',
+			'max-width': '22px',
 			'left': '3px',
 			'top': '3px',
 			'margin': '0',
@@ -61,6 +60,8 @@ var hoverZoom = {
 			'width': 'auto',
 			'left': 'auto',
 			'top': 'auto',
+			'max-height': 'none',
+			'max-width': 'none',
 			'margin': '0',
 			'padding': '0',
 			'border-radius': '0'
@@ -193,11 +194,8 @@ var hoverZoom = {
 		function posWhileLoading() {
 			if (loading) {
 				posImg();
-				if (hz.imgLoading && hz.hzImg.width() > 40) {
-					hz.imgLoading.remove();
-					hz.imgLoading = null;
-					posImg();
-					setTimeout(function () { skipFadeIn = true; }, 200);
+				if (hz.imgLoading && imgFullSize.height() > 0) {
+					displayFullSizeImage();
 				} else {
 					setTimeout(posWhileLoading, 100);
 				}
@@ -300,7 +298,7 @@ var hoverZoom = {
 			cancelImageLoading();
 			restoreTitles();
 		}
-		
+						
 		function loadFullSizeImage() {
 			// If no image is currently displayed...
 			if (!imgFullSize) {
@@ -312,74 +310,73 @@ var hoverZoom = {
 				imgHost = getHostFromUrl(imgSrc);
 				
 				skipFadeIn = false;
+				imgFullSize.css(progressCss);
 				if (options.showWhileLoading || imgSrc.substr(-4).toLowerCase() == '.gif') {
-					lastImgWidth = hz.hzImg.width();
 					posWhileLoading();
-				} else {
-					imgFullSize.css(progressCss);
-				}
-				
-				function imgFullSizeOnLoad() {
-					// Only the last hovered link gets displayed
-					if (imgSrc == $(imgFullSize).attr('src')) {
-						loading = false;
-						
-						hz.imgLoading.remove();
-						hz.imgLoading = null;
-						if (!options.showWhileLoading) {
-							hz.hzImg.stop(true, true);
-							hz.hzImg.offset({top:-9000, left:-9000});	// hides the image while making it available for size calculations
-							hz.hzImg.empty();
-							imgFullSize.css(imgFullSizeCss).appendTo(hz.hzImg).mousemove(imgFullSizeOnMouseMove);
-							if (options.showCaptions && hz.currentLink && hz.currentLink.data('hoverZoomCaption')) {
-								hzCaption = $('<div/>', {id: 'hzCaption', text: hz.currentLink.data('hoverZoomCaption')}).css(hzCaptionCss).appendTo(hz.hzImg);
-							}
-						}
-						if (!options.showWhileLoading && !skipFadeIn) {
-							hz.hzImg.hide().fadeTo(options.fadeDuration, options.picturesOpacity);
-						}
-                        
-                        // The image size is not yet available in the onload so I have to delay the positioning
-						setTimeout(posImg, options.showWhileLoading ? 0 : 10);
-                        
-						if (options.addToHistory && !chrome.extension.inIncognitoTab) {
-							chrome.extension.sendRequest({action: 'addUrlToHistory', url: imgSrc});
-						}
-						chrome.extension.sendRequest({action: 'trackEvent', event: {category: 'Actions', action: 'ImageDisplayedOnSite', label: document.location.host}});
-						chrome.extension.sendRequest({action: 'trackEvent', event: {category: 'Actions', action: 'ImageDisplayedFromSite', label: imgHost}});
-					}
-				}
-				
-				function imgFullSizeOnError() {
-					if (imgSrc == $(this).attr('src')) {
-						var hoverZoomSrcIndex = hz.currentLink ? hz.currentLink.data('hoverZoomSrcIndex') : 0;
-						if (hz.currentLink && hoverZoomSrcIndex < hz.currentLink.data('hoverZoomSrc').length - 1) {
-							// If the link has several possible sources, we try to load the next one
-							imgFullSize.remove();
-							imgFullSize = null;
-							hoverZoomSrcIndex++;
-							hz.currentLink.data('hoverZoomSrcIndex', hoverZoomSrcIndex);
-							console.info('[HoverZoom] Failed to load image: ' + imgSrc + '\nTrying next one...');
-							imgSrc = hz.currentLink.data('hoverZoomSrc')[hoverZoomSrcIndex];
-							setTimeout(loadFullSizeImage, 100);
-						} else {
-							hideHoverZoomImg();
-							//hz.currentLink.removeClass('hoverZoomLink').removeData();
-							console.warn('[HoverZoom] Failed to load image: ' + imgSrc);
-							chrome.extension.sendRequest({action: 'trackEvent', event: {category: 'Errors', action: 'LoadingErrorFromSite', label: imgHost}});
-						}
-					}
-				}
-				
-				function imgFullSizeOnMouseMove() {
-					if (!imgFullSize) {
-						hideHoverZoomImg(true);
-					}
 				}
 			}
 			posImg();
 		}
+		
+		function imgFullSizeOnLoad() {
+			// Only the last hovered link gets displayed
+			if (imgSrc == $(imgFullSize).attr('src')) {
+				loading = false;
+				displayFullSizeImage();
+			}
+		}
+		
+		function displayFullSizeImage() {
+			hz.imgLoading.remove();
+			hz.imgLoading = null;
+			hz.hzImg.stop(true, true);
+			hz.hzImg.offset({top:-9000, left:-9000});	// hides the image while making it available for size calculations
+			hz.hzImg.empty();
+			imgFullSize.css(imgFullSizeCss).appendTo(hz.hzImg).mousemove(imgFullSizeOnMouseMove);
+			if (options.showCaptions && hz.currentLink && hz.currentLink.data('hoverZoomCaption')) {
+				hzCaption = $('<div/>', {id: 'hzCaption', text: hz.currentLink.data('hoverZoomCaption')}).css(hzCaptionCss).appendTo(hz.hzImg);
+			}
+			if (!skipFadeIn) {
+				hz.hzImg.hide().fadeTo(options.fadeDuration, options.picturesOpacity);
+			}
+			
+			// The image size is not yet available in the onload so I have to delay the positioning
+			setTimeout(posImg, options.showWhileLoading ? 0 : 10);
+			
+			if (options.addToHistory && !chrome.extension.inIncognitoTab) {
+				chrome.extension.sendRequest({action: 'addUrlToHistory', url: imgSrc});
+			}
+			chrome.extension.sendRequest({action: 'trackEvent', event: {category: 'Actions', action: 'ImageDisplayedOnSite', label: document.location.host}});
+			chrome.extension.sendRequest({action: 'trackEvent', event: {category: 'Actions', action: 'ImageDisplayedFromSite', label: imgHost}});
+		}
 
+		function imgFullSizeOnError() {
+			if (imgSrc == $(this).attr('src')) {
+				var hoverZoomSrcIndex = hz.currentLink ? hz.currentLink.data('hoverZoomSrcIndex') : 0;
+				if (hz.currentLink && hoverZoomSrcIndex < hz.currentLink.data('hoverZoomSrc').length - 1) {
+					// If the link has several possible sources, we try to load the next one
+					imgFullSize.remove();
+					imgFullSize = null;
+					hoverZoomSrcIndex++;
+					hz.currentLink.data('hoverZoomSrcIndex', hoverZoomSrcIndex);
+					console.info('[HoverZoom] Failed to load image: ' + imgSrc + '\nTrying next one...');
+					imgSrc = hz.currentLink.data('hoverZoomSrc')[hoverZoomSrcIndex];
+					setTimeout(loadFullSizeImage, 100);
+				} else {
+					hideHoverZoomImg();
+					//hz.currentLink.removeClass('hoverZoomLink').removeData();
+					console.warn('[HoverZoom] Failed to load image: ' + imgSrc);
+					chrome.extension.sendRequest({action: 'trackEvent', event: {category: 'Errors', action: 'LoadingErrorFromSite', label: imgHost}});
+				}
+			}
+		}
+		
+		function imgFullSizeOnMouseMove() {
+			if (!imgFullSize) {
+				hideHoverZoomImg(true);
+			}
+		}
+		
 		function cancelImageLoading() {
 			hz.currentLink = null;
 			clearTimeout(loadFullSizeImageTimeout);

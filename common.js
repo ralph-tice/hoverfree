@@ -21,7 +21,7 @@ function loadOptions() {
 	options.excludedSites = 	options.hasOwnProperty('excludedSites') ? options.excludedSites : [];
 	options.whiteListMode = 	options.hasOwnProperty('whiteListMode') ? options.whiteListMode : false;
 	options.picturesOpacity = 	options.hasOwnProperty('picturesOpacity') ? options.picturesOpacity : 1;
-	options.showWhileLoading = 	options.hasOwnProperty('showWhileLoading') ? options.showWhileLoading : false;
+	options.showWhileLoading = 	options.hasOwnProperty('showWhileLoading') ? options.showWhileLoading : true;
 	
 	// Action keys
 	options.actionKey = 		options.hasOwnProperty('actionKey') ? options.actionKey : 0;
