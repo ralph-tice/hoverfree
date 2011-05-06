@@ -489,10 +489,12 @@ var hoverZoom = {
 		function prepareDownscaledImages() {
 			$('img').filter(function () {
 				var _this = $(this);
-				if (_this.data('hoverZoomSrc')) { return; }
+				
+				// Using _this.data('hoverZoomSrc') breaks some multi-frames sites (don't know why...)
+				if (_this.data().hoverZoomSrc) { return false; }
 				
 				// Don't process when the image is the only element on the page (well, first element).
-				if (this == document.body.firstChild) { return; }
+				if (this == document.body.firstChild) { return false; }
 				
 				// Only images with a specified width, height, max-width or max-weight are processed.
 				var scaled = this.getAttribute('width') || this.getAttribute('height') || 
