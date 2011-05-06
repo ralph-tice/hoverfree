@@ -893,6 +893,11 @@
             "js": ["plugins/pictmobi.js"],
             "matches": ["*://*.pict.mobi/*"],
             "run_at": "document_start"
-        }
+        },
+		{
+			"js": ["plugins/youtube_a.js"],
+			"matches": ["*://*.youtube.com/*"],
+			"run_at": "document_start"
+		}
 	]
 }
