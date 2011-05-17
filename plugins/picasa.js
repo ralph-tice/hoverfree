@@ -12,15 +12,16 @@ hoverZoomPlugins.push({
 	prepareImgLinks: function(callback) {
 	
 		function prepareImgLink() {
-			var _this = $(this);
-			if (_this.data('hoverZoomSrc')) { return; }
+			var _this = $(this), data = _this.data();
+			if (data.hoverZoomSrc) { return; }
 			var src = _this.find('img')[0].src;
 			src = src.replace(/\/s\d+(-c)?\//, options.showHighRes ? '/' : '/s800/');
-			_this.data('hoverZoomSrc', [src]).addClass('hoverZoomLink');
+			data.hoverZoomSrc = [src];
+			_this.addClass('hoverZoomLink');
 			
 			var tooltip = _this.parent().find('.goog-icon-list-icon-meta:eq(0)');
 			if (tooltip.length) {
-				_this.data('hoverZoomCaption', tooltip.text());
+				data.hoverZoomCaption = tooltip.text();
 			}
 		}
 	

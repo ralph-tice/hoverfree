@@ -11,8 +11,8 @@ hoverZoomPlugins.push( {
 			minSplitLength = 4;
 		
 		function prepareImgLink() {
-			var link = $(this), i = 0;
-			if (link.data('hoverZoomSrc')) { return; }
+			var link = $(this), i = 0, data = link.data();
+			if (data.hoverZoomSrc) { return; }
 			
 			var aHref = link.attr('href').split('/');
 			if (aHref.length < minSplitLength) { return; }
@@ -60,7 +60,9 @@ hoverZoomPlugins.push( {
 
 			if (!hash) { return; }
 			var url = 'http://i.imgur.com/' + hash;
-			link.data('hoverZoomSrc', [url + '.jpg', url + '.png', url + '.gif']);
+			var srcs = [url + '.jpg', url + '.png', url + '.gif'];
+			// Same array duplicated several times so that a retry is done if an image fails to load
+			data.hoverZoomSrc = srcs.concat(srcs).concat(srcs).concat(srcs);
 			res.push(link);
 		}
 	

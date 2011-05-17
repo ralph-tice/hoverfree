@@ -23,7 +23,7 @@ hoverZoomPlugins.push( {
 				srcs.push(src.replace(/\/\d+px-(?:.*?-)?/, '/800px-'));
 			}
 			srcs.push(src.substring(0, src.indexOf(ext) + ext.length).replace('thumb/', ''));
-			_this.data('hoverZoomSrc', srcs);
+			_this.data().hoverZoomSrc = srcs;
 			res.push(_this);
 		});
 		callback($(res));

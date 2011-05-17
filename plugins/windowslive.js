@@ -49,7 +49,10 @@ hoverZoomPlugins.push( {
 					
 					// Since the call is asynchronous, the list of links can't be returned by the prepareImgLinks function,
 					// so all the processing is done here
-					res.push($('a[href="' + rssLinkUrl + '"]').data('hoverZoomSrc', [src, src]).addClass('hoverZoomLink'));
+					var link = $('a[href="' + rssLinkUrl + '"]');
+					link.data().hoverZoomSrc = [src, src];
+					link.addClass('hoverZoomLink');
+					res.push(link);
 				});
 				callback($(res));
 			}

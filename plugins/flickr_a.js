@@ -15,10 +15,11 @@ var hoverZoomPluginFlickerA = {
 		}).each(function() {
 			var _this = $(this),
 				link = _this.parents('a:eq(0)'),
+				data = link.data(),
 				src = _this.attr('src');
-			if (link.data('hoverZoomSrc')) { return; }
+			if (data.hoverZoomSrc) { return; }
 			src = src.replace(/_[mst]\./, '.');
-			link.data('hoverZoomSrc', [src]);
+			data.hoverZoomSrc = [src];
 			res.push(link);
 			
 			// Second processing, this time with API calls.
@@ -53,7 +54,7 @@ var hoverZoomPluginFlickerA = {
 	
 	// Get details from this URL: http://farm{farm-id}.static.flickr.com/{server-id}/{id}_{secret}_[mstbo].(jpg|gif|png)
 	prepareImgLinkFromSrc: function(link) {
-		var src = link.data('hoverZoomSrc')[0],
+		var src = link.data().hoverZoomSrc[0],
 			aSrc = src.split('/');
 		if (aSrc.length < 5) { return };
 		var photoId = aSrc[4];
@@ -64,20 +65,22 @@ var hoverZoomPluginFlickerA = {
 	// Prepares a link by making a Flickr API call.
 	prepareImgLinkFromPhotoId: function(link, photoId) {
 		if (!link || !photoId) { return; }
+		var data = link.data();
 		// Check if the url was stored
 		var cachePrefix = 'cache_FlickrPhoto_' + (options.showHighRes ? 'hi' : 'lo') + '_';
 		var storedUrl = localStorage[cachePrefix + photoId];		
 		if (storedUrl) {
-			link.data('hoverZoomSrc', [storedUrl]).addClass('hoverZoomLink');
+			data.hoverZoomSrc = [storedUrl];
+			link.addClass('hoverZoomLink');
 		} else {
 			link.mouseenter(function() {
-				if (link.data('hoverZoomFlickrApiCalled')) { return; }
-				link.data('hoverZoomFlickrApiCalled', true);
+				if (data.hoverZoomFlickrApiCalled) { return; }
+				data.hoverZoomFlickrApiCalled = true;
 				var apiKey = '0bb8ac4ab9a737b644c407ba8f59e9e7';
 				//var apiKey = '26a8c097b4cc3237a4efad4df5f8fc7a';
 				var requestUrl = 'http://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=' + apiKey + '&photo_id=' + photoId + '&format=json&nojsoncallback=1';			
-				chrome.extension.sendRequest({action: 'ajaxGet', url: requestUrl}, function(data) {
-					var rsp = JSON.parse(data);
+				chrome.extension.sendRequest({action: 'ajaxGet', url: requestUrl}, function(response) {
+					var rsp = JSON.parse(response);
 					if (rsp.stat != 'ok') {
 						console.warn('[HoverZoom] Flickr API call failed. Photo ID: ' + photoId + '. Error #' + rsp.code + ': ' + rsp.message);
 						return;
@@ -89,7 +92,8 @@ var hoverZoomPluginFlickerA = {
 						}
 					}
 					if (src != '') {
-						link.data('hoverZoomSrc', [src]).addClass('hoverZoomLink');
+						data.hoverZoomSrc = [src];
+						link.addClass('hoverZoomLink');
 						hoverZoom.displayPicFromElement(link);
 						
 						// Items are stored to lessen API calls

@@ -17,12 +17,12 @@ hoverZoomPlugins.push( {
 				link = img.parents('a:eq(0)');
 			if (src.match(filter1)) {
 				src = src.replace(filter1, '$1.$2');
-				link.data('hoverZoomSrc', [src]);
+				link.data().hoverZoomSrc = [src];
 			} /*else if (src.match(filter2)) {
 				var srcs = [src.replace(filter2, '$1-440-$2.$3'),
 					src.replace(filter2, '$1-200-$2.$3'),
 					src.replace(filter2, '$1-160-$2.$3')];
-				link.data('hoverZoomSrc', srcs);
+				link.data().hoverZoomSrc = srcs;
 			}*/
 			res.push(link);
 		});

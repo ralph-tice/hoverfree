@@ -10,10 +10,10 @@ hoverZoomPlugins.push( {
 		$('img.avatar').each(function() {
 			var img = $(this),
 				url = img.attr('original') || img.attr('src');
-			img.data('hoverZoomSrc', [
+			img.data().hoverZoomSrc = [
 				url.replace(/\/(icon|mid)\//, '/original/'),
 				url.replace('/icon/', '/mid/')
-			]);
+			];
 			res.push(img);
 		});		
 		callback($(res));	

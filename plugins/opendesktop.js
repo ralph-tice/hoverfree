@@ -6,7 +6,7 @@ hoverZoomPlugins.push( {
 	name: 'openDesktop.org',
 	version: '0.2',
 	prepareImgLinks: function(callback) {
-		var imgs = $(''a img[src*="CONTENT"]');
+		var imgs = $('a img[src*="CONTENT"]');
 		var res = [];
 		var re = /(content|knowledgebase)-m(\d+)\/(m?)/;
 		imgs.each(function() {
@@ -32,7 +32,7 @@ hoverZoomPlugins.push( {
 					srcs.push(src.replace(/png$/i, 'jpeg'));
 					srcs.push(src.replace(/png$/i, 'JPEG'));
 				}
-				link.data('hoverZoomSrc', srcs);
+				link.data().hoverZoomSrc = srcs;
 				res.push(link);	
 			}
 		});

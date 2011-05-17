@@ -21,14 +21,14 @@ hoverZoomPlugins.push( {
 			}
 			aSrc.splice(sizeIndex, 1);
 			src = aSrc.join('/');
+			// deviantArt tends to refuse to load images sometimes.
+			// src is stored several times in hoverZoomSrc so that it may retry several times if loading fails.
 			srcs = [src + '#1', src + '#2', src + '#3', src + '#4'];
 			if (!options.showHighRes) {
 				srcs = [srcLo + '#1', srcLo + '#2'].concat(srcs);
 			}
 			var link = img.parents('a:eq(0)');
-			// deviantArt tends to refuse to load images sometimes.
-			// src is stored several times in hoverZoomSrc so that it may retry several times if loading fails.
-			link.data('hoverZoomSrc', srcs);
+			link.data().hoverZoomSrc = srcs;
 			res.push(link);
 		});
 		callback($(res));

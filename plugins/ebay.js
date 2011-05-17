@@ -38,9 +38,9 @@ hoverZoomPlugins.push( {
 			var storedItem = localStorage[cachePrefix + hzItems[i].id];
 			if (storedItem) {
 				storedItem = JSON.parse(storedItem);
-				var link = $(hzItems[i].link);
-				link.data('hoverZoomSrc', [storedItem.pictureUrl]);
-				link.data('hoverZoomCaption', storedItem.title);
+				var link = $(hzItems[i].link), data = link.data();
+				data.hoverZoomSrc = [storedItem.pictureUrl];
+				data.hoverZoomCaption = storedItem.title;
 				res.push(link);
 				hzItems.splice(i, 1);
 				i--;
@@ -68,9 +68,9 @@ hoverZoomPlugins.push( {
 					var item = getMultipleItemsResponse.Item[i];
 					for (var j=0; j<hzItems.length; j++) {
 						if (hzItems[j].id == item.ItemID && item.PictureURL && item.PictureURL.length > 0) {
-							var link = $(hzItems[j].link);
-							link.data('hoverZoomSrc', [item.PictureURL[0]]);
-							link.data('hoverZoomCaption', item.Title);
+							var link = $(hzItems[j].link), data = link.data();
+							data.hoverZoomSrc = [item.PictureURL[0]];
+							data.hoverZoomCaption = item.Title;
 							res.push(link);
 							
 							// Items are stored to lessen API calls

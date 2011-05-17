@@ -47,7 +47,7 @@ hoverZoomPlugins.push( {
 		
 		$('a img.img, a img.UIProfileImage, .itemsbox a img, a img.photo, .UIImageBlockTemplate_Image a img').each(function() {			
 			var img = $(this);
-			if (img.data('hoverZoomSrc')) { return; }
+			if (img.data().hoverZoomSrc) { return; }
 			if (img.parents('.uiSideNav').length) { return; }
 			
 			// Thumbnail URL
@@ -103,30 +103,30 @@ hoverZoomPlugins.push( {
 			}
 			
 			if (tooltip) {
-				img.data('hoverZoomCaption', tooltip);
+				img.data().hoverZoomCaption = tooltip;
 			}
 			
-			img.data('hoverZoomSrc', srcs);
+			img.data().hoverZoomSrc = srcs;
 			res.push(img);
 			
 		});
 		
 		// Chat images
 		$('#fbChatBuddyListParent a img').each(function() {
-			var img = $(this);
-			if (img.data('hoverZoomSrc')) { return; }
-			img.data('hoverZoomSrc', [srcReplace(img.attr('src'))]);
-			img.data('hoverZoomCaption', img.parent().find('span').text());
+			var img = $(this), data = img.data();
+			if (data.hoverZoomSrc) { return; }
+			data.hoverZoomSrc = [srcReplace(img.attr('src'))];
+			data.hoverZoomCaption = img.parent().find('span').text();
 			res.push(img);
 		});
 		
 		// Photo albums		
 		function preparePhotoAlbumLink() {
-			var _this = $(this), src;
-			if (_this.data('hoverZoomSrc')) { return; }
+			var _this = $(this), data = _this.data(), src;
+			if (data.hoverZoomSrc) { return; }
 			if (_this.attr('data-src')) {
 				src = srcReplace(_this.attr('data-src'));
-				_this.data('hoverZoomSrc', [src]);
+				data.hoverZoomSrc = [src];
 				res.push(_this);				
 			} else {
 				var i = _this.find('i:eq(0)'),
@@ -134,7 +134,7 @@ hoverZoomPlugins.push( {
 				if (src) {
 					src = src.substring(src.indexOf('http'), src.lastIndexOf(')'));
 					src = srcReplace(src);
-					_this.data('hoverZoomSrc', [src]);
+					data.hoverZoomSrc = [src];
 					res.push(_this);
 				}
 			}
@@ -144,14 +144,14 @@ hoverZoomPlugins.push( {
 		
 		// Photo albums covers
 		$('.album_thumb a.album_link').each(function() {
-			var _this = $(this);
-			if (_this.data('hoverZoomSrc')) { return; }
+			var _this = $(this), data = _this.data();
+			if (data.hoverZoomSrc) { return; }
 			var div = _this.parent();
 			var src = div.attr('style');
 			if (src) {
 				src = src.substring(src.indexOf('http'), src.lastIndexOf(')'));
 				src = srcReplace(src);
-				_this.data('hoverZoomSrc', [src]);
+				data.hoverZoomSrc = [src];
 				res.push(_this);
 			}
 		});

@@ -16,7 +16,7 @@ hoverZoomPlugins.push( {
 			} else {
 				url = this.src.replace(/\/(small|medium|mediuml)\//, '/large/').replace(/(s|m|ml)\./, 'l.');
 			}			
-			img.data('hoverZoomSrc', [url]);
+			img.data().hoverZoomSrc = [url];
 			res.push(img);
 		});
 		callback($(res));	

@@ -19,7 +19,7 @@ hoverZoomPlugins.push( {
 			}
 			src = aSrc.join('/');
 			var link = $(this).parents('a:eq(0)');
-			link.data('hoverZoomSrc', [src]);
+			link.data().hoverZoomSrc = [src];
 			res.push(link);
 		});
 		callback($(res));

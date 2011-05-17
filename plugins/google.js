@@ -24,7 +24,7 @@ hoverZoomPlugins.push( {
 			if (_this.attr('href')) {
 				var src = getSrc(_this);
 				if (src) {
-					_this.data('hoverZoomSrc', [src]);
+					_this.data().hoverZoomSrc = [src];
 					res.push(_this);
 				}
 			}
@@ -36,7 +36,8 @@ hoverZoomPlugins.push( {
 			var urlIndex = href.indexOf('url=');
 			if (imgUrlIndex > -1) {
 				src = decodeURIComponent(src.substring(imgUrlIndex + 4, src.indexOf('&', imgUrlIndex)));		
-				_this.addClass('hoverZoomLink').data('hoverZoomSrc', [src]);
+				_this.addClass('hoverZoomLink');
+				_this.data().hoverZoomSrc = [src];
 				//res.push(_this);
 			}
 		});
@@ -45,11 +46,12 @@ hoverZoomPlugins.push( {
 		
 		
 		$('#rg_hta').mousemove(function() {
-			var _this = $(this);
-			if (_this.data('hoverZoomSrc')) { return; }
+			var _this = $(this), data = _this.data();
+			if (data.hoverZoomSrc) { return; }
 			var src = getSrc(_this);
 			if (src) {
-				_this.addClass('hoverZoomLink').data('hoverZoomSrc', [src]);
+				_this.addClass('hoverZoomLink');
+				data.hoverZoomSrc = [src];
 			}
 		}).mouseleave(function() {
 			$(this).removeData('hoverZoomSrc');

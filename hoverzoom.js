@@ -208,7 +208,8 @@ var hoverZoom = {
 			if (titledElements) { return; }
 			titledElements = $('[title]').not('iframe, .lightbox, [rel^="lightbox"]');
 			titledElements.each(function () {
-				$(this).data('hoverZoomTitle', this.getAttribute('title')).removeAttr('title');
+				$(this).data().hoverZoomTitle = this.getAttribute('title');
+				this.removeAttribute('title');
 			});
 		}
 		
@@ -216,7 +217,7 @@ var hoverZoom = {
 		function restoreTitles() {
 			if (!titledElements) { return; }
 			titledElements.each(function () {
-				this.setAttribute('title', $(this).data('hoverZoomTitle'));
+				this.setAttribute('title', $(this).data().hoverZoomTitle);
 			});
 			titledElements = null;
 		}
@@ -258,14 +259,12 @@ var hoverZoom = {
 			}
 			
 			if (links && links.length > 0) {
-				var hoverZoomSrcIndex = links.data('hoverZoomSrcIndex') || 0;
-				if (links.data('hoverZoomSrc') && links.data('hoverZoomSrc') != 'undefined' && 
-					links.data('hoverZoomSrc')[hoverZoomSrcIndex] && 
-					links.data('hoverZoomSrc')[hoverZoomSrcIndex] != 'undefined') {
+				var hoverZoomSrcIndex = links.data().hoverZoomSrcIndex || 0;
+				if (links.data().hoverZoomSrc && links.data().hoverZoomSrc != 'undefined' && 
+					links.data().hoverZoomSrc[hoverZoomSrcIndex] && 
+					links.data().hoverZoomSrc[hoverZoomSrcIndex] != 'undefined') {
 					// Happens when the mouse goes from an image to another without hovering the page background
-					if (links.data('hoverZoomSrc')[hoverZoomSrcIndex] != imgSrc) {
-						//console.log('data:   ' + links.data('hoverZoomSrc')[hoverZoomSrcIndex]);
-						//console.log('imgSrc: ' + imgSrc);
+					if (links.data().hoverZoomSrc[hoverZoomSrcIndex] != imgSrc) {
 						hideHoverZoomImg();
 					}
 					
@@ -275,7 +274,7 @@ var hoverZoom = {
 					if (!imgFullSize) {
 						hz.currentLink = links;
 						if (!options.actionKey || actionKeyDown) {
-							imgSrc = links.data('hoverZoomSrc')[hoverZoomSrcIndex];
+							imgSrc = links.data().hoverZoomSrc[hoverZoomSrcIndex];
 							clearTimeout(loadFullSizeImageTimeout);
 							
 							// If the action key has been pressed over an image, no delay is applied
@@ -333,8 +332,8 @@ var hoverZoom = {
 			hz.hzImg.offset({top:-9000, left:-9000});	// hides the image while making it available for size calculations
 			hz.hzImg.empty();
 			imgFullSize.css(imgFullSizeCss).appendTo(hz.hzImg).mousemove(imgFullSizeOnMouseMove);
-			if (options.showCaptions && hz.currentLink && hz.currentLink.data('hoverZoomCaption')) {
-				hzCaption = $('<div/>', {id: 'hzCaption', text: hz.currentLink.data('hoverZoomCaption')}).css(hzCaptionCss).appendTo(hz.hzImg);
+			if (options.showCaptions && hz.currentLink && hz.currentLink.data().hoverZoomCaption) {
+				hzCaption = $('<div/>', {id: 'hzCaption', text: hz.currentLink.data().hoverZoomCaption}).css(hzCaptionCss).appendTo(hz.hzImg);
 			}
 			if (!skipFadeIn) {
 				hz.hzImg.hide().fadeTo(options.fadeDuration, options.picturesOpacity);
@@ -352,15 +351,15 @@ var hoverZoom = {
 
 		function imgFullSizeOnError() {
 			if (imgSrc == $(this).attr('src')) {
-				var hoverZoomSrcIndex = hz.currentLink ? hz.currentLink.data('hoverZoomSrcIndex') : 0;
-				if (hz.currentLink && hoverZoomSrcIndex < hz.currentLink.data('hoverZoomSrc').length - 1) {
+				var hoverZoomSrcIndex = hz.currentLink ? hz.currentLink.data().hoverZoomSrcIndex : 0;
+				if (hz.currentLink && hoverZoomSrcIndex < hz.currentLink.data().hoverZoomSrc.length - 1) {
 					// If the link has several possible sources, we try to load the next one
 					imgFullSize.remove();
 					imgFullSize = null;
 					hoverZoomSrcIndex++;
-					hz.currentLink.data('hoverZoomSrcIndex', hoverZoomSrcIndex);
+					hz.currentLink.data().hoverZoomSrcIndex = hoverZoomSrcIndex;
 					console.info('[HoverZoom] Failed to load image: ' + imgSrc + '\nTrying next one...');
-					imgSrc = hz.currentLink.data('hoverZoomSrc')[hoverZoomSrcIndex];
+					imgSrc = hz.currentLink.data().hoverZoomSrc[hoverZoomSrcIndex];
 					setTimeout(loadFullSizeImage, 100);
 				} else {
 					hideHoverZoomImg();
@@ -394,15 +393,15 @@ var hoverZoom = {
 				}
 			}
 			if (titledElement && titledElement.length) {
-				link.data('hoverZoomCaption', titledElement.attr('title'));
+				link.data().hoverZoomCaption = titledElement.attr('title');
 			} else {
 				var alt = link.attr('alt') || link.find('[alt]').attr('alt');
 				if (alt && alt.length > 6 && !/^\d+$/.test(alt)) {
-					link.data('hoverZoomCaption', alt);
+					link.data().hoverZoomCaption = alt;
 				} else {
 					var ref = link.attr('ref') || link.find('[ref]').attr('ref');
 					if (ref && ref.length > 6 && !/^\d+$/.test(ref)) {
-						link.data('hoverZoomCaption', ref);
+						link.data().hoverZoomCaption = ref;
 					}
 				}
 			}
@@ -413,7 +412,7 @@ var hoverZoom = {
 			var showPageAction = false;
 			links.each(function () {
 				var _this = $(this);
-				if (!_this.data('hoverZoomSrc')) {
+				if (!_this.data().hoverZoomSrc) {
 
 					prepareImgLinksAsync(true);
 			
@@ -421,7 +420,7 @@ var hoverZoom = {
 								
 					// Skip if the image has the same URL as the thumbnail.
 					try {
-						var url = _this.data('hoverZoomSrc')[0],
+						var url = _this.data().hoverZoomSrc[0],
 							skip = (url == _this.attr('src'));
 						if (!skip) {
 							_this.find('img[src]').each(function() {
@@ -446,17 +445,17 @@ var hoverZoom = {
 					_this.addClass('hoverZoomLink');
 					
 					// Convert URL special characters
-					var srcs = _this.data('hoverZoomSrc');
+					var srcs = _this.data().hoverZoomSrc;
 					for (var i=0; i<srcs.length; i++) {
 						srcs[i] = deepUnescape(srcs[i]);
 					}
 					//console.log(srcs);
-					_this.data('hoverZoomSrc', srcs);
+					_this.data().hoverZoomSrc = srcs;
 					
-					_this.data('hoverZoomSrcIndex', 0);
+					_this.data().hoverZoomSrcIndex = 0;
 					
 					// Caption
-					if (options.showCaptions && !_this.data('hoverZoomCaption')) {
+					if (options.showCaptions && !_this.data().hoverZoomCaption) {
 						prepareImgCaption(_this);
 					}
 				}
@@ -512,9 +511,10 @@ var hoverZoom = {
 				hzDownscaled.load(function () {
 					setTimeout(function() {
 						if (hzDownscaled.height() > heightAttr * 1.8 || hzDownscaled.width() > widthAttr * 1.8) {
-							var srcs = img.data('hoverZoomSrc') || [];
+							var srcs = img.data().hoverZoomSrc || [];
 							srcs.unshift(img.attr('src'));
-							img.data('hoverZoomSrc', srcs).addClass('hoverZoomLink');
+							img.data().hoverZoomSrc = srcs;
+							img.addClass('hoverZoomLink');
 						}
 						hzDownscaled.remove();
 					}, 10);
@@ -738,13 +738,13 @@ var hoverZoom = {
 				url = url.replace(search, replace);
 			}
 			if (thumbUrl == url) { return; }
-			var data = link.data('hoverZoomSrc');
+			var data = link.data().hoverZoomSrc;
 			if (Object.prototype.toString.call(data) === '[object Array]') {
 				data.unshift(url);
 			} else {
 				data = [url];
 			}
-			link.data('hoverZoomSrc', data);
+			link.data().hoverZoomSrc = data;
 			res.push(link);
 		});
 	},
@@ -789,18 +789,18 @@ var hoverZoom = {
 		function preloadNextImage() {
 			if (preloadIndex >= links.length) { return; }
 			var link = links.eq(preloadIndex++);
-			if (link.data('hoverZoomPreloaded')) {
+			if (link.data().hoverZoomPreloaded) {
 				preloadNextImage();
 				chrome.extension.sendRequest({action: 'preloadProgress', value: preloadIndex, max: links.length});
 			} else {
-				var hoverZoomSrcIndex = link.data('hoverZoomSrcIndex') || 0;
-				$('<img src="' + link.data('hoverZoomSrc')[hoverZoomSrcIndex] + '">').load(function() {
-					link.data('hoverZoomPreloaded', true);
+				var hoverZoomSrcIndex = link.data().hoverZoomSrcIndex || 0;
+				$('<img src="' + link.data().hoverZoomSrc[hoverZoomSrcIndex] + '">').load(function() {
+					link.data().hoverZoomPreloaded = true;
 					setTimeout(preloadNextImage, preloadDelay);
 					chrome.extension.sendRequest({action: 'preloadProgress', value: preloadIndex, max: links.length});
 				}).error(function() {
-					if (hoverZoomSrcIndex < link.data('hoverZoomSrc').length - 1) {
-						link.data('hoverZoomSrcIndex', hoverZoomSrcIndex + 1);
+					if (hoverZoomSrcIndex < link.data().hoverZoomSrc.length - 1) {
+						link.data().hoverZoomSrcIndex++;;
 						preloadIndex--;
 					}
 					setTimeout(preloadNextImage, preloadDelay);

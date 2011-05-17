@@ -22,7 +22,7 @@ hoverZoomPlugins.push( {
 			if (width < 128) { urls.push(url.replace('maxwidth', '128')); }
 			if (width < 100) { urls.push(url.replace('maxwidth', '100')); }
 			if (urls.length) {
-				link.data('hoverZoomSrc', urls);
+				link.data().hoverZoomSrc = urls;
 				res.push(link);
 			}
 		});

@@ -34,7 +34,7 @@ hoverZoomPlugins.push( {
 							if (src.substr(0, 4) != 'http') {
 								src = 'http://' + src;
 							}
-							_this.data('hoverZoomSrc', [src]);
+							_this.data().hoverZoomSrc = [src];
 							res.push(_this);
 						}
 					} else {
@@ -44,7 +44,7 @@ hoverZoomPlugins.push( {
 								var lastDotIndex = src.lastIndexOf('.');
 								if (src.substr(lastDotIndex - 2, 2) == '-s') {
 									src = unescape(src.replace('-s.', '.'));	
-									_this.data('hoverZoomSrc', [src]);
+									_this.data().hoverZoomSrc = [src];
 									res.push(_this);
 								}
 							}

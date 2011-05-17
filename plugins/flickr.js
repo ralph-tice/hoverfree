@@ -12,7 +12,7 @@ hoverZoomPlugins.push( {
 				div = _this.parents('div:eq(0)'),
 				src = _this.attr('src');
 			src = src.replace(/_[mst]\./, '.');
-			div.data('hoverZoomSrc', [src]);
+			div.data().hoverZoomSrc = [src];
 			div.mouseover(function() {
 				$(this).addClass('hoverZoomLink');
 			});

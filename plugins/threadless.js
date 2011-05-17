@@ -25,7 +25,7 @@ hoverZoomPlugins.push( {
 				url = hoverZoom.getThumbUrl(this);
 			url = url.replace('small', 'big').replace('t.', '.');
 			url = url.substr(0, url.lastIndexOf('.'));
-			_this.data('hoverZoomSrc', [url + '.jpg', url + '.png', url + '.gif']);
+			_this.data().hoverZoomSrc = [url + '.jpg', url + '.png', url + '.gif'];
 			res.push(_this);
 		});		
 		$('img[src*="/profiles/"]:not([src*="noimage"]), img[src*="teeriffic"], .product_image').each(function() {
@@ -33,7 +33,7 @@ hoverZoomPlugins.push( {
 				url = hoverZoom.getThumbUrl(this);
 			url = url.replace(/\/\d+x\d+/, '');
 			url = url.substr(0, url.lastIndexOf('.'));
-			_this.data('hoverZoomSrc', [url + '.jpg', url + '.gif', url + '.png']);
+			_this.data().hoverZoomSrc = [url + '.jpg', url + '.gif', url + '.png'];
 			res.push(_this);
 		});		
 		callback($(res));	

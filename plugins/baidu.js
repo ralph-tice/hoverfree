@@ -15,7 +15,7 @@ hoverZoomPlugins.push( {
 			if (src) {
 				src = src.toString();
 				src = src.substring(src.indexOf('http'), src.lastIndexOf("',"));
-				_this.data('hoverZoomSrc', [src]);
+				_this.data().hoverZoomSrc = [src];
 				res.push(_this);
 			}
 		});
@@ -34,7 +34,7 @@ hoverZoomPlugins.push( {
 			if (src) {
 				src = src.replace(/.*\/it\/u=(.*)&.*/, '$1');
 				src = unescape(src);
-				_this.data('hoverZoomSrc', [src]);
+				_this.data().hoverZoomSrc = [src];
 				res.push(_this);
 			}
 		});

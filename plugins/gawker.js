@@ -18,7 +18,7 @@ hoverZoomPlugins.push( {
 			}
 			if (img.hasClass('avatar')) { url = url.replace(/_\d+\./, '_160.'); }
 			url = url.substr(0, url.lastIndexOf('.'));
-			img.data('hoverZoomSrc', [url + '.jpg', url + '.png', url + '.gif', url]);
+			img.data().hoverZoomSrc = [url + '.jpg', url + '.png', url + '.gif', url];
 			res.push(img);
 		});
 		hoverZoom.urlReplace(res, 
