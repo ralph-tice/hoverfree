@@ -3,21 +3,20 @@
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
-	name: 'me.zing.vn',
+	name: 'LiveShare',
 	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'img.boderImg, [class*="imgAlbum"]',
-			/_\d+_\d+\./,
-			'.'
+			'img.thumb',
+			'_128.',
+			'_480.'
 		);
 		hoverZoom.urlReplace(res, 
-			'img[src*="avatar.me.zdn.vn"]',
-			'_50_',
-			'_180_',
-			':eq(0)'
+			'img.thumb',
+			'_128.',
+			'_960.'
 		);
-		callback($(res));		
+		callback($(res));
 	}
 });
