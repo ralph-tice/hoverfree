@@ -651,8 +651,8 @@ var hoverZoom = {
 		}
 		
 		function fixFlash() {
-			if (window == window.top && $('.hoverZoomLink').length == 0) { return; }
-			$('embed:not([wmode]), embed[wmode="window"], object[type="application/x-shockwave-flash"]').each(function () {
+			if (isExcludedSite() || window == window.top && $('.hoverZoomLink').length == 0) { return; }
+			$('embed:not([wmode]), embed[wmode="window"]').each(function () {
 				if (!this.type || this.type.toLowerCase() != 'application/x-shockwave-flash') { return; }
 				var embed = this.cloneNode(true);
 				embed.setAttribute('wmode', 'opaque');
@@ -660,12 +660,15 @@ var hoverZoom = {
 				$(this).replaceWith(embed);
 				wnd.bind('DOMNodeInserted', windowOnDOMNodeInserted);
 			});
-			$('object').filter(function () {
-				var param = $(this).children('param[name="wmode"]');
+			var wmodeFilter = function() {
+				return this.name.toLowerCase() == 'wmode';
+			};
+			$('object[type="application/x-shockwave-flash"]').filter(function () {
+				var param = $(this).children('param').filter(wmodeFilter);
 				return param.length == 0 || param.attr('value').toLowerCase() == 'window';
 			}).each(function () {
 				var object = this.cloneNode(true);
-				$(object).children('param[name="wmode"]').remove();
+				$(object).children('param').filter(wmodeFilter).remove();
 				$('<param name="wmode" value="opaque">').appendTo(object);
 				wnd.unbind('DOMNodeInserted', windowOnDOMNodeInserted);
 				$(this).replaceWith(object);
