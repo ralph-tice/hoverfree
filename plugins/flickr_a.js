@@ -76,8 +76,8 @@ var hoverZoomPluginFlickerA = {
 			link.mouseenter(function() {
 				if (data.hoverZoomFlickrApiCalled) { return; }
 				data.hoverZoomFlickrApiCalled = true;
-				var apiKey = '0bb8ac4ab9a737b644c407ba8f59e9e7';
-				//var apiKey = '26a8c097b4cc3237a4efad4df5f8fc7a';
+				//var apiKey = '0bb8ac4ab9a737b644c407ba8f59e9e7';
+				var apiKey = '26a8c097b4cc3237a4efad4df5f8fc7a';
 				var requestUrl = 'http://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=' + apiKey + '&photo_id=' + photoId + '&format=json&nojsoncallback=1';			
 				chrome.extension.sendRequest({action: 'ajaxGet', url: requestUrl}, function(response) {
 					var rsp = JSON.parse(response);
