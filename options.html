@@ -19,7 +19,7 @@
 			#title, #buttons, #about p, #messages p { text-align: center }
 			#delays p, #delays input, #txtPicturesOpacity { text-align: right }
 			.notice { font-size: 8pt; }
-			.hint { font-size: 8pt; padding-left: 25px }
+			.hint { font-size: 8pt; padding-left: 25px; display: block; }
 			#sliderPicturesOpacity { font-size: 0.7em; margin-bottom: 0.5em }
 			hr { margin: 0.7em 0 }
 		</style>
@@ -59,6 +59,7 @@
 				options.fadeDuration = getMilliseconds($('#txtFadeDuration'));				
 				options.picturesOpacity = $('#sliderPicturesOpacity').slider('value') / 100;
 				options.showWhileLoading = $('#chkShowWhileLoading')[0].checked;
+				options.alwaysFullZoom = $('#chkAlwaysFullZoom')[0].checked;
 				
 				// Excluded sites
 				options.excludedSites = [];
@@ -89,6 +90,7 @@
 				$('#selActionKey').val(options.actionKey);
 				$('#selFullZoomKey').val(options.fullZoomKey);
 				$('#chkShowWhileLoading')[0].checked = options.showWhileLoading;
+				$('#chkAlwaysFullZoom')[0].checked = options.alwaysFullZoom;
 				
 				$('#txtPicturesOpacity').val(options.picturesOpacity * 100);
 				$('#sliderPicturesOpacity').slider('value', options.picturesOpacity * 100);
@@ -204,13 +206,11 @@
 							<span class="hint">(Only when images can be zoomed)</span></label></p>
 						<p><input type="checkbox" id="chkShowCaptions"> <label for="chkShowCaptions">Show pictures captions<br>
 							<span class="hint">(When available)</span></label></p>
+						<p><input type="checkbox" id="chkAlwaysFullZoom"> <label for="chkAlwaysFullZoom">Show pictures using all available space<br>
+							<span class="hint">(If disabled, the picture will be resized so it doesn't go under the mouse cursor)</span></label></p>
 						<p><input type="checkbox" id="chkShowWhileLoading"> <label for="chkShowWhileLoading">Show zoomed pictures while loading</label></p>
 						<p><input type="checkbox" id="chkShowHighRes"> <label for="chkShowHighRes">Show high resolution pictures when available<br>
 							<span class="hint">(Pictures may take more time to load)</span></label></p>
-						<hr>
-						<p><label for="txtPicturesOpacity">Zoomed pictures opacity</label>: <input type="text" id="txtPicturesOpacity" size="2"> %
-						<div id="sliderPicturesOpacity"></div>
-						<div class="notice"><span>Transparent</span><span style="float: right">Opaque</span></div></p>
 						<h2>Delays</h2>
 						<div id="delays">
 						<p><label for="txtDisplayDelay">Delay before displaying a picture</label>: <input type="text" id="txtDisplayDelay" size="2"> sec.</p>
@@ -255,6 +255,10 @@
 						<p><input type="checkbox" id="chkAddToHistory"> <label for="chkAddToHistory">Add viewed pictures to the browser's history</label></p>
 						<p><input type="checkbox" id="chkAlwaysPreload"> <label for="chkAlwaysPreload">Automatically preload zoomed images<br>
 							<span class="hint">(This may consume a lot of bandwidth)</span></label></p>
+						<hr>
+						<p><label for="txtPicturesOpacity">Zoomed pictures opacity</label>: <input type="text" id="txtPicturesOpacity" size="2"> %
+						<div id="sliderPicturesOpacity"></div>
+						<div class="notice"><span>Transparent</span><span style="float: right">Opaque</span></div></p>
 					</div>
 				</div>
 				<div id="buttons">

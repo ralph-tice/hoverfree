@@ -40,7 +40,8 @@ var hoverZoom = {
 			pageActionShown = false,
 			skipFadeIn = false,
 			titledElements = null,
-			body100pct = true;
+			body100pct = true,
+			linkRect = null;
 			
 		var progressCss = {
 			'opacity': '0.5',
@@ -122,21 +123,9 @@ var hoverZoom = {
 					position.left -= 25;
 				}
 					
-			} else if (fullZoomKeyDown) {
-			
-				imgFullSize.width(wndWidth - padding).height('auto');				
-				if (hz.hzImg.height() > wndHeight) {
-					imgFullSize.height(wndHeight - padding - statusBarHeight).width('auto');
-					position.top = wndScrollTop;
-					position.left = wndScrollLeft + wndWidth / 2 - hz.hzImg.width() / 2;
-				} else {
-					position.top = wndScrollTop + wndHeight / 2 - hz.hzImg.height() / 2;
-					position.left = wndScrollLeft;
-				}
-
-				posCaption();
-				
 			} else {
+				
+				var fullZoom = options.alwaysFullZoom || fullZoomKeyDown;
 				
 				imgFullSize.width('auto').height('auto');
 				
@@ -148,15 +137,19 @@ var hoverZoom = {
 				}
 				
 				// Width adjustment
-				if (displayOnRight) {
-					if (naturalWidth + padding > wndWidth - position.left) {
-						imgFullSize.width(wndWidth - position.left - padding + wndScrollLeft);
-					}
+				if (fullZoom) {
+					imgFullSize.width(Math.min(naturalWidth, wndWidth - padding + wndScrollLeft));
 				} else {
-					if (naturalWidth + padding > position.left) {
-						imgFullSize.width(position.left - padding - wndScrollLeft);
-					}			
-				}				
+					if (displayOnRight) {
+						if (naturalWidth + padding > wndWidth - position.left) {
+							imgFullSize.width(wndWidth - position.left - padding + wndScrollLeft);
+						}
+					} else {
+						if (naturalWidth + padding > position.left) {
+							imgFullSize.width(position.left - padding - wndScrollLeft);
+						}			
+					}				
+				}
 				
 				// Height adjustment
 				if (hz.hzImg.height() > wndHeight - padding - statusBarHeight) {
@@ -171,6 +164,15 @@ var hoverZoom = {
 				if (!displayOnRight) {
 					position.left -= hz.hzImg.width() + padding;
 				}
+				
+				// Horizontal position adjustment if full zoom
+				if (fullZoom) {
+					if (displayOnRight) {
+						position.left = Math.min(position.left, wndScrollLeft + wndWidth - hz.hzImg.width() - padding);
+					} else {
+						position.left = Math.max(position.left, wndScrollLeft);
+					}
+				}
 					
 				// Vertical position adjustments
 				var maxTop = wndScrollTop + wndHeight - hz.hzImg.height() - padding - statusBarHeight;
@@ -180,8 +182,8 @@ var hoverZoom = {
 				if (position.top < wndScrollTop) {
 					position.top = wndScrollTop;
 				}
-				
 			}
+			
 
 			// This fixes positioning when the body's width is not 100%
 			if (body100pct) {
@@ -194,7 +196,7 @@ var hoverZoom = {
 		function posWhileLoading() {
 			if (loading) {
 				posImg();
-				if (hz.imgLoading && imgFullSize.height() > 0) {
+				if (hz.imgLoading && imgFullSize && imgFullSize.height() > 0) {
 					displayFullSizeImage();
 				} else {
 					setTimeout(posWhileLoading, 100);
@@ -258,6 +260,13 @@ var hoverZoom = {
 				}
 			}
 			
+			if (options.alwaysFullZoom && target.length && 
+				(imgFullSize && imgFullSize.length && target[0] == imgFullSize[0] ||
+				 hz.hzImg && hz.hzImg.length && target[0] == hz.hzImg[0])) {
+				if (mousePos.top > linkRect.top && mousePos.top < linkRect.bottom && mousePos.left > linkRect.left && mousePos.left < linkRect.right)
+					return;
+			}
+			
 			if (links && links.length > 0) {
 				var hoverZoomSrcIndex = links.data().hoverZoomSrcIndex || 0;
 				if (links.data().hoverZoomSrc && links.data().hoverZoomSrc != 'undefined' && 
@@ -280,6 +289,11 @@ var hoverZoom = {
 							// If the action key has been pressed over an image, no delay is applied
 							var delay = explicitCall ? 0 : options.displayDelay;
 							loadFullSizeImageTimeout = setTimeout(loadFullSizeImage, delay);
+							
+							linkRect = links.offset();
+							linkRect.bottom = linkRect.top + links.height();
+							linkRect.right = linkRect.left + links.width();
+							
 							loading = true;
 						}
 					} else {
@@ -371,7 +385,7 @@ var hoverZoom = {
 		}
 		
 		function imgFullSizeOnMouseMove() {
-			if (!imgFullSize) {
+			if (!imgFullSize && !options.alwaysFullZoom) {
 				hideHoverZoomImg(true);
 			}
 		}
