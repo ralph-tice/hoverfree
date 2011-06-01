@@ -871,7 +871,8 @@
 		},
 		{
 			"matches": ["*://*.reddit.com/*"],
-			"js": ["plugins/slutcapades.js"],
+			"js": ["plugins/quickmeme.js",
+			       "plugins/slutcapades.js"],
 			"run_at": "document_start"
 		},
 		{
@@ -914,6 +915,61 @@
 		{
 			"js": ["plugins/weheartit.js"],
 			"matches": ["*://*.weheartit.com/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/funnyjunk.js"],
+			"matches": ["*://*.funnyjunk.com/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": [ "plugins/sky_it.js" ],
+			"matches": [ "*://*.sky.it/*" ],
+			"run_at": "document_start"
+		},
+		{
+			"js": [ "plugins/blogo_it.js" ],
+			"matches": [
+				"*://*.02blog.it/*",
+				"*://*.06blog.it/*",
+				"*://*.artsblog.it/*",
+				"*://*.autoblog.it/*",
+				"*://*.bebeblog.it/*",
+				"*://*.benessereblog.it/*",
+				"*://*.betsblog.it/*",
+				"*://*.booksblog.it/*",
+				"*://*.calcioblog.it/*",
+				"*://*.cineblog.it/*",
+				"*://*.clickblog.it/*",
+				"*://*.comicsblog.it/*",
+				"*://*.crimeblog.it/*",
+				"*://*.deluxeblog.it/*",
+				"*://*.designerblog.it/*",
+				"*://*.downloadblog.it/*",
+				"*://*.ecoblog.it/*",
+				"*://*.fashionblog.it/*",
+				"*://*.finanzablog.it/*",
+				"*://*.gadgetblog.it/*",
+				"*://*.gamesblog.it/*",
+				"*://*.gossipblog.it/*",
+				"*://*.gustoblog.it/*",
+				"*://*.happyblog.it/*",
+				"*://*.melablog.it/*",
+				"*://*.mobileblog.it/*",
+				"*://*.motoblog.it/*",
+				"*://*.motorsportblog.it/*",
+				"*://*.ossblog.it/*",
+				"*://*.outdoorblog.it/*",
+				"*://*.pinkblog.it/*",
+				"*://*.polisblog.it/*",
+				"*://*.queerblog.it/*",
+				"*://*.softblog.it/*",
+				"*://*.soldiblog.it/*",
+				"*://*.soundsblog.it/*",
+				"*://*.toysblog.it/*",
+				"*://*.travelblog.it/*",
+				"*://*.tvblog.it/*"
+			],
 			"run_at": "document_start"
 		}
 	]
