@@ -22,7 +22,7 @@ function loadOptions() {
 	options.whiteListMode = 	options.hasOwnProperty('whiteListMode') ? options.whiteListMode : false;
 	options.picturesOpacity = 	options.hasOwnProperty('picturesOpacity') ? options.picturesOpacity : 1;
 	options.showWhileLoading = 	options.hasOwnProperty('showWhileLoading') ? options.showWhileLoading : true;
-	options.alwaysFullZoom = 	options.hasOwnProperty('alwaysFullZoom') ? options.alwaysFullZoom : true;
+	options.expAlwaysFullZoom = options.hasOwnProperty('expAlwaysFullZoom') ? options.expAlwaysFullZoom : false;
 	
 	// Action keys
 	options.actionKey = 		options.hasOwnProperty('actionKey') ? options.actionKey : 0;

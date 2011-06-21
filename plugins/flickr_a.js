@@ -24,9 +24,9 @@ var hoverZoomPluginFlickerA = {
 			
 			// Second processing, this time with API calls.
 			// Will overwrite values from first processing if larger images are found.
-			if (options.showHighRes) {
+			/*if (options.showHighRes) {
 				hoverZoomPluginFlickerA.prepareImgLinkFromSrc(link);
-			}
+			}*/
 		});
 		callback($(res));
 		
@@ -74,6 +74,7 @@ var hoverZoomPluginFlickerA = {
 			link.addClass('hoverZoomLink');
 		} else {
 			link.mouseenter(function() {
+				data.hoverZoomMouseOver = true;
 				if (data.hoverZoomFlickrApiCalled) { return; }
 				data.hoverZoomFlickrApiCalled = true;
 				//var apiKey = '0bb8ac4ab9a737b644c407ba8f59e9e7';
@@ -87,19 +88,24 @@ var hoverZoomPluginFlickerA = {
 					}
 					var src = '';
 					for (var i=0; i<rsp.sizes.size.length; i++) {
-						if (options.showHighRes && rsp.sizes.size[i].label == 'Original' || options.showHighRes && rsp.sizes.size[i].label == 'Large' || rsp.sizes.size[i].label.indexOf('Medium') == 0) {
+						if (options.showHighRes && rsp.sizes.size[i].label == 'Original' || /*options.showHighRes &&*/ rsp.sizes.size[i].label == 'Large' || rsp.sizes.size[i].label.indexOf('Medium') == 0) {
 							src = rsp.sizes.size[i].source;
 						}
 					}
 					if (src != '') {
 						data.hoverZoomSrc = [src];
 						link.addClass('hoverZoomLink');
-						hoverZoom.displayPicFromElement(link);
+						
+						// Image is displayed if the cursor is still over the link
+						if (data.hoverZoomMouseOver)
+							hoverZoom.displayPicFromElement(link);
 						
 						// Items are stored to lessen API calls
 						localStorage[cachePrefix + photoId] = src;
 					}
 				});
+			}).mouseleave(function() {
+				data.hoverZoomMouseOver = false;
 			});
 		}
 	}

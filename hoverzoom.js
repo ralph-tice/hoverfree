@@ -125,7 +125,7 @@ var hoverZoom = {
 					
 			} else {
 				
-				var fullZoom = options.alwaysFullZoom || fullZoomKeyDown;
+				var fullZoom = options.expAlwaysFullZoom || fullZoomKeyDown;
 				
 				imgFullSize.width('auto').height('auto');
 				
@@ -260,7 +260,7 @@ var hoverZoom = {
 				}
 			}
 			
-			if (options.alwaysFullZoom && target.length && 
+			if (options.expAlwaysFullZoom && target.length && 
 				(imgFullSize && imgFullSize.length && target[0] == imgFullSize[0] ||
 				 hz.hzImg && hz.hzImg.length && target[0] == hz.hzImg[0])) {
 				if (mousePos.top > linkRect.top && mousePos.top < linkRect.bottom && mousePos.left > linkRect.left && mousePos.left < linkRect.right)
@@ -357,7 +357,7 @@ var hoverZoom = {
 			setTimeout(posImg, options.showWhileLoading ? 0 : 10);
 			
 			if (options.addToHistory && !chrome.extension.inIncognitoTab) {
-				chrome.extension.sendRequest({action: 'addUrlToHistory', url: imgSrc});
+				chrome.extension.sendRequest({action: 'addUrlToHistory', url: hz.currentLink.context.href});
 			}
 			chrome.extension.sendRequest({action: 'trackEvent', event: {category: 'Actions', action: 'ImageDisplayedOnSite', label: document.location.host}});
 			chrome.extension.sendRequest({action: 'trackEvent', event: {category: 'Actions', action: 'ImageDisplayedFromSite', label: imgHost}});
@@ -385,7 +385,7 @@ var hoverZoom = {
 		}
 		
 		function imgFullSizeOnMouseMove() {
-			if (!imgFullSize && !options.alwaysFullZoom) {
+			if (!imgFullSize && !options.expAlwaysFullZoom) {
 				hideHoverZoomImg(true);
 			}
 		}
@@ -482,8 +482,12 @@ var hoverZoom = {
 		}
 		
 		function prepareImgLinks() {
+			//console.time('prepareImgLinks');
 			pageActionShown = false;
-			$('.hoverZoomLink').removeClass('hoverZoomLink').removeData('hoverZoomSrc');
+			
+			// Commented this out in version 2.9 for better performances. Keep an eye on it for potential side effects.
+			//$('.hoverZoomLink').removeClass('hoverZoomLink').removeData('hoverZoomSrc');
+			
 			for (var i = 0; i < hoverZoomPlugins.length; i++) {
 				hoverZoomPlugins[i].prepareImgLinks(imgLinksPrepared);
 			}
@@ -497,6 +501,8 @@ var hoverZoom = {
 			}
 			
 			prepareDownscaledImages();
+			//console.timeEnd('prepareImgLinks');
+			
 		}
 		
 		function prepareDownscaledImages() {

@@ -19,7 +19,7 @@ hoverZoomPlugins.push( {
 		}
 		
 		var res = [];
-		$('#iur a[href], #ImgCont a[href]').each(function() {
+		$('#iur a[href], #ImgCont a[href], #ires a[href]').each(function() {
 			var _this = $(this);
 			if (_this.attr('href')) {
 				var src = getSrc(_this);

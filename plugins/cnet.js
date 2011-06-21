@@ -13,7 +13,7 @@ hoverZoomPlugins.push( {
 			
 		imgs.each(function() {
 			var img = $(this),
-				src = img.attr('src')
+				src = img.attr('src'),
 				link = img.parents('a:eq(0)');
 			if (src.match(filter1)) {
 				src = src.replace(filter1, '$1.$2');

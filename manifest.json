@@ -971,6 +971,21 @@
 				"*://*.tvblog.it/*"
 			],
 			"run_at": "document_start"
+		},
+		{
+			"js": [ "plugins/yelp.js" ],
+			"matches": [ "*://*.yelp.com/*" ],
+			"run_at": "document_start"
+		},
+		{
+			"js": [ "plugins/hwzone_il.js" ],
+			"matches": [ "*://*.hwzone.co.il/*" ],
+			"run_at": "document_start"
+		},
+		{
+			"js": [ "plugins/googlecode.js" ],
+			"matches": [ "*://code.google.com/*" ],
+			"run_at": "document_start"
 		}
 	]
 }

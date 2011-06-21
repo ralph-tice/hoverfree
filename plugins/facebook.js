@@ -91,6 +91,11 @@ hoverZoomPlugins.push( {
 				srcs.push(src.replace(/\/s\d+(-c)?\//, options.showHighRes ? '/' : '/s800/'));				
 			}
 			
+			// Youtube images
+			if (src.indexOf('ytimg.com') > -1) {
+				srcs.push(src.replace(/\/(\d|default)\.jpg/, '/0.jpg'));				
+			}
+			
 			srcs.push(src);
 			
 			var tooltip;
