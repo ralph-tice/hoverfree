@@ -9,12 +9,12 @@ hoverZoomPlugins.push( {
 		var res = [];
 		hoverZoom.urlReplace(res, 
 			'a[href*="quickmeme.com/meme/"]',
-			/^.*\/meme\/([^\/]+).*$/,
+			/^.*\/meme\/(\w+).*$/,
 			'http://i.qkme.me/$1.jpg'
 		);		
 		hoverZoom.urlReplace(res, 
 			'a[href*="qkme.me/"]',
-			/^.*qkme.me\/([^\/]+).*$/,
+			/^.*qkme.me\/(\w+).*$/,
 			'http://i.qkme.me/$1.jpg'
 		);		
 		callback($(res));	
