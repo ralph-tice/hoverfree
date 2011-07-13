@@ -9,7 +9,7 @@ var hoverZoom = {
 	currentLink: null,
 	hzImg: null,
 	hzImgCss: {
-		'border': '1px solid #444', 
+		'border': '1px solid #e3e3e3', 
 		'line-height': 0,
 		'overflow': 'hidden',
 		'padding': '2px',
@@ -18,7 +18,7 @@ var hoverZoom = {
 		'z-index': 2147483647,
 		'border-radius': '3px',
 		'background': '-webkit-gradient(linear, left top, right bottom, from(#ffffff), to(#ededed), color-stop(0.5, #ffffff))',
-		'-webkit-box-shadow': '2px 3px 12px rgba(0,0,0,0.6)'
+		'-webkit-box-shadow': '3px 3px 5px #777'
 	},
 	imgLoading: null,
 	pageGenerator: '',
@@ -772,7 +772,8 @@ var hoverZoom = {
 	// Extract a thumbnail url from an element, whether it be a link, 
 	// an image or a element with a background image.
 	getThumbUrl: function (el) {
-		var backgroundImage = getComputedStyle(el).backgroundImage;
+		var compStyle = getComputedStyle(el),
+			backgroundImage = compStyle ? compStyle.backgroundImage : 'none';
 		if (backgroundImage != 'none') {
 			return backgroundImage.replace(/.*url\s*\(\s*(.*)\s*\).*/i, '$1');
 		} else {

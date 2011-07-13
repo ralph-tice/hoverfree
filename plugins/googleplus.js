@@ -13,18 +13,27 @@ hoverZoomPlugins.push( {
 			''
 		);		
 		hoverZoom.urlReplace(res, 
-			'img:not([src*="/news/tbn/"])[src*="url="]',
-			/.*url=([^&]+).*/,
+			'img:not([src*="/news/tbn/"])[src*="proxy?url="]',
+			/.*proxy\?url=([^&]+).*/,
 			'$1'
 		);		
 		hoverZoom.urlReplace(res, 
-			'.ea-S img',
-			/\/(w\d+-h\d+|[hws]\d+)(-[pc])?\//,
+			'.ea-S img, .a-b-g-Mp-ba img',
+			/\/(w\d+-h\d+|[hws]\d+)(-[pck])*\//,
 			'/'
 		);		
+		// Circles thumbs
 		$('img.a-j-Db-z').each(function() {
 			var _this = $(this),
 				title = _this.siblings('.a-j-Db-Dg');
+			if (title.length > 0) {
+				_this.data().hoverZoomCaption = title.text();
+			}
+		});
+		// View photos of xxx with...
+		$('.a-b-g-Mp-ba img').each(function() {
+			var _this = $(this),
+				title = _this.parents('.ea-g-Vc').find('a.a-g-h');
 			if (title.length > 0) {
 				_this.data().hoverZoomCaption = title.text();
 			}

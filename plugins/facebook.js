@@ -117,7 +117,7 @@ hoverZoomPlugins.push( {
 		});
 		
 		// Chat images
-		$('#fbChatBuddyListParent a img').each(function() {
+		$('#fbChatBuddyListParent a img, .fbChatSidebar img.pic').each(function() {
 			var img = $(this), data = img.data();
 			if (data.hoverZoomSrc) { return; }
 			data.hoverZoomSrc = [srcReplace(img.attr('src'))];
