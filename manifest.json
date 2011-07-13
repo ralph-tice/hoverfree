@@ -991,6 +991,12 @@
 			"js": [ "plugins/googleplus.js" ],
 			"matches": [ "*://plus.google.com/*" ],
 			"run_at": "document_start"
+		},
+		{
+			"js": [ "plugins/spinchat.js" ],
+			"matches": [ "*://*.spinchat.com/*",
+						 "*://*.spin.de/*" ],
+			"run_at": "document_start"
 		}
 	]
 }
