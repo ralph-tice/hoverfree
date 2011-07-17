@@ -997,6 +997,11 @@
 			"matches": [ "*://*.spinchat.com/*",
 						 "*://*.spin.de/*" ],
 			"run_at": "document_start"
+		},
+		{
+			"js": [ "plugins/etsy.js" ],
+			"matches": [ "*://*.etsy.com/*" ],
+			"run_at": "document_start"
 		}
 	]
 }
