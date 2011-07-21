@@ -1002,6 +1002,13 @@
 			"js": [ "plugins/etsy.js" ],
 			"matches": [ "*://*.etsy.com/*" ],
 			"run_at": "document_start"
+		},
+		{
+			"js": [ "plugins/asos.js" ],
+			"matches": [ "*://*.asos.com/*",
+						 "*://*.asos.fr/*",
+						 "*://*.asos.de/*" ],
+			"run_at": "document_start"
 		}
 	]
 }
