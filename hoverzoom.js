@@ -18,7 +18,7 @@ var hoverZoom = {
 		'z-index': 2147483647,
 		'border-radius': '3px',
 		'background': '-webkit-gradient(linear, left top, right bottom, from(#ffffff), to(#ededed), color-stop(0.5, #ffffff))',
-		'-webkit-box-shadow': '3px 3px 5px #777'
+		'-webkit-box-shadow': '3px 3px 6px rgba(0,0,0,0.46)'
 	},
 	imgLoading: null,
 	pageGenerator: '',
