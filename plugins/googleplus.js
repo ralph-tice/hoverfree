@@ -8,20 +8,14 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			//'img:not(.a-b-c-z-pa):not(.a-Lc-Ct)[src*="?sz="]',
-			'img:not([oid])[src*="?sz="]',
-			/\?sz=\d+/,
-			''
+			'img[src*=".googleusercontent.com/-"]:not(.Rl, .a-Tc-gy, .a-c-b-z-la)',
+			[/.*proxy\?url=([^&]+).*/, /\/(w\d+-h\d+|[hws]\d+)(-[npck])*\//, /\?sz=\d+/],
+			['$1', '/', '']
 		);		
 		hoverZoom.urlReplace(res, 
-			'img:not([src*="/news/tbn/"])[src*="proxy?url="]',
+			'img[src*="proxy\?url="]',
 			/.*proxy\?url=([^&]+).*/,
 			'$1'
-		);		
-		hoverZoom.urlReplace(res, 
-			'.ea-S img, .a-b-g-Mp-ba img, .a-c-Cj img',
-			/\/(w\d+-h\d+|[hws]\d+)(-[pck])*\//,
-			'/'
 		);		
 		// Circles thumbs
 		$('img.a-j-Db-z').each(function() {
