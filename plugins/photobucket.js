@@ -8,9 +8,10 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'a div.thumb',
-			'/th_',
-			'/'
+			'img[src*="th_"]',
+			['//th', '/th_'],
+			['//i', '/'],
+			':first'
 		);
 		callback($(res));
 	}
