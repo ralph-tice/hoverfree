@@ -1009,6 +1009,11 @@
 						 "*://*.asos.fr/*",
 						 "*://*.asos.de/*" ],
 			"run_at": "document_start"
+		},
+		{
+			"js": [ "plugins/500px.js" ],
+			"matches": [ "*://*.500px.com/*" ],
+			"run_at": "document_start"
 		}
 	]
 }
