@@ -25,8 +25,19 @@ hoverZoomPlugins.push({
 			}
 		}
 	
-		var links = $("a.goog-icon-list-icon-link,div.gphoto-grid-cell a");
-		links.live('mouseover', prepareImgLink);
-		callback(links);
+		function bindLinks() {
+			$('a.goog-icon-list-icon-link,div.gphoto-grid-cell a').mouseover(prepareImgLink);
+			bindLinksTimeout = null;
+		}
+	
+		var bindLinksTimeout = setTimeout(bindLinks, 500);
+		
+		function windowOnDOMNodeInserted(event) {
+			if (!bindLinksTimeout && event.srcElement && event.srcElement.nodeName == 'A') {
+				bindLinksTimeout = setTimeout(bindLinks, 500);
+			}
+		}
+
+		$(window).bind('DOMNodeInserted', windowOnDOMNodeInserted)
 	}
 });
