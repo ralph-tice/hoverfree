@@ -500,9 +500,19 @@ var hoverZoom = {
 				chrome.extension.sendRequest({action : 'preloadAvailable'});
 			}
 			
-			prepareDownscaledImages();
+			prepareDownscaledImagesAsync();
 			//console.timeEnd('prepareImgLinks');
 			
+		}
+		
+		var prepareDownscaledImagesDelay = 500, prepareDownscaledImagesTimeout;
+		function prepareDownscaledImagesAsync(dontResetDelay) {
+			if (!dontResetDelay) {
+				prepareDownscaledImagesDelay = 500;
+			}
+			clearTimeout(prepareDownscaledImagesTimeout);
+			prepareDownscaledImagesTimeout = setTimeout(prepareDownscaledImages, prepareDownscaledImagesDelay);
+			prepareDownscaledImagesDelay *= 2;
 		}
 		
 		function prepareDownscaledImages() {
