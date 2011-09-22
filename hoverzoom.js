@@ -77,13 +77,21 @@ var hoverZoom = {
 			'overflow': 'hidden',
 			'vertical-align': 'top'
 		};
+		
+		var flashFixDomains = [
+			'www.youtube.com',
+			'www.redditmedia.com'
+		];
 
 		// Calculate optimal image position and size
 		function posImg(position) {
 			if (!imgFullSize) {
 				return;
 			}
-			position = position || {top: mousePos.top, left: mousePos.left};
+			
+			if (position === undefined || position.top === undefined || position.left === undefined) {
+				position = {top: mousePos.top, left: mousePos.left};
+			}
 			
 			var offset = 20,
 				padding = 10,
@@ -219,7 +227,9 @@ var hoverZoom = {
 		function restoreTitles() {
 			if (!titledElements) { return; }
 			titledElements.each(function () {
-				this.setAttribute('title', $(this).data().hoverZoomTitle);
+				if ($(this).data()) {
+					this.setAttribute('title', $(this).data().hoverZoomTitle);
+				}
 			});
 			titledElements = null;
 		}
@@ -320,6 +330,7 @@ var hoverZoom = {
 				hz.createImgLoading();
 				
 				imgFullSize = $('<img style="border: none" />').appendTo(hz.hzImg).load(imgFullSizeOnLoad).error(imgFullSizeOnError).attr('src', imgSrc);
+			
 				imgHost = getHostFromUrl(imgSrc);
 				
 				skipFadeIn = false;
@@ -346,6 +357,22 @@ var hoverZoom = {
 			hz.hzImg.offset({top:-9000, left:-9000});	// hides the image while making it available for size calculations
 			hz.hzImg.empty();
 			imgFullSize.css(imgFullSizeCss).appendTo(hz.hzImg).mousemove(imgFullSizeOnMouseMove);
+
+			/*if (options.expAlwaysFullZoom) {
+				// If the user clicks the image, this hides the image and simulates a click underneath (still buggy).
+				imgFullSize.mousedown(function(event) {
+					hideHoverZoomImg(true);
+					var simEvent = document.createEvent("MouseEvents"),
+						target = document.elementFromPoint(event.clientX, event.clientY);
+					simEvent.initMouseEvent('click', true, true, window, 0, event.screenX, event.screenY, event.clientX, event.clientY, false, false, false, false, 0, null);
+					target.dispatchEvent(simEvent);
+					//simEvent.type = 'mousedown';
+					//target.dispatchEvent(simEvent);
+					//simEvent.type = 'mouseup';
+					//target.dispatchEvent(simEvent);
+				});
+			}*/
+			
 			if (options.showCaptions && hz.currentLink && hz.currentLink.data().hoverZoomCaption) {
 				hzCaption = $('<div/>', {id: 'hzCaption', text: hz.currentLink.data().hoverZoomCaption}).css(hzCaptionCss).appendTo(hz.hzImg);
 			}
@@ -626,14 +653,14 @@ var hoverZoom = {
 		}
 		
 		function windowOnDOMNodeInserted(event) {
-			if (event.srcElement) {
-				if (event.srcElement.id == 'hzImg' || 
-					event.srcElement.parentNode.id == 'hzImg' ||
-					event.srcElement.id == 'hzDownscaled') { return; }
-				var srcElement = $(event.srcElement);
-				if (event.srcElement.nodeName == 'A' || event.srcElement.nodeName == 'IMG' || srcElement.find('a, img').length || srcElement.parents('a, img').length) {
+			if (event.target) {
+				if (event.target.id == 'hzImg' || 
+					event.target.parentNode.id == 'hzImg' ||
+					event.target.id == 'hzDownscaled') { return; }
+				var srcElement = $(event.target);
+				if (event.target.nodeName == 'A' || event.target.nodeName == 'IMG' || srcElement.find('a, img').length || srcElement.parents('a, img').length) {
 					prepareImgLinksAsync();
-				} else if (event.srcElement.nodeName == 'EMBED' || event.srcElement.nodeName == 'OBJECT') {
+				} else if (event.target.nodeName == 'EMBED' || event.target.nodeName == 'OBJECT') {
 					fixFlash();
 				}
 			}
@@ -681,6 +708,7 @@ var hoverZoom = {
 		}
 		
 		function fixFlash() {
+			if (flashFixDomains.indexOf(location.host) == -1) { return; }
 			if (isExcludedSite() || window == window.top && $('.hoverZoomLink').length == 0) { return; }
 			$('embed:not([wmode]), embed[wmode="window"]').each(function () {
 				if (!this.type || this.type.toLowerCase() != 'application/x-shockwave-flash') { return; }
@@ -803,6 +831,7 @@ var hoverZoom = {
 		hoverZoom.hzImg.css(hoverZoom.hzImgCss);
 		hoverZoom.hzImg.empty();
 		hoverZoom.hzImg.stop(true, true).fadeTo(options.fadeDuration, options.picturesOpacity);
+		
 	},
 	
 	// Create and displays the loading image container
