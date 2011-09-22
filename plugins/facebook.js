@@ -4,11 +4,11 @@
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	name: 'Facebook',
-	version: '0.7',
+	version: '0.8',
 	prepareImgLinks: function(callback) {
 	
 		function srcReplace(src) {
-			return src.replace(/_[sqta]\./, '_n.').replace(/\/[sqta](\d)/, '/n$1');
+			return src.replace(/[a-z]\d+\.(facebook\.com|sphotos\.ak\.fbcdn\.net)\//, 'fbcdn-sphotos-a.akamaihd.net/').replace(/\/[a-z]\d+x\d+\//, '/').replace(/_[sqta]\./, '_n.').replace(/\/[sqta](\d)/, '/n$1');
 		}
 		
 		function getTooltip(link) {
