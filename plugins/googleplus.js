@@ -8,9 +8,9 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			'img[src*=".googleusercontent.com/-"]:not(.Rl, .a-Tc-gy, .a-c-b-z-la)',
-			[/.*proxy\?url=([^&]+).*/, /\/(w\d+-h\d+|[hws]\d+)(-[npck])*\//, /\?sz=\d+/],
-			['$1', '/', '']
+			':not([oid]) > img[src*=".googleusercontent.com/-"]',
+			[/\/(w\d+-h\d+|[hws]\d+)(-[npck])*\//, /\?sz=\d+/],
+			['/', '']
 		);		
 		hoverZoom.urlReplace(res, 
 			'img[src*="proxy\?url="]',
