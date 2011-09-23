@@ -1,6 +1,6 @@
 ﻿{
     "name": "Hover Zoom",
-    "version": "3.2",
+    "version": "3.3",
     "description": "Enlarge thumbnails on mouse over. Works on many sites (Facebook, Twitter, Google™, Flickr, Reddit, Amazon, etc).",
 	"icons": {
 		"16": "images/icon16.png",
@@ -1018,6 +1018,11 @@
 		{
 			"js": [ "plugins/500px.js" ],
 			"matches": [ "*://*.500px.com/*" ],
+			"run_at": "document_start"
+		},
+		{
+			"js": [ "plugins/modelmayhem.js" ],
+			"matches": [ "*://*.modelmayhem.com/*" ],
 			"run_at": "document_start"
 		}
 	]

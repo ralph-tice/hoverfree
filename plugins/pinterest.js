@@ -4,12 +4,12 @@
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	name: 'Pinterest',
-	version: '0.1',
+	version: '0.2',
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res,
-			'div.pin a img[src*="_b.jpg"]',
-			/_b\.jpg/,
+			'img[src*="_b.jpg"], img[src*="_t.jpg"]',
+			/_[bt]\.jpg/,
 			'_c.jpg'
 		);
 		callback($(res));
