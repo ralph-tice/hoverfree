@@ -1029,6 +1029,12 @@
 			"js": [ "plugins/yam.js" ],
 			"matches": [ "*://*.yam.com/*" ],
 			"run_at": "document_start"
+		},
+		{
+			"js": [ "plugins/gmail.js" ],
+			"matches": [ "*://mail.google.com/*" ],
+			"run_at": "document_start",
+			"all_frames": true
 		}
 	]
 }
