@@ -65,7 +65,8 @@ var hoverZoom = {
 			'max-width': 'none',
 			'margin': '0',
 			'padding': '0',
-			'border-radius': '0'
+			'border-radius': '0',
+			'background-size': '100%'
 		},
 		hzCaptionCss = {
 			'font': 'menu',
@@ -356,8 +357,22 @@ var hoverZoom = {
 			hz.hzImg.stop(true, true);
 			hz.hzImg.offset({top:-9000, left:-9000});	// hides the image while making it available for size calculations
 			hz.hzImg.empty();
+						
 			imgFullSize.css(imgFullSizeCss).appendTo(hz.hzImg).mousemove(imgFullSizeOnMouseMove);
-
+				
+			// Sets up the thumbnail as a full-size background
+			if (loading && hz.currentLink) {
+				var lowResSrc = hz.currentLink.attr('src') || hz.currentLink.find('[src]').attr('src');
+				if (!lowResSrc) {
+					var styledElem = hz.currentLink.find('[style]');
+					if (styledElem.length)
+						lowResSrc = hz.getThumbUrl(styledElem[0]);
+				}
+				lowResSrc = lowResSrc || 'noimage';
+				if (lowResSrc.indexOf('noimage') == -1)
+					imgFullSize.css({'background': 'url(' + lowResSrc + ')'});
+			}
+				
 			/*if (options.expAlwaysFullZoom) {
 				// If the user clicks the image, this hides the image and simulates a click underneath (still buggy).
 				imgFullSize.mousedown(function(event) {
