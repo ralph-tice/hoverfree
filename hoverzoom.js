@@ -66,7 +66,9 @@ var hoverZoom = {
 			'margin': '0',
 			'padding': '0',
 			'border-radius': '0',
-			'background-size': '100%'
+			'background-size': '100% 100%',
+			'background-position': 'center',
+			'background-repeat': 'no-repeat'
 		},
 		hzCaptionCss = {
 			'font': 'menu',
@@ -362,15 +364,24 @@ var hoverZoom = {
 				
 			// Sets up the thumbnail as a full-size background
 			if (loading && hz.currentLink) {
-				var lowResSrc = hz.currentLink.attr('src') || hz.currentLink.find('[src]').attr('src');
+				var thumb = hz.currentLink, 
+					lowResSrc = thumb.attr('src');
 				if (!lowResSrc) {
-					var styledElem = hz.currentLink.find('[style]');
-					if (styledElem.length)
-						lowResSrc = hz.getThumbUrl(styledElem[0]);
+					thumb = hz.currentLink.find('[src]').first();
+					lowResSrc = thumb.attr('src');
+				}
+				if (!lowResSrc) {
+					thumb = hz.currentLink.find('[style]').first();
+					lowResSrc = hz.getThumbUrl(thumb);
 				}
 				lowResSrc = lowResSrc || 'noimage';
-				if (lowResSrc.indexOf('noimage') == -1)
-					imgFullSize.css({'background': 'url(' + lowResSrc + ')'});
+				if (lowResSrc.indexOf('noimage') == -1) {
+					var imgRatio = imgFullSize.width() / imgFullSize.height(),
+						thumbRatio = thumb.width() / thumb.height();
+					// The thumbnail is used as a background only if its width/height ratio is similar to the image
+					if (Math.abs(imgRatio - thumbRatio) < 0.1)
+						imgFullSize.css({'background-image': 'url(' + lowResSrc + ')'});
+				}
 			}
 				
 			/*if (options.expAlwaysFullZoom) {
