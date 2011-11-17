@@ -38,14 +38,11 @@
 			       "plugins/flickr_a.js",
 				   "plugins/tumblr_a.js",
 				   "plugins/picasa_a.js",
-				   "plugins/skyrock_a.js",
 				   "plugins/imageshack_a.js",
-				   "plugins/fukung_a.js",
 				   "plugins/mediawiki_a.js",
 				   "plugins/wordpress_a.js",
 				   "plugins/vbulletin_a.js",
-				   "plugins/ipboard_a.js",
-				   "plugins/twitpic_a.js"],
+				   "plugins/ipboard_a.js"],
 			"matches": ["<all_urls>"],
 			"run_at": "document_start",
 			"all_frames": true
@@ -587,6 +584,11 @@
 			"run_at": "document_start"
         },
         {
+            "js": ["plugins/twitpic.js"],
+			"matches": ["*://*.twitter.com/*"],
+			"run_at": "document_start"
+        },
+        {
             "js": ["plugins/ravelry.js"],
 			"matches": ["*://*.ravelry.com/*"],
 			"run_at": "document_start"
@@ -737,6 +739,17 @@
 			"js": ["plugins/phapit.js"],
 			"matches": ["*://*.phapit.com/*",
 						"*://*.reddit.com/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/fukung.js"],
+			"matches": ["*://*.fukung.net/*",
+						"*://*.reddit.com/*"],
+			"run_at": "document_start"
+		},
+		{
+			"js": ["plugins/picsarus.js"],
+			"matches": ["*://*.reddit.com/*"],
 			"run_at": "document_start"
 		},
 		{
@@ -1040,6 +1053,11 @@
 		{
 			"js": [ "plugins/8tracks.js" ],
 			"matches": [ "*://*.8tracks.com/*" ],
+			"run_at": "document_start"
+		},
+		{
+			"js": [ "plugins/yfrog.js" ],
+			"matches": [ "*://*.twitter.com/*" ],
 			"run_at": "document_start"
 		}
 	]
