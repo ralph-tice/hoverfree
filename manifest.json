@@ -1059,6 +1059,11 @@
 			"js": [ "plugins/yfrog.js" ],
 			"matches": [ "*://*.twitter.com/*" ],
 			"run_at": "document_start"
+		},
+		{
+			"js": [ "plugins/gameblog.js" ],
+			"matches": [ "*://*.gameblog.fr/*" ],
+			"run_at": "document_start"
 		}
 	]
 }
