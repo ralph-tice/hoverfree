@@ -1064,6 +1064,13 @@
 			"js": [ "plugins/gameblog.js" ],
 			"matches": [ "*://*.gameblog.fr/*" ],
 			"run_at": "document_start"
+		},
+		{
+			"js": [ "plugins/diaspora.js" ],
+			"matches": [ "*://*.diasp.org/*",
+						 "*://*.joindiaspora.com/*",
+						 "*://*.diasp.eu/*"],
+			"run_at": "document_start"
 		}
 	]
 }
