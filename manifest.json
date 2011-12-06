@@ -42,6 +42,7 @@
 				   "plugins/mediawiki_a.js",
 				   "plugins/wordpress_a.js",
 				   "plugins/vbulletin_a.js",
+				   "plugins/photoshop_a.js",
 				   "plugins/ipboard_a.js"],
 			"matches": ["<all_urls>"],
 			"run_at": "document_start",
