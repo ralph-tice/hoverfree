@@ -572,6 +572,9 @@ var hoverZoom = {
 			$('img').filter(function () {
 				var _this = $(this);
 				
+				// Only zoom jpg images, to prevent zooming on images that are part of the site design
+				if (this.src.toLowerCase().lastIndexOf('.jpg') != this.src.length - 4) { return false; }
+				
 				// Using _this.data('hoverZoomSrc') breaks some multi-frames sites (don't know why...)
 				if (_this.data().hoverZoomSrc) { return false; }
 				
