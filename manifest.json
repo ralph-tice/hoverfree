@@ -1,6 +1,6 @@
 ﻿{
     "name": "Hover Zoom",
-    "version": "3.7",
+    "version": "3.8",
     "description": "Enlarge thumbnails on mouse over. Works on many sites (Facebook, Twitter, Flickr, Reddit, Amazon, Tumblr, etc).",
 	"icons": {
 		"16": "images/icon16.png",
@@ -23,14 +23,8 @@
 	],
 	"content_scripts": [
         {
-            "js": ["hoverzoom.js"],
-			"matches": ["<all_urls>"],
-			"all_frames": true
-        },
-        {
             "js": ["jquery.min.js", "plugins/default.js"],
 			"matches": ["<all_urls>"],
-			"run_at": "document_start",
 			"all_frames": true
         },
         {
@@ -45,26 +39,22 @@
 				   "plugins/photoshop_a.js",
 				   "plugins/ipboard_a.js"],
 			"matches": ["<all_urls>"],
-			"run_at": "document_start",
 			"all_frames": true
         },
         {
             "js": ["plugins/facebook.js"],
 			"matches": ["*://*.facebook.com/*"],
-			"run_at": "document_start",
 			"all_frames": true
         },
         {
             "js": ["plugins/flickr.js"],
-			"matches": ["*://*.flickr.com/*"],
-			"run_at": "document_start"
-        },
+			"matches": ["*://*.flickr.com/*"]
+		},
         {
             "js": ["plugins/yahoo.js"],
 			"matches": ["*://*.search.yahoo.com/*",
-						"*://*.search.yahoo.co.jp/*"],
-			"run_at": "document_start"
-        },
+						"*://*.search.yahoo.co.jp/*"]
+		},
         {
             "js": ["plugins/picasa.js"],
 			"matches": ["*://picasaweb.google.com/*", 
@@ -245,14 +235,12 @@
 						"*://picasaweb.google.co.za/*", 
 						"*://picasaweb.google.co.zm/*", 
 						"*://picasaweb.google.co.zw/*", 
-						"*://picasaweb.google.cat/*"],
-			"run_at": "document_start"
-        },
+						"*://picasaweb.google.cat/*"]
+		},
         {
             "js": ["plugins/deviantart.js"],
-			"matches": ["*://*.deviantart.com/*"],
-			"run_at": "document_start"
-        },
+			"matches": ["*://*.deviantart.com/*"]
+		},
 		{
             "js": ["plugins/google.js"],
 			"matches": ["*://*.google.com/*", 
@@ -436,9 +424,8 @@
 						"*://*.google.co.za/*", 
 						"*://*.google.co.zm/*", 
 						"*://*.google.co.zw/*", 
-						"*://*.google.cat/*"],
-			"run_at": "document_start"
-        },
+						"*://*.google.cat/*"]
+		},
         {
             "js": ["plugins/opendesktop.js"],
 			"matches": ["*://opendesktop.org/*",
@@ -476,14 +463,12 @@
 						"*://gimpstuff.org/*",
 						"*://inkscapestuff.org/*",
 						"*://scribusstuff.org/*",
-						"*://blenderstuff.org/*"],
-			"run_at": "document_start"
-        },
+						"*://blenderstuff.org/*"]
+		},
         {
             "js": ["plugins/gamekult.js"],
-			"matches": ["*://*.gamekult.com/*"],
-			"run_at": "document_start"
-        },
+			"matches": ["*://*.gamekult.com/*"]
+		},
         {
             "js": ["plugins/imdb.js"],
 			"matches": ["*://*.imdb.com/*",
@@ -491,24 +476,20 @@
 						"*://*.imdb.it/*",
 						"*://*.imdb.es/*",
 						"*://*.imdb.fr/*",
-						"*://*.imdb.pt/*"],
-			"run_at": "document_start"
-        },
+						"*://*.imdb.pt/*"]
+		},
         {
             "js": ["plugins/image_aspx.js"],
-			"matches": ["*://manager.co.th/*"],
-			"run_at": "document_start"
-        },
+			"matches": ["*://manager.co.th/*"]
+		},
         {
             "js": ["plugins/myspace.js"],
-			"matches": ["*://*.myspace.com/*"],
-			"run_at": "document_start"
-        },
+			"matches": ["*://*.myspace.com/*"]
+		},
         {
             "js": ["plugins/baidu.js"],
-			"matches": ["*://*.baidu.com/*"],
-			"run_at": "document_start"
-        },
+			"matches": ["*://*.baidu.com/*"]
+		},
         {
             "js": ["plugins/amazon.js"],
 			"matches": ["*://*.amazon.com/*",
@@ -518,24 +499,20 @@
 						"*://*.amazon.de/*",
 						"*://*.amazon.co.jp/*",
 						"*://*.amazon.co.uk/*",
-						"*://*.gizmodo.jp/*"],
-			"run_at": "document_start"
-        },
+						"*://*.gizmodo.jp/*"]
+		},
         {
             "js": ["plugins/windowslive.js"],
-			"matches": ["*://*.photos.live.com/*"],
-			"run_at": "document_start"
-        },
+			"matches": ["*://*.photos.live.com/*"]
+		},
         {
             "js": ["plugins/hi5.js"],
-			"matches": ["*://*.hi5.com/*"],
-			"run_at": "document_start"
-        },
+			"matches": ["*://*.hi5.com/*"]
+		},
         {
             "js": ["plugins/play.js"],
-			"matches": ["*://*.play.com/*"],
-			"run_at": "document_start"
-        },
+			"matches": ["*://*.play.com/*"]
+		},
         {
             "js": ["plugins/ebay.js"],
 			"matches": ["*://*.ebay.com/*",
@@ -558,57 +535,47 @@
 						"*://*.ebay.com.sg/*",
 						"*://*.ebay.ch/*",
 						"*://*.ebay.co.th/*",
-						"*://*.ebay.vn/*"],
-			"run_at": "document_start"
-        },
+						"*://*.ebay.vn/*"]
+		},
         {
             "js": ["plugins/allocine.js"],
 			"matches": ["*://*.allocine.fr/*",
 						"*://*.filmstarts.de/*",
-						"*://*.sensacine.com/*"],
-			"run_at": "document_start"
-        },
+						"*://*.sensacine.com/*"]
+		},
         {
             "js": ["plugins/flixster.js"],
 			"matches": ["*://*.flixster.com/*",
-						"*://*.rottentomatoes.com/*"],
-			"run_at": "document_start"
-        },
+						"*://*.rottentomatoes.com/*"]
+		},
         {
             "js": ["plugins/gamespot.js"],
-			"matches": ["*://*.gamespot.com/*"],
-			"run_at": "document_start"
-        },
+			"matches": ["*://*.gamespot.com/*"]
+		},
         {
             "js": ["plugins/twitter.js"],
-			"matches": ["*://*.twitter.com/*"],
-			"run_at": "document_start"
-        },
+			"matches": ["*://*.twitter.com/*"]
+		},
         {
             "js": ["plugins/twitpic.js"],
-			"matches": ["*://*.twitter.com/*"],
-			"run_at": "document_start"
-        },
+			"matches": ["*://*.twitter.com/*"]
+		},
         {
             "js": ["plugins/ravelry.js"],
-			"matches": ["*://*.ravelry.com/*"],
-			"run_at": "document_start"
-        },
+			"matches": ["*://*.ravelry.com/*"]
+		},
         {
             "js": ["plugins/jeuxvideo_com.js"],
-			"matches": ["*://*.jeuxvideo.com/*"],
-			"run_at": "document_start"
-        },
+			"matches": ["*://*.jeuxvideo.com/*"]
+		},
         {
             "js": ["plugins/beautify_it.js"],
-			"matches": ["*://*.beautify.it/*"],
-			"run_at": "document_start"
-        },
+			"matches": ["*://*.beautify.it/*"]
+		},
         {
             "js": ["plugins/cnet.js"],
-			"matches": ["*://*.cnet.com/*"],
-			"run_at": "document_start"
-        },
+			"matches": ["*://*.cnet.com/*"]
+		},
         {
             "js": ["plugins/lastfm.js"],
 			"matches": ["*://*.last.fm/*",
@@ -621,73 +588,60 @@
 						"*://*.lastfm.com.br/*",
 						"*://*.lastfm.ru/*",
 						"*://*.lastfm.se/*",
-						"*://*.lastfm.com.tr/*"],
-			"run_at": "document_start"
-        },
+						"*://*.lastfm.com.tr/*"]
+		},
         {
             "js": ["plugins/musicme.js"],
 			"matches": ["*://*.musicme.com/*"],
-			"run_at": "document_start",
 			"all_frames": true
         },
         {
             "js": ["plugins/tinypic.js"],
-			"matches": ["*://*.tinypic.com/*"],
-			"run_at": "document_start"
-        },
+			"matches": ["*://*.tinypic.com/*"]
+		},
         {
             "js": ["plugins/photobucket.js"],
-			"matches": ["*://*.photobucket.com/*"],
-			"run_at": "document_start"
-        },
+			"matches": ["*://*.photobucket.com/*"]
+		},
         {
             "js": ["plugins/backpage.js"],
-			"matches": ["*://*.backpage.com/*"],
-			"run_at": "document_start"
-        },
+			"matches": ["*://*.backpage.com/*"]
+		},
         {
             "js": ["plugins/wretch_cc.js"],
-			"matches": ["*://*.wretch.cc/*"],
-			"run_at": "document_start"
-        },
+			"matches": ["*://*.wretch.cc/*"]
+		},
         {
             "js": ["plugins/events-gallery_ch.js"],
-			"matches": ["*://*.events-gallery.ch/*"],
-			"run_at": "document_start"
-        },
+			"matches": ["*://*.events-gallery.ch/*"]
+		},
         {
             "js": ["plugins/knowyourmeme.js"],
-			"matches": ["*://*.knowyourmeme.com/*"],
-			"run_at": "document_start"
-        },
+			"matches": ["*://*.knowyourmeme.com/*"]
+		},
         {
             "js": ["plugins/tshirthell.js"],
-			"matches": ["*://*.tshirthell.com/*"],
-			"run_at": "document_start"
-        },
+			"matches": ["*://*.tshirthell.com/*"]
+		},
         {
             "js": ["plugins/threadless.js"],
-			"matches": ["*://*.threadless.com/*"],
-			"run_at": "document_start"
-        },
+			"matches": ["*://*.threadless.com/*"]
+		},
         {
             "js": ["plugins/viedemerde.js"],
 			"matches": ["*://*.viedemerde.fr/*",
 						"*://*.fmylife.com/*",
 						"*://*.vitadimerda.it/*",
 						"*://*.vayamierdadevida.com/*",
-						"*://*.fanformittliv.com/*"],
-			"run_at": "document_start"
-        },
+						"*://*.fanformittliv.com/*"]
+		},
         {
             "js": ["plugins/xing.js"],
-			"matches": ["*://*.xing.com/*"],
-			"run_at": "document_start"
-        },
+			"matches": ["*://*.xing.com/*"]
+		},
 		{
 			"js": ["plugins/stern_de.js"],
-			"matches": ["*://*.stern.de/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.stern.de/*"]
 		},
 		{
 			"js": ["plugins/gawker.js"],
@@ -702,244 +656,199 @@
 						"*://*.gizmodo.pl/*",
 						"*://*.deadspin.com/*",
 						"*://*.jezebel.com/*",
-						"*://*.jalopnik.com/*"],
-			"run_at": "document_start"
+						"*://*.jalopnik.com/*"]
 		},
 		{
 			"js": ["plugins/nintendolife.js"],
-			"matches": ["*://*.nintendolife.com/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.nintendolife.com/*"]
 		},
 		{
 			"js": ["plugins/skyrock.js"],
-			"matches": ["*://*.skyrock.com/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.skyrock.com/*"]
 		},
 		{
 			"js": ["plugins/tagged.js"],
-			"matches": ["*://*.tagged.com/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.tagged.com/*"]
 		},
 		{
 			"js": ["plugins/leboncoin_fr.js"],
-			"matches": ["*://*.leboncoin.fr/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.leboncoin.fr/*"]
 		},
 		{
 			"js": ["plugins/linkedin.js"],
-			"matches": ["*://*.linkedin.com/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.linkedin.com/*"]
 		},
 		{
 			"js": ["plugins/subimg_net.js"],
 			"matches": ["*://*.subimg.net/*",
-						"*://*.reddit.com/*"],
-			"run_at": "document_start"
+						"*://*.reddit.com/*"]
 		},
 		{
 			"js": ["plugins/phapit.js"],
 			"matches": ["*://*.phapit.com/*",
-						"*://*.reddit.com/*"],
-			"run_at": "document_start"
+						"*://*.reddit.com/*"]
 		},
 		{
 			"js": ["plugins/fukung.js"],
 			"matches": ["*://*.fukung.net/*",
-						"*://*.reddit.com/*"],
-			"run_at": "document_start"
+						"*://*.reddit.com/*"]
 		},
 		{
 			"js": ["plugins/picsarus.js"],
-			"matches": ["*://*.reddit.com/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.reddit.com/*"]
 		},
 		{
 			"js": ["plugins/pixiv.js"],
-			"matches": ["*://*.pixiv.net/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.pixiv.net/*"]
 		},
 		{
 			"js": ["plugins/rakuten.js"],
 			"matches": ["*://*.rakuten.co.jp/*",
-						"*://*.rakuten.com/*"],
-			"run_at": "document_start"
+						"*://*.rakuten.com/*"]
 		},
 		{
 			"js": ["plugins/copainsdavant.js"],
-			"matches": ["*://copainsdavant.linternaute.com/*"],
-			"run_at": "document_start"
+			"matches": ["*://copainsdavant.linternaute.com/*"]
 		},
 		{
 			"js": ["plugins/blogcdn.js"],
 			"matches": ["*://*.joystiq.com/*",
 						"*://*.engadget.com/*",
 						"*://*.switched.com/*",
-						"*://*.tuaw.com/*"],
-			"run_at": "document_start"
+						"*://*.tuaw.com/*"]
 		},
 		{
 			"js": ["plugins/badoo.js"],
-			"matches": ["*://*.badoo.com/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.badoo.com/*"]
 		},
 		{
 			"js": ["plugins/steam.js"],
 			"matches": ["*://*.steamcommunity.com/*",
-						"*://*.steampowered.com/*"],
-			"run_at": "document_start"
+						"*://*.steampowered.com/*"]
 		},
 		{
 			"js": ["plugins/1x.js"],
-			"matches": ["*://*.1x.com/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.1x.com/*"]
 		},
 		{
 			"js": ["plugins/wired.js"],
-			"matches": ["*://*.wired.com/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.wired.com/*"]
 		},
 		{
 			"js": ["plugins/maxmodels.js"],
-			"matches": ["*://*.maxmodels.pl/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.maxmodels.pl/*"]
 		},
 		{
 			"js": ["plugins/blip.js"],
-			"matches": ["*://*.blip.pl/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.blip.pl/*"]
 		},
 		{
 			"js": ["plugins/digart.js"],
-			"matches": ["*://*.digart.pl/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.digart.pl/*"]
 		},
 		{
 			"js": ["plugins/picplz.js"],
-			"matches": ["*://*.picplz.com/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.picplz.com/*"]
 		},
 		{
 			"js": ["plugins/twimg.js"],
 			"matches": ["*://*.favstar.fm/*",
-						"*://*.tweetmeme.com/*"],
-			"run_at": "document_start"
+						"*://*.tweetmeme.com/*"]
 		},
 		{
 			"js": ["plugins/cyworld.js"],
 			"matches": ["*://*.cyworld.com/*",
 						"*://*.cyworld.co.kr/*",
-						"*://*.cyworld.co.cn/*"],
-			"run_at": "document_start"
+						"*://*.cyworld.co.cn/*"]
 		},
 		{
 			"js": ["plugins/fotolog.js"],
-			"matches": ["*://*.fotolog.com/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.fotolog.com/*"]
 		},
 		{
 			"js": ["plugins/panoramio.js"],
-			"matches": ["*://*.panoramio.com/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.panoramio.com/*"]
 		},
 		{
 			"js": ["plugins/imagefap.js"],
-			"matches": ["*://*.imagefap.com/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.imagefap.com/*"]
 		},
 		{
 			"js": ["plugins/oxd_in.js"],
 			"matches": ["*://*.oxd.in/*",
-						"*://*.reddit.com/*"],
-			"run_at": "document_start"
+						"*://*.reddit.com/*"]
 		},
 		{
 			"js": ["plugins/vk.js"],
 			"matches": ["*://*.vk.com/*",
-						"*://*.vkontakte.ru/*"],
-			"run_at": "document_start"
+						"*://*.vkontakte.ru/*"]
 		},
 		{
 			"js": ["plugins/plurk.js"],
-			"matches": ["*://*.plurk.com/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.plurk.com/*"]
 		},
 		{
 			"js": ["plugins/vimeo.js"],
-			"matches": ["*://*.vimeo.com/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.vimeo.com/*"]
 		},
 		{
 			"js": ["plugins/bebo.js"],
-			"matches": ["*://*.bebo.com/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.bebo.com/*"]
 		},
 		{
 			"js": ["plugins/okcupid.js"],
-			"matches": ["*://*.okcupid.com/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.okcupid.com/*"]
 		},
 		{
 			"js": ["plugins/paheal.js"],
-			"matches": ["*://*.paheal.net/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.paheal.net/*"]
 		},
 		{
 			"matches": ["*://*.reddit.com/*"],
 			"js": ["plugins/quickmeme.js",
-			       "plugins/slutcapades.js"],
-			"run_at": "document_start"
+			       "plugins/slutcapades.js"]
 		},
 		{
 			"js": ["plugins/instructables.js"],
-			"matches": ["*://*.instructables.com/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.instructables.com/*"]
 		},
 		{
 			"js": ["plugins/nofrag.js"],
-			"matches": ["*://*.nofrag.com/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.nofrag.com/*"]
 		},
         {
             "js": ["plugins/pictmobi.js"],
-            "matches": ["*://*.pict.mobi/*"],
-            "run_at": "document_start"
+            "matches": ["*://*.pict.mobi/*"]
         },
 		{
 			"js": ["plugins/youtube_a.js"],
-			"matches": ["*://*.youtube.com/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.youtube.com/*"]
 		},
 		{
 			"js": ["plugins/zing_vn.js"],
 			"matches": ["*://*.zing.vn/*"],
-			"run_at": "document_start",
 			"all_frames": true
 		},
 		{
 			"js": ["plugins/rootmusic.js"],
 			"matches": ["*://*.rootmusic.com/fb/*"],
-			"run_at": "document_start",
 			"all_frames": true
 		},
 		{
 			"js": ["plugins/liveshare.js"],
-			"matches": ["*://*.liveshare.com/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.liveshare.com/*"]
 		},
 		{
 			"js": ["plugins/weheartit.js"],
-			"matches": ["*://*.weheartit.com/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.weheartit.com/*"]
 		},
 		{
 			"js": ["plugins/funnyjunk.js"],
-			"matches": ["*://*.funnyjunk.com/*"],
-			"run_at": "document_start"
+			"matches": ["*://*.funnyjunk.com/*"]
 		},
 		{
 			"js": [ "plugins/sky_it.js" ],
-			"matches": [ "*://*.sky.it/*" ],
-			"run_at": "document_start"
+			"matches": [ "*://*.sky.it/*" ]
 		},
 		{
 			"js": [ "plugins/blogo_it.js" ],
@@ -983,95 +892,83 @@
 				"*://*.toysblog.it/*",
 				"*://*.travelblog.it/*",
 				"*://*.tvblog.it/*"
-			],
-			"run_at": "document_start"
+			]
 		},
 		{
 			"js": [ "plugins/yelp.js" ],
-			"matches": [ "*://*.yelp.com/*" ],
-			"run_at": "document_start"
+			"matches": [ "*://*.yelp.com/*" ]
 		},
 		{
 			"js": [ "plugins/hwzone_il.js" ],
-			"matches": [ "*://*.hwzone.co.il/*" ],
-			"run_at": "document_start"
+			"matches": [ "*://*.hwzone.co.il/*" ]
 		},
 		{
 			"js": [ "plugins/googlecode.js" ],
-			"matches": [ "*://code.google.com/*" ],
-			"run_at": "document_start"
+			"matches": [ "*://code.google.com/*" ]
 		},
 		{
 			"js": [ "plugins/googleplus.js" ],
-			"matches": [ "*://plus.google.com/*" ],
-			"run_at": "document_start"
+			"matches": [ "*://plus.google.com/*" ]
 		},
 		{
 			"js": [ "plugins/spinchat.js" ],
 			"matches": [ "*://*.spinchat.com/*",
 						 "*://*.spin.de/*" ],
-			"run_at": "document_start",
 			"all_frames": true
 		},
 		{
 			"js": [ "plugins/etsy.js" ],
-			"matches": [ "*://*.etsy.com/*" ],
-			"run_at": "document_start"
+			"matches": [ "*://*.etsy.com/*" ]
 		},
 		{
 			"js": [ "plugins/asos.js" ],
 			"matches": [ "*://*.asos.com/*",
 						 "*://*.asos.fr/*",
-						 "*://*.asos.de/*" ],
-			"run_at": "document_start"
+						 "*://*.asos.de/*" ]
 		},
 		{
 			"js": [ "plugins/pinterest.js" ],
-			"matches": [ "*://*.pinterest.com/*" ],
-			"run_at": "document_start"
+			"matches": [ "*://*.pinterest.com/*" ]
 		},
 		{
 			"js": [ "plugins/500px.js" ],
-			"matches": [ "*://*.500px.com/*" ],
-			"run_at": "document_start"
+			"matches": [ "*://*.500px.com/*" ]
 		},
 		{
 			"js": [ "plugins/modelmayhem.js" ],
-			"matches": [ "*://*.modelmayhem.com/*" ],
-			"run_at": "document_start"
+			"matches": [ "*://*.modelmayhem.com/*" ]
 		},
 		{
 			"js": [ "plugins/yam.js" ],
-			"matches": [ "*://*.yam.com/*" ],
-			"run_at": "document_start"
+			"matches": [ "*://*.yam.com/*" ]
 		},
 		{
 			"js": [ "plugins/gmail.js" ],
 			"matches": [ "*://mail.google.com/*" ],
-			"run_at": "document_start",
 			"all_frames": true
 		},
 		{
 			"js": [ "plugins/8tracks.js" ],
-			"matches": [ "*://*.8tracks.com/*" ],
-			"run_at": "document_start"
+			"matches": [ "*://*.8tracks.com/*" ]
 		},
 		{
 			"js": [ "plugins/yfrog.js" ],
-			"matches": [ "*://*.twitter.com/*" ],
-			"run_at": "document_start"
+			"matches": [ "*://*.twitter.com/*" ]
 		},
 		{
 			"js": [ "plugins/gameblog.js" ],
-			"matches": [ "*://*.gameblog.fr/*" ],
-			"run_at": "document_start"
+			"matches": [ "*://*.gameblog.fr/*" ]
 		},
 		{
 			"js": [ "plugins/diaspora.js" ],
 			"matches": [ "*://*.diasp.org/*",
 						 "*://*.joindiaspora.com/*",
-						 "*://*.diasp.eu/*"],
-			"run_at": "document_start"
-		}
+						 "*://*.diasp.eu/*"]
+		},
+		{
+            "js": ["hoverzoom.js"],
+			"matches": ["<all_urls>"],
+			"all_frames": true
+        }
 	]
 }
