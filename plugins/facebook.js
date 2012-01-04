@@ -88,7 +88,7 @@ hoverZoomPlugins.push( {
 			
 			// Picasa hosted images
 			if (src.indexOf('ggpht.com') > -1 || src.indexOf('blogspot.com') > -1) {
-				srcs.push(src.replace(/\/s\d+(-c)?\//, options.showHighRes ? '/' : '/s800/'));				
+				srcs.push(src.replace(/\/s\d+(-c)?\//, options.showHighRes ? '/s0/' : '/s800/'));				
 			}
 			
 			// Youtube images

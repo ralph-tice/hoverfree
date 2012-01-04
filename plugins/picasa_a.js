@@ -12,7 +12,7 @@ hoverZoomPlugins.push( {
 			
 		hoverZoom.urlReplace(res, filter, search, '/s800/');		
 		if (options.showHighRes) {
-			hoverZoom.urlReplace(res, filter, search, '/');
+			hoverZoom.urlReplace(res, filter, search, '/s0/');
 		}
 		
 		callback($(res));	
