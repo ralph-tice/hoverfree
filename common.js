@@ -25,8 +25,9 @@ function loadOptions() {
 	options.expAlwaysFullZoom = options.hasOwnProperty('expAlwaysFullZoom') ? options.expAlwaysFullZoom : false;
 	
 	// Action keys
-	options.actionKey = 		options.hasOwnProperty('actionKey') ? options.actionKey : 0;
-	options.fullZoomKey = 		options.hasOwnProperty('fullZoomKey') ? options.fullZoomKey : 90;
+	options.actionKey = 	options.hasOwnProperty('actionKey') ? options.actionKey : 0;
+	options.fullZoomKey = 	options.hasOwnProperty('fullZoomKey') ? options.fullZoomKey : 90;
+	options.hideKey = 		options.hasOwnProperty('hideKey') ? options.hideKey : 88;
 	
 	localStorage.options = JSON.stringify(options);
 	

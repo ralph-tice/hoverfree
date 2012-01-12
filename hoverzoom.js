@@ -37,6 +37,7 @@ var hoverZoom = {
 			preloadTimeout,
 			actionKeyDown = false,
 			fullZoomKeyDown = false,
+			hideKeyDown = false,
 			pageActionShown = false,
 			skipFadeIn = false,
 			titledElements = null,
@@ -329,7 +330,7 @@ var hoverZoom = {
 			// If no image is currently displayed...
 			if (!imgFullSize) {
 				
-				hz.createHzImg();
+				hz.createHzImg(!hideKeyDown);
 				hz.createImgLoading();
 				
 				imgFullSize = $('<img style="border: none" />').appendTo(hz.hzImg).load(imgFullSizeOnLoad).error(imgFullSizeOnError).attr('src', imgSrc);
@@ -402,7 +403,7 @@ var hoverZoom = {
 			if (options.showCaptions && hz.currentLink && hz.currentLink.data().hoverZoomCaption) {
 				hzCaption = $('<div/>', {id: 'hzCaption', text: hz.currentLink.data().hoverZoomCaption}).css(hzCaptionCss).appendTo(hz.hzImg);
 			}
-			if (!skipFadeIn) {
+			if (!skipFadeIn && !hideKeyDown) {
 				hz.hzImg.hide().fadeTo(options.fadeDuration, options.picturesOpacity);
 			}
 			
@@ -706,6 +707,7 @@ var hoverZoom = {
 			
 			if (options.actionKey || options.fullZoomKey) {
 				$(document).keydown(function (event) {
+					// Action key (zoom image) is pressed down
 					if (event.which == options.actionKey && !actionKeyDown) {
 						actionKeyDown = true;
 						$(this).mousemove();
@@ -713,6 +715,7 @@ var hoverZoom = {
 							return false;
 						}
 					}
+					// Full zoom key is pressed down
 					if (event.which == options.fullZoomKey && !fullZoomKeyDown) {
 						fullZoomKeyDown = true;
 						posImg();
@@ -720,16 +723,36 @@ var hoverZoom = {
 							return false;
 						}
 					}
-					if (imgFullSize && (event.which == options.actionKey || event.which == options.fullZoomKey)) {
+					// Hide key (hide zoomed image) is pressed down
+					if (event.which == options.hideKey && !hideKeyDown) {
+						hideKeyDown = true;
+						if (hz.hzImg) {
+							hz.hzImg.hide();
+						}
+						if (imgFullSize) {
+							return false;
+						}
+					}
+					if (imgFullSize && (event.which == options.actionKey || event.which == options.fullZoomKey || event.which == options.hideKey)) {
 						return false;
 					}
 				}).keyup(function (event) {
+					// Action key (zoom image) is released
 					if (event.which == options.actionKey) {
 						actionKeyDown = false;
 						hideHoverZoomImg();
 					}
+					// Full zoom key is released
 					if (event.which == options.fullZoomKey) {
 						fullZoomKeyDown = false;
+						$(this).mousemove();
+					}
+					// Full zoom key is released
+					if (event.which == options.hideKey) {
+						hideKeyDown = false;
+						if (hz.hzImg) {
+							hz.hzImg.show();
+						}
 						$(this).mousemove();
 					}
 				});
@@ -855,12 +878,13 @@ var hoverZoom = {
 	},
 	
 	// Create and displays the zoomed image container
-	createHzImg: function () {
+	createHzImg: function (displayNow) {
 		hoverZoom.hzImg = hoverZoom.hzImg || $('<div id="hzImg"></div>').appendTo(document.body);			
 		hoverZoom.hzImg.css(hoverZoom.hzImgCss);
 		hoverZoom.hzImg.empty();
-		hoverZoom.hzImg.stop(true, true).fadeTo(options.fadeDuration, options.picturesOpacity);
-		
+		if (displayNow) {
+			hoverZoom.hzImg.stop(true, true).fadeTo(options.fadeDuration, options.picturesOpacity);
+		}		
 	},
 	
 	// Create and displays the loading image container

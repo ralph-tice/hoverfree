@@ -53,6 +53,7 @@
 				options.showHighRes = $('#chkShowHighRes')[0].checked;
 				options.actionKey = parseInt($('#selActionKey').val());
 				options.fullZoomKey = parseInt($('#selFullZoomKey').val());
+				options.hideKey = parseInt($('#selHideKey').val());
 				options.addToHistory = $('#chkAddToHistory')[0].checked;
 				options.alwaysPreload = $('#chkAlwaysPreload')[0].checked;
 				options.displayDelay = getMilliseconds($('#txtDisplayDelay'));
@@ -89,6 +90,7 @@
 				$('#txtFadeDuration').val((options.fadeDuration || 0) / 1000);
 				$('#selActionKey').val(options.actionKey);
 				$('#selFullZoomKey').val(options.fullZoomKey);
+				$('#selHideKey').val(options.hideKey);
 				$('#chkShowWhileLoading')[0].checked = options.showWhileLoading;
 				$('#chkAlwaysFullZoom')[0].checked = options.expAlwaysFullZoom;
 				
@@ -125,6 +127,20 @@
 				if ($('#selFullZoomKey').val() != '0' && $('#selFullZoomKey').val() == $('#selActionKey').val()) {
 					$('#selActionKey').val('0').effect("highlight", {color: 'red'}, 5000);
 				}
+			}
+			
+			function selKeyOnChange(event) {
+				var currSel = $(event.target);
+				if (currSel.val() != '0') {
+					$('.actionKey').each(function() {
+						if (!$(this).is(currSel) && $(this).val() == currSel.val()) {
+							$(this).val('0').effect("highlight", {color: 'red'}, 5000);
+						}
+					});
+				}
+				/*if ($('#selHideKey').val() != '0' && $('#selHideKey').val() == $('#selActionKey').val()) {
+					$('#selActionKey').val('0').effect("highlight", {color: 'red'}, 5000);
+				}*/
 			}
 			
 			function selActionKeyOnChange() {
@@ -166,7 +182,7 @@
 			}		
 			
 			$(function() {
-				loadKeys($('#selActionKey, #selFullZoomKey'));
+				loadKeys($('#selActionKey, #selFullZoomKey, #selHideKey'));
 				$('input, select, textarea').change(enableControls).keydown(enableControls);
 				$('#btnSave').click(saveOptions);
 				$('#btnReset').click(restoreOptions);
@@ -182,6 +198,7 @@
 					}
 				});
 				$('#txtPicturesOpacity').change(txtPicturesOpacityOnChange);
+				$('.actionKey').change(selKeyOnChange);
 				restoreOptions();
 				chrome.extension.onRequest.addListener(onRequest);
 			});
@@ -232,7 +249,16 @@
 						<h2>Activate Hover Zoom</h2>
 						<p>If a key is set, Hover Zoom will be active only when this key is held down.</p>
 						<p>Key to activate Hover Zoom:
-							<select id="selActionKey" onchange="selActionKeyOnChange()">
+							<select id="selActionKey" class="actionKey">
+								<option value="0">None</option>
+								<option value="16">Shift</option>
+								<option value="17">Ctrl</option>
+							</select>
+						</p>
+						<h2>Disable Hover Zoom</h2>
+						<p>Holding this key down hides the zoomed picture. Use it when the picture hides elements that are also displayed on mouseover.</p>
+						<p>Key to disable Hover Zoom:
+							<select id="selHideKey" class="actionKey">
 								<option value="0">None</option>
 								<option value="16">Shift</option>
 								<option value="17">Ctrl</option>
@@ -241,7 +267,7 @@
 						<h2>Activate full zoom</h2>
 						<p>When this key is held down, the picture is displayed using all available space. Useful for high resolution pictures only.</p>
 						<p>Key to activate full zoom:
-							<select id="selFullZoomKey" onchange="selFullZoomKeyOnChange()">
+							<select id="selFullZoomKey" class="actionKey">
 								<option value="0">None</option>
 								<option value="16">Shift</option>
 								<option value="17">Ctrl</option>
@@ -290,7 +316,7 @@
 					<!--p>Like this extension? 
 					<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=C8VC69MYY8AZG&lc=US&item_name=Romain%20Vallet&item_number=Hover%20Zoom&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted">Buy me a beer!</a>
 					</p-->
-					<p>&copy; 2011 Romain Vallet</p>
+					<p>&copy; 2012 Romain Vallet</p>
 				</div>
 			</div>
 		</div>
