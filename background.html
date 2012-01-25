@@ -60,31 +60,14 @@
 						localStorage.removeItem(request.id);
 						break;
 					case 'createWindow':
-						chrome.windows.create(request.createData);
+						chrome.windows.create(request.createData, function(window) {
+							chrome.tabs.executeScript(window.tabs[0].id, {
+								code: 'window.resizeBy(document.body.firstChild.width - window.innerWidth, document.body.firstChild.height - window.innerHeight);'
+							});
+						});
 						break;
-						if (request.visible) {
-							var info = {
-								top: -9000, 
-								left: request.left, 
-								height: screen.availHeight
-							};
-							info.width = screen.availWidth - info.left;
-							if (!viewWindow) {
-								info.type = 'popup';
-								info.url = request.url;
-								chrome.windows.create(info, function(window) {
-									viewWindow = window;
-									chrome.tabs.insertCSS(viewWindow.tabs[0].id, {code: 'img {display: block; margin: auto}'});
-									chrome.windows.update(viewWindow.id, {top: 0});
-								});
-							} else {
-								chrome.windows.update(viewWindow.id, info);
-								chrome.tabs.update(viewWindow.tabs[0].id, {url: request.url});
-							}
-						} else if (viewWindow) {
-							chrome.windows.remove(viewWindow.id);
-							viewWindow = null;
-						}
+					case 'createTab':
+						chrome.tabs.create(request.createData);
 						break;
 					case 'trackEvent':
 						if (_gaq) { _gaq.push(['_trackEvent', request.event.category, request.event.action, request.event.label]); }

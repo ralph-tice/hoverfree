@@ -740,9 +740,15 @@ var hoverZoom = {
 							return false;
 						}
 					}
-					if (event.which == 79) {
+					if (event.which == 87) {
 						if (imgFullSize) {
 							openImageInWindow();
+							return false;
+						}
+					}
+					if (event.which == 84) {
+						if (imgFullSize) {
+							openImageInTab();
 							return false;
 						}
 					}
@@ -840,6 +846,13 @@ var hoverZoom = {
 			chrome.extension.sendRequest({
 				action: 'createWindow', 
 				createData: createData
+			});			
+		}
+		
+		function openImageInTab() {
+			chrome.extension.sendRequest({
+				action: 'createTab', 
+				createData: {url: imgDetails.url}
 			});			
 		}
 		
