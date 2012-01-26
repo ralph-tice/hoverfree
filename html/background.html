@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<body>
-		<script src="common.js"></script>
+		<script src="../js/common.js"></script>
 		<script type="text/javascript">
 			var extensionVersion = '3.9',
 				options, _gaq, viewWindow = null;
@@ -61,14 +61,14 @@
 						break;
 					case 'openViewWindow':
 						chrome.windows.create(request.createData, function(window){							
-							chrome.tabs.executeScript(window.tabs[0].id, {file: 'viewWindow.js'});
+							chrome.tabs.executeScript(window.tabs[0].id, {file: 'js/viewWindow.js'});
 						});
 						break;
 					case 'openViewTab':
 						chrome.tabs.getSelected(null, function(currentTab) {
 							request.createData.index = currentTab.index;
 							chrome.tabs.create(request.createData, function(tab){							
-								chrome.tabs.executeScript(tab.id, {file: 'viewTab.js'});
+								chrome.tabs.executeScript(tab.id, {file: 'js/viewTab.js'});
 							});
 						});
 						break;
@@ -80,9 +80,9 @@
 
 			function showPageAction(tab) {
 				if (!options.extensionEnabled || isExcludedSite(tab.url)) {
-					chrome.pageAction.setIcon({tabId: tab.id, path: 'images/icon19d.png'});
+					chrome.pageAction.setIcon({tabId: tab.id, path: '../images/icon19d.png'});
 				} else {
-					chrome.pageAction.setIcon({tabId: tab.id, path: 'images/icon19.png'});
+					chrome.pageAction.setIcon({tabId: tab.id, path: '../images/icon19.png'});
 				}
 				chrome.pageAction.show(tab.id);
 			}

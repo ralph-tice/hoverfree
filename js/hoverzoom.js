@@ -741,19 +741,25 @@ var hoverZoom = {
 							return false;
 						}
 					}
-					if (event.which == 87) {
+					// "Open image in a new window" key
+					if (event.which == options.openImageInWindowKey) {
 						if (imgFullSize) {
 							openImageInWindow();
 							return false;
 						}
 					}
-					if (event.which == 84) {
+					// "Open image in a new tab" key
+					if (event.which == options.openImageInTabKey) {
 						if (imgFullSize) {
 							openImageInTab();
 							return false;
 						}
 					}
-					if (imgFullSize && (event.which == options.actionKey || event.which == options.fullZoomKey || event.which == options.hideKey)) {
+					// Cancels event if an action key is held down (auto repeat may trigger additional events)
+					if (imgFullSize && 
+						(event.which == options.actionKey || 
+						event.which == options.fullZoomKey || 
+						event.which == options.hideKey)) {
 						return false;
 					}
 				}).keyup(function (event) {

@@ -3,7 +3,7 @@
 	<head>
 		<title>Hover Zoom Options</title>
 		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.0/themes/base/jquery-ui.css" />
-		<link rel="stylesheet" href="common.css" />
+		<link rel="stylesheet" href="../css/common.css" />
 		<style type="text/css">
 			#body { margin: 0 auto; width: 40em;  }
 			#container {float: left; margin: 1em;}
@@ -22,12 +22,40 @@
 			.hint { font-size: 8pt; padding-left: 25px; display: block; }
 			#sliderPicturesOpacity { font-size: 0.7em; margin-bottom: 0.5em }
 			hr { margin: 0.7em 0 }
+			.actionKey { line-height: 14px; margin-top: 10px; }
 		</style>
-		<script src="jquery.min.js"></script>
-		<script src="jquery-ui.min.js"></script>
-		<script src="common.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/jquery-ui.min.js"></script>
+		<script src="../js/common.js"></script>
 		<script>
-			var options;
+			var options,
+				actionKeys = [
+					{
+						id: 'actionKey',
+						title: 'Activate Hover Zoom',
+						description: 'If a key is set, Hover Zoom will be active only when this key is held down.'
+					},
+					{
+						id: 'hideKey',
+						title: 'Disable Hover Zoom',
+						description: 'Holding this key down hides the zoomed picture. Use it when the picture hides elements that are also displayed on mouseover.'
+					},
+					{
+						id: 'fullZoomKey',
+						title: 'Activate full zoom',
+						description: 'When this key is held down, the picture is displayed using all available space. Useful for high resolution pictures only.'
+					},
+					{
+						id: 'openImageInWindowKey',
+						title: 'Open image in a new window',
+						description: 'Press this key to open the image you are currently viewing in a new window. Press this key again to close the window.'
+					},
+					{
+						id: 'openImageInTabKey',
+						title: 'Open image in a new tab',
+						description: 'Press this key to open the image you are currently viewing in a new tab. Press this key again to close the tab.'
+					}
+				];
 			
 			function getMilliseconds(ctrl) {
 				var value = parseFloat(ctrl.val());
@@ -36,7 +64,19 @@
 				return value;
 			}
 			
+			function initActionKeys() {
+				for (var i=0; i<actionKeys.length; i++) {
+					var key = actionKeys[i];
+					$('<tr><td><h2>' + key.title + '</h2><p>' + key.description + '</p></td>' + 
+						'<td><select id="sel' + key.id + '" class="actionKey"/></td></tr>').appendTo($('#tableActionKeys'));
+					loadKeys($('#sel' + key.id));
+				}
+			}
+			
 			function loadKeys(sel) {
+				$('<option value="0">None</option>').appendTo(sel);
+				$('<option value="16">Shift</option>').appendTo(sel);
+				$('<option value="17">Ctrl</option>').appendTo(sel);
 				if (navigator.appVersion.indexOf('Macintosh') > -1) {
 					$('<option value="91">Command</option>').appendTo(sel);
 				}
@@ -51,9 +91,6 @@
 				options.pageActionEnabled = $('#chkPageActionEnabled')[0].checked;
 				options.showCaptions = $('#chkShowCaptions')[0].checked;
 				options.showHighRes = $('#chkShowHighRes')[0].checked;
-				options.actionKey = parseInt($('#selActionKey').val());
-				options.fullZoomKey = parseInt($('#selFullZoomKey').val());
-				options.hideKey = parseInt($('#selHideKey').val());
 				options.addToHistory = $('#chkAddToHistory')[0].checked;
 				options.alwaysPreload = $('#chkAlwaysPreload')[0].checked;
 				options.displayDelay = getMilliseconds($('#txtDisplayDelay'));
@@ -61,6 +98,10 @@
 				options.picturesOpacity = $('#sliderPicturesOpacity').slider('value') / 100;
 				options.showWhileLoading = $('#chkShowWhileLoading')[0].checked;
 				options.expAlwaysFullZoom = $('#chkAlwaysFullZoom')[0].checked;
+				
+				for (var i=0; i<actionKeys.length; i++) {
+					options[actionKeys[i].id] = parseInt($('#sel' + actionKeys[i].id).val());
+				}
 				
 				// Excluded sites
 				options.excludedSites = [];
@@ -88,11 +129,12 @@
 				$('#chkAlwaysPreload')[0].checked = options.alwaysPreload;
 				$('#txtDisplayDelay').val((options.displayDelay || 0) / 1000);
 				$('#txtFadeDuration').val((options.fadeDuration || 0) / 1000);
-				$('#selActionKey').val(options.actionKey);
-				$('#selFullZoomKey').val(options.fullZoomKey);
-				$('#selHideKey').val(options.hideKey);
 				$('#chkShowWhileLoading')[0].checked = options.showWhileLoading;
 				$('#chkAlwaysFullZoom')[0].checked = options.expAlwaysFullZoom;
+				
+				for (var i=0; i<actionKeys.length; i++) {
+					$('#sel' + actionKeys[i].id).val(options[actionKeys[i].id]);
+				}
 				
 				$('#txtPicturesOpacity').val(options.picturesOpacity * 100);
 				$('#sliderPicturesOpacity').slider('value', options.picturesOpacity * 100);
@@ -123,12 +165,6 @@
 				}
 			}
 			
-			function selFullZoomKeyOnChange() {
-				if ($('#selFullZoomKey').val() != '0' && $('#selFullZoomKey').val() == $('#selActionKey').val()) {
-					$('#selActionKey').val('0').effect("highlight", {color: 'red'}, 5000);
-				}
-			}
-			
 			function selKeyOnChange(event) {
 				var currSel = $(event.target);
 				if (currSel.val() != '0') {
@@ -137,15 +173,6 @@
 							$(this).val('0').effect("highlight", {color: 'red'}, 5000);
 						}
 					});
-				}
-				/*if ($('#selHideKey').val() != '0' && $('#selHideKey').val() == $('#selActionKey').val()) {
-					$('#selActionKey').val('0').effect("highlight", {color: 'red'}, 5000);
-				}*/
-			}
-			
-			function selActionKeyOnChange() {
-				if ($('#selActionKey').val() != '0' && $('#selFullZoomKey').val() == $('#selActionKey').val()) {
-					$('#selFullZoomKey').val('0').effect("highlight", {color: 'red'}, 5000);
 				}
 			}
 			
@@ -182,7 +209,7 @@
 			}		
 			
 			$(function() {
-				loadKeys($('#selActionKey, #selFullZoomKey, #selHideKey'));
+				initActionKeys();
 				$('input, select, textarea').change(enableControls).keydown(enableControls);
 				$('#btnSave').click(saveOptions);
 				$('#btnReset').click(restoreOptions);
@@ -206,7 +233,7 @@
 	</head>
 	<body>
 		<div id="body">
-			<img id="icon" src="images/icon128.png">
+			<img id="icon" src="../images/icon128.png">
 			<div id="container">
 				<h1 id="title">Hover Zoom Options</h1>
 				<div id="tabs">
@@ -246,7 +273,9 @@
 						<p>If this box is checked, Hover Zoom will be enabled <em>only</em> for the sites listed above.</p>
 					</div>
 					<div id="optionTab3">
-						<h2>Activate Hover Zoom</h2>
+						<table id="tableActionKeys">
+						</table>
+						<!--<h2>Activate Hover Zoom</h2>
 						<p>If a key is set, Hover Zoom will be active only when this key is held down.</p>
 						<p>Key to activate Hover Zoom:
 							<select id="selActionKey" class="actionKey">
@@ -272,7 +301,7 @@
 								<option value="16">Shift</option>
 								<option value="17">Ctrl</option>
 							</select>
-						</p>
+						</p>-->
 					</div>
 					<div id="optionTab4">
 						<h2>Advanced options</h2>

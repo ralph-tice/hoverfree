@@ -9,11 +9,11 @@
 		"128": "images/icon128.png"
 	},
 	"minimum_chrome_version": "6.0.472.63",
-	"background_page": "background.html",
-	"options_page": "options.html",
+	"background_page": "html/background.html",
+	"options_page": "html/options.html",
 	"page_action": {
 		"default_icon": "images/icon19.png",
-		"default_popup": "popup.html",
+		"default_popup": "html/popup.html",
 		"default_title": "Hover Zoom"
 	},	
 	"permissions": [
@@ -23,7 +23,7 @@
 	],
 	"content_scripts": [
         {
-            "js": ["jquery.min.js", "plugins/default.js"],
+            "js": ["js/jquery.min.js", "plugins/default.js"],
 			"matches": ["<all_urls>"],
 			"all_frames": true
         },
@@ -970,7 +970,7 @@
 			"matches": [ "*://*.reddit.com/*" ]
 		},
 		{
-            "js": ["hoverzoom.js"],
+            "js": ["js/hoverzoom.js"],
 			"matches": ["<all_urls>"],
 			"all_frames": true
         }

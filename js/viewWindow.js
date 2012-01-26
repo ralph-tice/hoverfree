@@ -4,8 +4,10 @@
 var popupBorder = { width: window.outerWidth-window.innerWidth, height: window.outerHeight-window.innerHeight };
 chrome.extension.sendRequest({action: 'setItem', id: 'popupBorder', data: JSON.stringify(popupBorder)});
 
-window.addEventListener('keydown', function(event) {
-	if (event.which == 87) {
-		window.close();
-	}
+chrome.extension.sendRequest({action: 'getOptions'}, function(options){
+	window.addEventListener('keydown', function(event) {
+		if (event.which == options.openImageInWindowKey) {
+			window.close();
+		}
+	});	
 });
