@@ -19,7 +19,7 @@
 	"permissions": [
 		"tabs",
 		"history",
-		"http://*/*"
+		"*://*/*"
 	],
 	"content_scripts": [
         {
