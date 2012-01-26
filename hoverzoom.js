@@ -418,7 +418,8 @@ var hoverZoom = {
 			setTimeout(posImg, options.showWhileLoading ? 0 : 10);
 			
 			if (options.addToHistory && !chrome.extension.inIncognitoTab) {
-				chrome.extension.sendRequest({action: 'addUrlToHistory', url: hz.currentLink.context.href});
+				var url = hz.currentLink.context.href || imgDetails.url;
+				chrome.extension.sendRequest({action: 'addUrlToHistory', url: url});
 			}
 			chrome.extension.sendRequest({action: 'trackEvent', event: {category: 'Actions', action: 'ImageDisplayedOnSite', label: document.location.host}});
 			chrome.extension.sendRequest({action: 'trackEvent', event: {category: 'Actions', action: 'ImageDisplayedFromSite', label: imgDetails.host}});
@@ -827,32 +828,46 @@ var hoverZoom = {
 		}
 		
 		function openImageInWindow() {
-			var createData = {
-				url: imgDetails.url,
-				width: imgDetails.naturalWidth + window.outerWidth - window.innerWidth,
-				height: imgDetails.naturalHeight + window.outerHeight - window.innerHeight - 20,
-				type: 'popup'
-			};
-			if (createData.height > screen.availHeight) {
-				createData.height = screen.availHeight;
-				createData.width = Math.round(createData.height * imgDetails.naturalWidth / imgDetails.naturalHeight);
-			}
-			if (createData.width > screen.availWidth) {
-				createData.width = screen.availWidth;
-				createData.height = Math.min(Math.round(createData.width * imgDetails.naturalHeight / imgDetails.naturalWidth) + 40, screen.availHeight);
-			}
-			createData.top = Math.round(screen.availHeight / 2 - createData.height / 2);
-			createData.left = Math.round(screen.availWidth / 2 - createData.width / 2);
-			chrome.extension.sendRequest({
-				action: 'createWindow', 
-				createData: createData
+			chrome.extension.sendRequest({action: 'getItem', id: 'popupBorder'}, function(data) {
+				var popupBorder, createData;
+				
+				try { popupBorder = JSON.parse(data); }
+				catch(e) { popupBorder = {width: 16, height: 36}; }
+				
+				createData = {
+					url: imgDetails.url,
+					width: imgDetails.naturalWidth + popupBorder.width,
+					height: imgDetails.naturalHeight + popupBorder.height,
+					type: 'popup'
+				};
+				
+				// If image bigger than screen, adjust window dimensions to match image's aspect ratio
+				if (createData.height > screen.availHeight) {
+					createData.height = screen.availHeight;
+					createData.width = Math.round(popupBorder.width + (screen.availHeight - popupBorder.height) * imgDetails.naturalWidth / imgDetails.naturalHeight);
+				}
+				if (createData.width > screen.availWidth) {
+					createData.width = screen.availWidth;
+					createData.height = Math.round(popupBorder.height + (screen.availWidth - popupBorder.width) * imgDetails.naturalHeight / imgDetails.naturalWidth);
+				}
+				
+				// Center window
+				createData.top = Math.round(screen.availHeight / 2 - createData.height / 2);
+				createData.left = Math.round(screen.availWidth / 2 - createData.width / 2);
+				
+				chrome.extension.sendRequest({
+					action: 'openViewWindow', 
+					createData: createData
+				});			
 			});			
 		}
 		
 		function openImageInTab() {
 			chrome.extension.sendRequest({
-				action: 'createTab', 
-				createData: {url: imgDetails.url}
+				action: 'openViewTab', 
+				createData: {
+					url: imgDetails.url
+				}
 			});			
 		}
 		

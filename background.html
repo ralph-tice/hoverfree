@@ -59,15 +59,18 @@
 					case 'removeItem':
 						localStorage.removeItem(request.id);
 						break;
-					case 'createWindow':
-						chrome.windows.create(request.createData, function(window) {
-							chrome.tabs.executeScript(window.tabs[0].id, {
-								code: 'window.resizeBy(document.body.firstChild.width - window.innerWidth, document.body.firstChild.height - window.innerHeight);'
-							});
+					case 'openViewWindow':
+						chrome.windows.create(request.createData, function(window){							
+							chrome.tabs.executeScript(window.tabs[0].id, {file: 'viewWindow.js'});
 						});
 						break;
-					case 'createTab':
-						chrome.tabs.create(request.createData);
+					case 'openViewTab':
+						chrome.tabs.getSelected(null, function(currentTab) {
+							request.createData.index = currentTab.index;
+							chrome.tabs.create(request.createData, function(tab){							
+								chrome.tabs.executeScript(tab.id, {file: 'viewTab.js'});
+							});
+						});
 						break;
 					case 'trackEvent':
 						if (_gaq) { _gaq.push(['_trackEvent', request.event.category, request.event.action, request.event.label]); }
