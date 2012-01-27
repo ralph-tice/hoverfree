@@ -839,10 +839,13 @@ var hoverZoom = {
 		
 		function openImageInWindow() {
 			chrome.extension.sendRequest({action: 'getItem', id: 'popupBorder'}, function(data) {
-				var popupBorder, createData;
+				var createData,
+					popupBorder = {width: 16, height: 38};
 				
-				try { popupBorder = JSON.parse(data); }
-				catch(e) { popupBorder = {width: 16, height: 36}; }
+				if (data) {
+					try { popupBorder = JSON.parse(data); }
+					catch(e) { }
+				}
 				
 				createData = {
 					url: imgDetails.url,
