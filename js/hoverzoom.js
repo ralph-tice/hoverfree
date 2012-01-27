@@ -41,6 +41,8 @@ var hoverZoom = {
 			titledElements = null,
 			body100pct = true,
 			linkRect = null;
+			/*panning = true,
+			panningThumb = null;*/
 			
 		var imgDetails = {
 			url: '',
@@ -263,13 +265,14 @@ var hoverZoom = {
 				return;
 			}
 
-			// Test if the action key was pressed without moving the mouse
-			var explicitCall = event.pageY == undefined;
+			var links,
+				target = $(event.target),
+				// Test if the action key was pressed without moving the mouse
+				explicitCall = event.pageY == undefined;
 
+				
 			// If so, the MouseMove event was triggered programmaticaly and we don't have details
 			// about the mouse position and the event target, so we use the last saved ones.
-			var links,
-				target = $(event.target);
 			if (explicitCall) {
 				links = hz.currentLink;
 			} else {
@@ -310,6 +313,7 @@ var hoverZoom = {
 							var delay = explicitCall ? 0 : options.displayDelay;
 							loadFullSizeImageTimeout = setTimeout(loadFullSizeImage, delay);
 							
+							// TODO: jQuery's offset() is buggy (body margin != 0), find another method (maybe getBoundingClientRect)
 							linkRect = links.offset();
 							linkRect.bottom = linkRect.top + links.height();
 							linkRect.right = linkRect.left + links.width();
@@ -369,9 +373,20 @@ var hoverZoom = {
 			hz.hzImg.empty();
 						
 			imgFullSize.css(imgFullSizeCss).appendTo(hz.hzImg).mousemove(imgFullSizeOnMouseMove);
-				
-			// Sets up the thumbnail as a full-size background
+			
+			// If the user clicks the image, this hides the image and simulates a click underneath (still buggy).
+			if (hz.currentLink) {
+				imgFullSize.mousedown(function(event) {
+					hideHoverZoomImg(true);
+					var simEvent = document.createEvent('MouseEvents');
+					simEvent.initMouseEvent('click', true, true, window, 0, event.screenX, event.screenY, event.clientX, event.clientY, false, false, false, false, 0, null);
+					hz.currentLink[0].dispatchEvent(simEvent);
+				});
+			}
+
 			if (loading && hz.currentLink) {
+			
+				// Sets up the thumbnail as a full-size background
 				var thumb = hz.currentLink, 
 					lowResSrc = thumb.attr('src');
 				if (!lowResSrc) {
@@ -390,22 +405,11 @@ var hoverZoom = {
 					if (Math.abs(imgRatio - thumbRatio) < 0.1)
 						imgFullSize.css({'background-image': 'url(' + lowResSrc + ')'});
 				}
-			}
 				
-			/*if (options.expAlwaysFullZoom) {
-				// If the user clicks the image, this hides the image and simulates a click underneath (still buggy).
-				imgFullSize.mousedown(function(event) {
-					hideHoverZoomImg(true);
-					var simEvent = document.createEvent("MouseEvents"),
-						target = document.elementFromPoint(event.clientX, event.clientY);
-					simEvent.initMouseEvent('click', true, true, window, 0, event.screenX, event.screenY, event.clientX, event.clientY, false, false, false, false, 0, null);
-					target.dispatchEvent(simEvent);
-					//simEvent.type = 'mousedown';
-					//target.dispatchEvent(simEvent);
-					//simEvent.type = 'mouseup';
-					//target.dispatchEvent(simEvent);
-				});
-			}*/
+				/*if (thumb.length == 1) {
+					panningThumb = thumb.first();
+				}*/
+			}
 			
 			if (options.showCaptions && hz.currentLink && hz.currentLink.data().hoverZoomCaption) {
 				hzCaption = $('<div/>', {id: 'hzCaption', text: hz.currentLink.data().hoverZoomCaption}).css(hzCaptionCss).appendTo(hz.hzImg);
