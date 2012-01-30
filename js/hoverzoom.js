@@ -29,6 +29,7 @@ var hoverZoom = {
 			body = $(document.body),
 			hzCaption = null,
 			imgFullSize = null,
+			imgThumb = null,
 			mousePos = {},
 			loading = false,
 			loadFullSizeImageTimeout,
@@ -313,11 +314,6 @@ var hoverZoom = {
 							var delay = explicitCall ? 0 : options.displayDelay;
 							loadFullSizeImageTimeout = setTimeout(loadFullSizeImage, delay);
 							
-							// TODO: jQuery's offset() is buggy (body margin != 0), find another method (maybe getBoundingClientRect)
-							linkRect = links.offset();
-							linkRect.bottom = linkRect.top + links.height();
-							linkRect.right = linkRect.left + links.width();
-							
 							loading = true;
 						}
 					} else {
@@ -331,9 +327,11 @@ var hoverZoom = {
 			}
 		}
 		
-		function documentMouseDown() {
-			cancelImageLoading();
-			restoreTitles();
+		function documentMouseDown(event) {
+			if (imgFullSize && event.target != hz.hzImg[0] && event.target != imgFullSize[0]) {
+				cancelImageLoading();
+				restoreTitles();
+			}
 		}
 						
 		function loadFullSizeImage() {
@@ -374,43 +372,43 @@ var hoverZoom = {
 						
 			imgFullSize.css(imgFullSizeCss).appendTo(hz.hzImg).mousemove(imgFullSizeOnMouseMove);
 			
-			// If the user clicks the image, this hides the image and simulates a click underneath (still buggy).
 			if (hz.currentLink) {
-				imgFullSize.mousedown(function(event) {
-					hideHoverZoomImg(true);
-					var simEvent = document.createEvent('MouseEvents');
-					simEvent.initMouseEvent('click', true, true, window, 0, event.screenX, event.screenY, event.clientX, event.clientY, false, false, false, false, 0, null);
-					hz.currentLink[0].dispatchEvent(simEvent);
-				});
-			}
-
-			if (loading && hz.currentLink) {
 			
 				// Sets up the thumbnail as a full-size background
-				var thumb = hz.currentLink, 
-					lowResSrc = thumb.attr('src');
+				imgThumb = hz.currentLink;
+				var lowResSrc = imgThumb.attr('src');
 				if (!lowResSrc) {
-					thumb = hz.currentLink.find('[src]').first();
-					lowResSrc = thumb.attr('src');
+					imgThumb = hz.currentLink.find('[src]').first();
+					lowResSrc = imgThumb.attr('src');
 				}
 				if (!lowResSrc) {
-					thumb = hz.currentLink.find('[style]').first();
-					lowResSrc = hz.getThumbUrl(thumb);
+					imgThumb = hz.currentLink.find('[style]').first();
+					lowResSrc = hz.getThumbUrl(imgThumb);
 				}
 				lowResSrc = lowResSrc || 'noimage';
 				if (lowResSrc.indexOf('noimage') == -1) {
 					var imgRatio = imgFullSize.width() / imgFullSize.height(),
-						thumbRatio = thumb.width() / thumb.height();
+						thumbRatio = imgThumb.width() / imgThumb.height();
 					// The thumbnail is used as a background only if its width/height ratio is similar to the image
 					if (Math.abs(imgRatio - thumbRatio) < 0.1)
 						imgFullSize.css({'background-image': 'url(' + lowResSrc + ')'});
+				} else {
+					imgThumb = null;
 				}
 				
 				/*if (thumb.length == 1) {
 					panningThumb = thumb.first();
 				}*/
+
+				hz.hzImg.css('cursor', 'pointer');
+
+				var rectSource = imgThumb || hz.currentLink;
+				linkRect = rectSource.offset();
+				linkRect.bottom = linkRect.top + rectSource.height();
+				linkRect.right = linkRect.left + rectSource.width();
+				
 			}
-			
+
 			if (options.showCaptions && hz.currentLink && hz.currentLink.data().hoverZoomCaption) {
 				hzCaption = $('<div/>', {id: 'hzCaption', text: hz.currentLink.data().hoverZoomCaption}).css(hzCaptionCss).appendTo(hz.hzImg);
 			}
@@ -956,7 +954,19 @@ var hoverZoom = {
 	
 	// Create and displays the zoomed image container
 	createHzImg: function (displayNow) {
-		hoverZoom.hzImg = hoverZoom.hzImg || $('<div id="hzImg"></div>').appendTo(document.body);			
+		if (!hoverZoom.hzImg) {
+			hoverZoom.hzImg = $('<div id="hzImg"></div>').appendTo(document.body);		
+			
+			// If the user clicks the image, this simulates a click underneath
+			hoverZoom.hzImg.click(function(event) {
+				if (hoverZoom.currentLink && hoverZoom.currentLink.length) {
+					var simEvent = document.createEvent('MouseEvents');
+					simEvent.initMouseEvent('click', true, true, window, 0, event.screenX, event.screenY, event.clientX, event.clientY, false, false, false, false, 0, null);
+					hoverZoom.currentLink[0].dispatchEvent(simEvent);
+				}
+			});
+			
+		}
 		hoverZoom.hzImg.css(hoverZoom.hzImgCss);
 		hoverZoom.hzImg.empty();
 		if (displayNow) {
