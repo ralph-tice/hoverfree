@@ -961,7 +961,9 @@ var hoverZoom = {
 			hoverZoom.hzImg.click(function(event) {
 				if (hoverZoom.currentLink && hoverZoom.currentLink.length) {
 					var simEvent = document.createEvent('MouseEvents');
-					simEvent.initMouseEvent('click', true, true, window, 0, event.screenX, event.screenY, event.clientX, event.clientY, false, false, false, false, 0, null);
+					simEvent.initMouseEvent('click', event.bubbles, event.cancelable, event.view, event.detail, 
+						event.screenX, event.screenY, event.clientX, event.clientY, 
+						event.ctrlKey, event.altKey, event.shiftKey, event.metaKey, event.button, null);
 					hoverZoom.currentLink[0].dispatchEvent(simEvent);
 				}
 			});

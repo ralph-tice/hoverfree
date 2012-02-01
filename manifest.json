@@ -805,7 +805,9 @@
 		},
 		{
 			"matches": ["*://*.reddit.com/*"],
-			"js": ["plugins/quickmeme.js",
+			"js": ["plugins/reddit.js",
+			       "plugins/quickmeme.js",
+				   "plugins/memegenerator.js",
 			       "plugins/slutcapades.js"]
 		},
 		{
@@ -966,8 +968,9 @@
 						 "*://*.diasp.eu/*"]
 		},
 		{
-			"js": [ "plugins/reddit.js" ],
-			"matches": [ "*://*.reddit.com/*" ]
+			"js": [ "plugins/memecrunch.js" ],
+			"matches": [ "*://*.memecrunch.com/*",
+			             "*://*.reddit.com/*" ]
 		},
 		{
             "js": ["js/hoverzoom.js"],

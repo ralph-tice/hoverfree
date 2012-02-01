@@ -8,7 +8,7 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
-			':not([oid]) > img[src*=".googleusercontent.com/-"]',
+			'img[src*=".googleusercontent.com/-"]',
 			/\/(w\d+-h\d+|[hws]\d+)(-[npck])*\//,
 			options.showHighRes ? '/s0/' : '/s800/'
 		);		
