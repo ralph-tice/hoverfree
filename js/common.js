@@ -30,6 +30,7 @@ function loadOptions() {
 	options.hideKey = 				options.hasOwnProperty('hideKey') ? options.hideKey : 88;
 	options.openImageInWindowKey =	options.hasOwnProperty('openImageInWindowKey') ? options.openImageInWindowKey : 87;
 	options.openImageInTabKey =		options.hasOwnProperty('openImageInTabKey') ? options.openImageInTabKey : 84;
+	options.saveImageKey =			options.hasOwnProperty('saveImageKey') ? options.saveImageKey : 83;
 	
 	localStorage.options = JSON.stringify(options);
 	
