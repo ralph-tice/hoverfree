@@ -1,13 +1,14 @@
-// Copyright (c) 2010 Romain Vallet
+// Copyright (c) 2012 Romain Vallet <romain.vallet@gmail.com>
 // Licensed under the MIT license, read license.txt
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	name: 'deviantART',
-	version: '0.5',
+	version: '0.6',
 	prepareImgLinks: function(callback) {
-		var res = [],
-			https = (document.location.protocol == 'https:'),
+		var res = [];
+		
+		/*var	https = (document.location.protocol == 'https:'),
 			filter = https ? 'a img[src*="/th/"]' : 'a img[src^="http://th"]',
 			sizeIndex = https ? 5 : 4;
 		$(filter).each(function() {
@@ -30,6 +31,14 @@ hoverZoomPlugins.push( {
 			var link = img.parents('a:eq(0)');
 			link.data().hoverZoomSrc = srcs;
 			res.push(link);
+		});*/
+		$('a[super_img]').each(function() {
+			var _this = $(this),
+				url = this.getAttribute('super_img');
+			if (options.showHighRes && this.hasAttribute('super_fullimg'))
+				url = this.getAttribute('super_fullimg');
+			_this.data().hoverZoomSrc = [url];
+			res.push(_this);
 		});
 		callback($(res));
 	}
