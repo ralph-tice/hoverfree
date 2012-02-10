@@ -785,7 +785,7 @@ var hoverZoom = {
 					// Hide key is released
 					if (event.which == options.hideKey) {
 						hideKeyDown = false;
-						if (hz.hzImg) {
+						if (imgFullSize) {
 							hz.hzImg.show();
 						}
 						$(this).mousemove();
