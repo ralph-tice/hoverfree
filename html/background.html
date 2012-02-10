@@ -153,6 +153,13 @@
 					miscStats();
 					optionsStats();
 				}
+				
+				// Modify response headers of web requests with an url ending with 'hoverzoomdownload'
+				// to trigger a 'Save as' dialog for the image
+				chrome.webRequest.onHeadersReceived.addListener(function(details) {
+					details.responseHeaders.push({name: 'Content-Disposition', value: 'attachment; filename=' + details.url.split('/').pop().split('?')[0]});
+					return {responseHeaders: details.responseHeaders};
+				}, {urls: ['*://*/*hoverzoomdownload'], types: ['main_frame', 'image']}, ['blocking', 'responseHeaders']);
 			}
 
 			init();

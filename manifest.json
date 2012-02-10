@@ -19,6 +19,8 @@
 	"permissions": [
 		"tabs",
 		"history",
+		"webRequest",
+		"webRequestBlocking",
 		"*://*/*"
 	],
 	"content_scripts": [
