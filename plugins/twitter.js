@@ -1,10 +1,10 @@
-// Copyright (c) 2011 Romain Vallet
+// Copyright (c) 2012 Romain Vallet <romain.vallet@gmail.com>
 // Licensed under the MIT license, read license.txt
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	name: 'Twitter',
-	version: '0.1',
+	version: '0.2',
 	prepareImgLinks: function(callback) {
 		var res = [];
 		hoverZoom.urlReplace(res, 
@@ -12,9 +12,9 @@ hoverZoomPlugins.push( {
 			/_(mini|normal|bigger)/,
 			''
 		);
-		$('a[data-expanded-url]').each(function() {
+		$('a[data-expanded-url], a[data-url]').each(function() {
 			var link = $(this),
-				url = this.getAttribute('data-expanded-url');
+				url = this.getAttribute('data-expanded-url') || this.getAttribute('data-url');
 			if (url.match(/\/[^:]+\.(?:jpe?g|gif|png|svg|webp|bmp|ico|xbm)(?:[\?#].*)?$/i)) {
 				link.data().hoverZoomSrc = [url];
 				res.push(link);
