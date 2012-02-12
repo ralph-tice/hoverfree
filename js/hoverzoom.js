@@ -856,7 +856,8 @@ var hoverZoom = {
 					url: imgDetails.url,
 					width: imgDetails.naturalWidth + popupBorder.width,
 					height: imgDetails.naturalHeight + popupBorder.height,
-					type: 'popup'
+					type: 'popup',
+					incognito: chrome.extension.inIncognitoTab
 				};
 
 				// If image bigger than screen, adjust window dimensions to match image's aspect ratio
@@ -892,7 +893,7 @@ var hoverZoom = {
 		function saveImage() {
 			var hzDownloadIframe = $('#hzDownloadIframe'),
 				//hzDownloadImg = $('#hzDownloadImg'),
-				url = 'http://hoverzoomdownload/?url=' + encodeURIComponent(imgDetails.url);
+				url = location.protocol + '//hoverzoomdownload/?url=' + encodeURIComponent(imgDetails.url);
 			if (!hzDownloadIframe.length) {
 				hzDownloadIframe = $('<iframe id="hzDownloadIframe" style="display: none"/>').appendTo(hz.hzImg);
 			}

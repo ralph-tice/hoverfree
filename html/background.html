@@ -148,18 +148,15 @@
 				chrome.extension.onRequest.addListener(onRequest);
 
 				// Anonymous stats
-				// There was a bug before Chrome version 8.0.551.0 on Linux and Mac (Chromium issue 43400)
-				if (navigator.appVersion.indexOf("Win") != -1 || hasMinChromeVersion('8.0.551.0')) {
-					setUpStats();
-					miscStats();
-					optionsStats();
-				}
+				setUpStats();
+				miscStats();
+				optionsStats();
 				
 				// Store request IDs of 'hoverzoomdownload' URLs
 				chrome.webRequest.onBeforeRequest.addListener(function(details) {
 					downloadRequests[details.requestId] = true;
-					return {redirectUrl: decodeURIComponent(details.url.replace('http://hoverzoomdownload/?url=', ''))};
-				}, {urls: ['http://hoverzoomdownload/*'], types: ['sub_frame']}, ['blocking']);
+					return {redirectUrl: decodeURIComponent(details.url.replace(/.*hoverzoomdownload\/\?url=/, ''))};
+				}, {urls: ['*://hoverzoomdownload/*'], types: ['sub_frame']}, ['blocking']);
 
 				// Modify response headers of web requests with a stored request ID
 				// to trigger a 'Save as' dialog for the image
