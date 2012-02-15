@@ -975,6 +975,10 @@
 			             "*://*.reddit.com/*" ]
 		},
 		{
+			"js": [ "plugins/myyearbook.js" ],
+			"matches": [ "*://*.myyearbook.com/*" ]
+		},
+		{
             "js": ["js/hoverzoom.js"],
 			"matches": ["<all_urls>"],
 			"all_frames": true
