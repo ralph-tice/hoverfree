@@ -721,7 +721,8 @@
 		},
 		{
 			"js": ["plugins/badoo.js"],
-			"matches": ["*://*.badoo.com/*"]
+			"matches": ["*://*.badoo.com/*",
+						"*://*.hotornot.com/*"]
 		},
 		{
 			"js": ["plugins/steam.js"],
