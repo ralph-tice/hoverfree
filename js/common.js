@@ -77,18 +77,24 @@ function isExcludedSite(url) {
 	return !excluded;
 }
 
+function compareVersionNumbers(v1, v2) {
+	var aV1 = v1.split('.'),
+		aV2 = v2.split('.'),
+		l = Math.min(aV1.length, aV2.length),
+		i, cmp;
+	for (i = 0; i < l; i++) {
+		cmp = parseInt(aV1[i]) < parseInt(aV2[i]);
+		if (cmp !== 0) {
+			return cmp;
+		}
+	}
+	return aV1.length - aV2.length;
+}
+
 // Return true if the version of Chrome is superior or equal to minVersion
 function hasMinChromeVersion(minVersion) {
 	var matches = navigator.appVersion.match(/Chrome\/([^\s]+)/);
 	if (!matches || matches.length < 2) { return; }
 	var currentVersion = matches[1];
-	var aCV = currentVersion.split('.'), aMV = minVersion.split('.');
-	for (var i=0; i<aMV.length; i++) {
-		if (parseInt(aCV[i]) < parseInt(aMV[i])) {
-			return false;
-		} else if (parseInt(aCV[i]) > parseInt(aMV[i])) {
-			return true;
-		}
-	}
-	return true;
+	return compareVersionNumbers(currentVersion, minVersion) >= 0;
 }
