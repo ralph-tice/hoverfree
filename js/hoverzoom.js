@@ -359,6 +359,7 @@ var hoverZoom = {
 			if (imgDetails.url == $(imgFullSize).attr('src')) {
 				loading = false;
 				displayFullSizeImage();
+				imgFullSize.css({'background-image': 'none'});
 			}
 		}
 
@@ -387,11 +388,13 @@ var hoverZoom = {
 				}
 				lowResSrc = lowResSrc || 'noimage';
 				if (lowResSrc.indexOf('noimage') == -1) {
-					var imgRatio = imgFullSize.width() / imgFullSize.height(),
-						thumbRatio = imgThumb.width() / imgThumb.height();
-					// The thumbnail is used as a background only if its width/height ratio is similar to the image
-					if (Math.abs(imgRatio - thumbRatio) < 0.1)
-						imgFullSize.css({'background-image': 'url(' + lowResSrc + ')'});
+					if (imgDetails.url.substr(imgDetails.url.length - 4).toLowerCase() != '.gif') {
+						var imgRatio = imgFullSize.width() / imgFullSize.height(),
+							thumbRatio = imgThumb.width() / imgThumb.height();
+						// The thumbnail is used as a background only if its width/height ratio is similar to the image
+						if (Math.abs(imgRatio - thumbRatio) < 0.1)
+							imgFullSize.css({'background-image': 'url(' + lowResSrc + ')'});
+					}
 				} else {
 					imgThumb = null;
 				}
@@ -604,7 +607,8 @@ var hoverZoom = {
 					widthAttr = parseInt(this.getAttribute('width') || this.style.width || this.style.maxWidth || img.css('width') || img.css('max-width')),
 					heightAttr = parseInt(this.getAttribute('height') || this.style.height || this.style.maxHeight || img.css('height') || img.css('max-height')),
 					hzDownscaled = $('<img id="hzDownscaled" style="position: absolute; top: -10000px;">').appendTo(document.body);
-				if (widthAttr >= 300 || heightAttr >= 300) { return; }
+				console.log(widthAttr + 'x' + heightAttr + ' - ' + img.attr('src'));
+				if (widthAttr > 300 || heightAttr > 300) { return; }
 				hzDownscaled.load(function () {
 					setTimeout(function() {
 						if (hzDownscaled.height() > heightAttr * 1.8 || hzDownscaled.width() > widthAttr * 1.8) {

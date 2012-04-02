@@ -17,8 +17,8 @@ hoverZoomPlugins.push( {
 		
 		hoverZoom.urlReplace(res, 
 			'a img',
-			'_square.',
-			repl + '.'
+			'_square',
+			repl
 		);	
 		
 		callback($(res));
