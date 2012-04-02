@@ -1,8 +1,7 @@
 ﻿// Copyright (c) 2012 Romain Vallet <romain.vallet@gmail.com>
 // Licensed under the MIT license, read license.txt
 
-var extensionVersion = '3.9',
-	options, _gaq, viewWindow = null,
+var options, _gaq, viewWindow = null,
 	downloadRequests = {};
 
 // Performs an ajax request
@@ -78,6 +77,7 @@ function onRequest(request, sender, callback) {
 };
 
 function showPageAction(tab) {
+	if (!tab) { return; }
 	if (!options.extensionEnabled || isExcludedSite(tab.url)) {
 		chrome.pageAction.setIcon({tabId: tab.id, path: '../images/icon19d.png'});
 	} else {
@@ -135,7 +135,16 @@ function optionsStats() {
 // Report miscellaneous stats
 // No user data (browser history, etc) is reported
 function miscStats() {
-	_gaq.push(['_trackEvent', 'Misc', 'extensionVersion', extensionVersion]);
+	_gaq.push(['_trackEvent', 'Misc', 'extensionVersion', chrome.app.getDetails().version]);
+}
+
+function checkUpdate() {
+	var currVersion = chrome.app.getDetails().version,
+		prevVersion = localStorage.hzVersion;
+	/*if (currVersion != prevVersion && typeof prevVersion != 'undefined') {
+		
+	}*/
+	localStorage.hzVersion = currVersion;
 }
 
 function init() {
@@ -177,6 +186,8 @@ function init() {
 			return {responseHeaders: details.responseHeaders};
 		}
 	}, {urls: ['<all_urls>'], types: ['sub_frame']}, ['blocking', 'responseHeaders']);
+	
+	checkUpdate();
 }
 
 init();
