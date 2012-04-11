@@ -1,13 +1,14 @@
 ﻿{
     "name": "Hover Zoom",
-    "version": "4.0",
-    "description": "Enlarge thumbnails on mouse over. Works on many sites (Facebook, Twitter, Flickr, Reddit, Amazon, Tumblr, etc).",
+    "version": "3.9.1",
+    "description": "__MSG_extDescription__",
 	"icons": {
 		"16": "images/icon16.png",
 		"32": "images/icon32.png",
 		"48": "images/icon48.png",
 		"128": "images/icon128.png"
 	},
+	"default_locale": "en",
 	"minimum_chrome_version": "17",
 	"background_page": "html/background.html",
 	"options_page": "html/options.html",
