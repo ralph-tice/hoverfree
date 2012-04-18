@@ -19,7 +19,7 @@
 			#title, #buttons, #about, #about p, #messages p { text-align: center }
 			#delays p, #delays input, #txtPicturesOpacity { text-align: right }
 			.notice { font-size: 8pt; }
-			.hint { font-size: 8pt; padding-left: 25px; display: block; }
+			.hint { font-size: 8pt; padding-left: 25px; display: block; color: #555; }
 			#sliderPicturesOpacity { font-size: 0.7em; margin-bottom: 0.5em }
 			hr { margin: 0.7em 0 }
 			.actionKey { line-height: 14px; margin-top: 10px; }
@@ -41,11 +41,6 @@
 						description: 'Holding this key down hides the zoomed picture. Use it when the picture hides elements that are also displayed on mouseover.'
 					},
 					{
-						id: 'fullZoomKey',
-						title: 'Activate full zoom',
-						description: 'When this key is held down, the picture is displayed using all available space. Useful for high resolution pictures only.'
-					},
-					{
 						id: 'openImageInWindowKey',
 						title: 'Open image in a new window',
 						description: 'Press this key to open the image you are currently viewing in a new window. Press this key again to close the window.'
@@ -59,6 +54,11 @@
 						id: 'saveImageKey',
 						title: 'Save image',
 						description: 'Press this key to save the image you are currently viewing.'
+					},
+					{
+						id: 'fullZoomKey',
+						title: 'Activate full zoom',
+						description: 'When this key is held down, the picture is displayed using all available space. Useful for high resolution pictures only.'
 					}
 				];
 			
@@ -102,7 +102,9 @@
 				options.fadeDuration = getMilliseconds($('#txtFadeDuration'));				
 				options.picturesOpacity = $('#sliderPicturesOpacity').slider('value') / 100;
 				options.showWhileLoading = $('#chkShowWhileLoading')[0].checked;
-				options.expAlwaysFullZoom = $('#chkAlwaysFullZoom')[0].checked;
+				//options.expAlwaysFullZoom = $('#chkAlwaysFullZoom')[0].checked;
+				options.mouseUnderlap = $('#chkMouseUnderlap')[0].checked;
+				options.updateNotifications = $('#chkUpdateNotifications')[0].checked;
 				
 				for (var i=0; i<actionKeys.length; i++) {
 					options[actionKeys[i].id] = parseInt($('#sel' + actionKeys[i].id).val());
@@ -135,7 +137,9 @@
 				$('#txtDisplayDelay').val((options.displayDelay || 0) / 1000);
 				$('#txtFadeDuration').val((options.fadeDuration || 0) / 1000);
 				$('#chkShowWhileLoading')[0].checked = options.showWhileLoading;
-				$('#chkAlwaysFullZoom')[0].checked = options.expAlwaysFullZoom;
+				//$('#chkAlwaysFullZoom')[0].checked = options.expAlwaysFullZoom;
+				$('#chkMouseUnderlap')[0].checked = options.mouseUnderlap;
+				$('#chkUpdateNotifications')[0].checked  = options.updateNotifications;
 				
 				for (var i=0; i<actionKeys.length; i++) {
 					$('#sel' + actionKeys[i].id).val(options[actionKeys[i].id]);
@@ -251,13 +255,15 @@
 					<div id="optionTab1">
 						<p><input type="checkbox" id="chkExtensionEnabled"> <label for="chkExtensionEnabled">Enable Hover Zoom</label></p>
 						<h2>View</h2>
+						<p><input type="checkbox" id="chkMouseUnderlap"> <label for="chkMouseUnderlap">Extend zoomed images below the mouse cursor<br>
+							<span class="hint">If unchecked, zoomed images will be resized dynamically.</span></label></p>
 						<p><input type="checkbox" id="chkPageActionEnabled"> <label for="chkPageActionEnabled">Show icon in address bar<br>
 							<span class="hint">(Only when images can be zoomed)</span></label></p>
 						<p><input type="checkbox" id="chkShowCaptions"> <label for="chkShowCaptions">Show pictures captions<br>
 							<span class="hint">(When available)</span></label></p>
 						<p><input type="checkbox" id="chkShowWhileLoading"> <label for="chkShowWhileLoading">Show zoomed pictures while loading</label></p>
 						<p><input type="checkbox" id="chkShowHighRes"> <label for="chkShowHighRes">Show high resolution pictures when available<br>
-							<span class="hint">(Pictures may take more time to load)</span></label></p>
+							<span class="hint">Pictures may take more time to load.</span></label></p>
 						<h2>Delays</h2>
 						<div id="delays">
 						<p><label for="txtDisplayDelay">Delay before displaying a picture</label>: <input type="text" id="txtDisplayDelay" size="2"> sec.</p>
@@ -280,36 +286,10 @@
 					<div id="optionTab3">
 						<table id="tableActionKeys">
 						</table>
-						<!--<h2>Activate Hover Zoom</h2>
-						<p>If a key is set, Hover Zoom will be active only when this key is held down.</p>
-						<p>Key to activate Hover Zoom:
-							<select id="selActionKey" class="actionKey">
-								<option value="0">None</option>
-								<option value="16">Shift</option>
-								<option value="17">Ctrl</option>
-							</select>
-						</p>
-						<h2>Disable Hover Zoom</h2>
-						<p>Holding this key down hides the zoomed picture. Use it when the picture hides elements that are also displayed on mouseover.</p>
-						<p>Key to disable Hover Zoom:
-							<select id="selHideKey" class="actionKey">
-								<option value="0">None</option>
-								<option value="16">Shift</option>
-								<option value="17">Ctrl</option>
-							</select>
-						</p>
-						<h2>Activate full zoom</h2>
-						<p>When this key is held down, the picture is displayed using all available space. Useful for high resolution pictures only.</p>
-						<p>Key to activate full zoom:
-							<select id="selFullZoomKey" class="actionKey">
-								<option value="0">None</option>
-								<option value="16">Shift</option>
-								<option value="17">Ctrl</option>
-							</select>
-						</p>-->
 					</div>
 					<div id="optionTab4">
 						<h2>Advanced options</h2>
+						<p><input type="checkbox" id="chkUpdateNotifications"> <label for="chkUpdateNotifications">Show update notifications</label></p>
 						<p><input type="checkbox" id="chkAddToHistory"> <label for="chkAddToHistory">Add viewed pictures to the browser's history</label></p>
 						<p><input type="checkbox" id="chkAlwaysPreload"> <label for="chkAlwaysPreload">Automatically preload zoomed images<br>
 							<span class="hint">(This may consume a lot of bandwidth)</span></label></p>
@@ -317,10 +297,6 @@
 						<p><label for="txtPicturesOpacity">Zoomed pictures opacity</label>: <input type="text" id="txtPicturesOpacity" size="2"> %
 						<div id="sliderPicturesOpacity"></div>
 						<div class="notice"><span>Transparent</span><span style="float: right">Opaque</span></div></p>
-						<h2>Experimental features</h2>
-						<p><span class="hint"><b>Warning</b>: These features may change, break, or disappear in the future.</span></p>
-						<p><input type="checkbox" id="chkAlwaysFullZoom"> <label for="chkAlwaysFullZoom">Show pictures using all available space<br>
-							<span class="hint">(If disabled, the picture will be resized so it doesn't go under the mouse cursor)</span></label></p>						
 					</div>
 				</div>
 				<div id="buttons">
@@ -331,8 +307,8 @@
 					<div id="saved"><p>Options saved.<br>Some settings may need a page refresh.</p></div>
 				</div>
 				<div id="about">
-					<p><a href="http://code.google.com/p/hoverzoom/">Home page</a> - 
-					<a href="http://code.google.com/p/hoverzoom/issues/list">Report a bug</a></p>
+					<p><a target="_blank" href="http://code.google.com/p/hoverzoom/">Home page</a> - 
+					<a target="_blank" href="http://code.google.com/p/hoverzoom/issues/list">Report a bug</a></p>
 					
 					<!-- Google +1 -->
 					<div class="g-plusone" data-size="small" data-href="https://chrome.google.com/webstore/detail/nonjdcjchghhkdoolnlbekcfllmednbl"></div>
@@ -347,9 +323,8 @@
 					<!-- Facebook Like -->
 					<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FHover-Zoom%2F121453051234637&amp;layout=button_count&amp;show_faces=false&amp;width=100&amp;action=like&amp;colorscheme=light&amp;height=21&amp;ref=options_page" style="border:none; overflow:hidden; width:100px; height:21px; vertical-align: middle;"></iframe>					
 					
-					<!--p>Like this extension? 
-					<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=C8VC69MYY8AZG&lc=US&item_name=Romain%20Vallet&item_number=Hover%20Zoom&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted">Buy me a beer!</a>
-					</p-->
+					<p><a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=C8VC69MYY8AZG&lc=US&item_name=Romain%20Vallet&item_number=Hover%20Zoom&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted">Donations appreciated</a>!
+					</p>
 					<p>&copy; 2012 Romain Vallet</p>
 				</div>
 			</div>

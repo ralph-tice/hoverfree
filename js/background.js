@@ -1,6 +1,9 @@
 ﻿// Copyright (c) 2012 Romain Vallet <romain.vallet@gmail.com>
 // Licensed under the MIT license, read license.txt
 
+// True if the current version of the extension has something to show in an update notification
+var hasReleaseNotes = true;
+
 var options, _gaq, viewWindow = null,
 	downloadRequests = {};
 
@@ -40,6 +43,11 @@ function onRequest(request, sender, callback) {
 			break;
 		case 'getOptions':
 			callback(options);
+			break;
+		case 'setOption':
+			options[request.name] = request.value;
+			localStorage.options = JSON.stringify(options);
+			sendOptions(request.options);
 			break;
 		case 'optionsChanged':
 			options = request.options;
@@ -138,12 +146,14 @@ function miscStats() {
 	_gaq.push(['_trackEvent', 'Misc', 'extensionVersion', chrome.app.getDetails().version]);
 }
 
+// Checks if the extension has been updated.
+// Displays a notification if necessary.
 function checkUpdate() {
 	var currVersion = chrome.app.getDetails().version,
 		prevVersion = localStorage.hzVersion;
-	/*if (currVersion != prevVersion && typeof prevVersion != 'undefined') {
-		
-	}*/
+	if (hasReleaseNotes && options.updateNotifications && currVersion != prevVersion && typeof prevVersion != 'undefined') {
+		webkitNotifications.createHTMLNotification(chrome.extension.getURL('html/update-notif.html')).show();
+	}
 	localStorage.hzVersion = currVersion;
 }
 
@@ -155,9 +165,11 @@ function init() {
 	chrome.extension.onRequest.addListener(onRequest);
 
 	// Anonymous stats
-	setUpStats();
-	miscStats();
-	optionsStats();
+	if (navigator.appVersion.indexOf("RockMelt") == -1) {
+		setUpStats();
+		miscStats();
+		optionsStats();
+	}
 	
 	// Store request IDs of 'hoverzoomdownload' URLs
 	chrome.webRequest.onBeforeRequest.addListener(function(details) {

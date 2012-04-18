@@ -1,0 +1,38 @@
+﻿<html>
+	<head>
+		<title>Hover Zoom update</title>
+		<style>
+			body {
+				font: 10pt sans-serif;
+			}
+			h1 {
+				font-size: 10pt;
+				margin: 0;
+			}
+			p {
+				margin: 5px;
+			}
+			img {
+				vertical-align: middle;
+				margin-right: 5px;
+				height: 28px;
+			}
+		</style>
+		<script>
+			function chkNoUpdateNotifications_onchange() {
+				chrome.extension.sendRequest({
+					action: 'setOption', 
+					name: 'updateNotifications', 
+					value: !document.getElementById('chkNoUpdateNotifications').checked
+				});
+			}
+		</script>
+	</head>
+	<body>
+		<h1><img src="../images/icon32.png"> Hover Zoom has been updated</h1>
+		<p>Large images can now expand below the mouse cursor (you can turn this off in the <a href="options.html" target="_blank">options page</a>).</p>
+		<p>Also, check out the new keyboard shortcuts in the <b>Action keys</b> tab.</p>
+		<p><input type="checkbox" id="chkNoUpdateNotifications" onchange="chkNoUpdateNotifications_onchange()">
+		<label for="chkNoUpdateNotifications">Don't show these notifications</label></p>
+	</body>
+</html>

@@ -145,7 +145,7 @@ var hoverZoom = {
 
 			} else {
 
-				var fullZoom = options.expAlwaysFullZoom || fullZoomKeyDown;
+				var fullZoom = options.mouseUnderlap || fullZoomKeyDown;
 
 				imgFullSize.width('auto').height('auto');
 
@@ -284,7 +284,7 @@ var hoverZoom = {
 				}
 			}
 
-			if (options.expAlwaysFullZoom && target.length &&
+			if (options.mouseUnderlap && target.length &&
 				(imgFullSize && imgFullSize.length && target[0] == imgFullSize[0] ||
 				 hz.hzImg && hz.hzImg.length && target[0] == hz.hzImg[0])) {
 				if (mousePos.top > linkRect.top && mousePos.top < linkRect.bottom && mousePos.left > linkRect.left && mousePos.left < linkRect.right)
@@ -452,7 +452,7 @@ var hoverZoom = {
 		}
 
 		function imgFullSizeOnMouseMove() {
-			if (!imgFullSize && !options.expAlwaysFullZoom) {
+			if (!imgFullSize && !options.mouseUnderlap) {
 				hideHoverZoomImg(true);
 			}
 		}
@@ -607,7 +607,7 @@ var hoverZoom = {
 					widthAttr = parseInt(this.getAttribute('width') || this.style.width || this.style.maxWidth || img.css('width') || img.css('max-width')),
 					heightAttr = parseInt(this.getAttribute('height') || this.style.height || this.style.maxHeight || img.css('height') || img.css('max-height')),
 					hzDownscaled = $('<img id="hzDownscaled" style="position: absolute; top: -10000px;">').appendTo(document.body);
-				console.log(widthAttr + 'x' + heightAttr + ' - ' + img.attr('src'));
+				//console.log(widthAttr + 'x' + heightAttr + ' - ' + img.attr('src'));
 				if (widthAttr > 300 || heightAttr > 300) { return; }
 				hzDownscaled.load(function () {
 					setTimeout(function() {
