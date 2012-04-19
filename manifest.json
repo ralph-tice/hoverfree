@@ -992,11 +992,15 @@
 		},
 		{
 			"js": [ "plugins/e621.js" ],
-			"matches": [ "*://e621.net/*" ]
+			"matches": [ "*://*.e621.net/*" ]
 		},
 		{
 			"js": [ "plugins/jootix.js" ],
-			"matches": [ "*://jootix.com/*" ]
+			"matches": [ "*://*.jootix.com/*" ]
+		},
+		{
+			"js": [ "plugins/bing.js" ],
+			"matches": [ "*://*.bing.com/*" ]
 		},
 		{
             "js": ["js/hoverzoom.js"],
