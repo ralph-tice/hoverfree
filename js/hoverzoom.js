@@ -284,7 +284,7 @@ var hoverZoom = {
 				}
 			}
 
-			if (options.mouseUnderlap && target.length &&
+			if (options.mouseUnderlap && target.length && mousePos && linkRect &&
 				(imgFullSize && imgFullSize.length && target[0] == imgFullSize[0] ||
 				 hz.hzImg && hz.hzImg.length && target[0] == hz.hzImg[0])) {
 				if (mousePos.top > linkRect.top && mousePos.top < linkRect.bottom && mousePos.left > linkRect.left && mousePos.left < linkRect.right)
