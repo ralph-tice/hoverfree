@@ -48,7 +48,10 @@ var hoverZoomPluginFlickerA = {
 		var href = link.attr('href'),
 			aHref = href.split('/'),
 			photoIdIndex = 5;
-		if (aHref[0].indexOf('http') == -1) { photoIdIndex = 3; }	// If relative URL
+		if (aHref[0].indexOf('http') == -1) { 
+			if (link.parents('#nav').length) { return; }
+			photoIdIndex = 3;
+		}	// If relative URL
 		if (aHref.length < photoIdIndex + 1) { return; }
 		var photoId = aHref[photoIdIndex];
 		if (parseInt(photoId) != photoId) { return; }
