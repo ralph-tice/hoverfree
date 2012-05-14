@@ -9,7 +9,7 @@
 				font-size: 10pt;
 				margin: 0;
 			}
-			p {
+			p, li {
 				margin: 5px;
 			}
 			img {
@@ -18,6 +18,7 @@
 				height: 28px;
 			}
 		</style>
+		<script src="../js/common.js"></script>
 		<script>
 			function chkNoUpdateNotifications_onchange() {
 				chrome.extension.sendRequest({
@@ -26,12 +27,20 @@
 					value: !document.getElementById('chkNoUpdateNotifications').checked
 				});
 			}
+			
+			function init() {
+				var options = loadOptions();
+				if (options.openImageInTabKey > 0) {
+					document.getElementById('openImageInTabKey').textContent = keyCodeToKeyName(options.openImageInTabKey);
+					document.getElementById('backTab').style.display = 'list-item';
+				}
+			}
 		</script>
 	</head>
-	<body>
+	<body onload="init()">
 		<h1><img src="../images/icon32.png"> Hover Zoom has been updated</h1>
-		<p>Large images can now expand below the mouse cursor (you can turn this off in the <a href="options.html" target="_blank">options page</a>).</p>
-		<p>Also, check out the new keyboard shortcuts in the <b>Action keys</b> tab.</p>
+		<li id="backTab" style="display: none">You can now press Shift+<span id="openImageInTabKey"></span> to open the current image in a background tab.</li>
+		<li>Fixes for IMDb.</li>
 		<p><input type="checkbox" id="chkNoUpdateNotifications" onchange="chkNoUpdateNotifications_onchange()">
 		<label for="chkNoUpdateNotifications">Don't show these notifications</label></p>
 	</body>

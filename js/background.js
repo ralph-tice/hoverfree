@@ -73,6 +73,8 @@ function onRequest(request, sender, callback) {
 		case 'openViewTab':
 			chrome.tabs.getSelected(null, function(currentTab) {
 				request.createData.index = currentTab.index;
+				if (!request.createData.active)
+					request.createData.index++;
 				chrome.tabs.create(request.createData, function(tab){							
 					chrome.tabs.executeScript(tab.id, {file: 'js/viewTab.js'});
 				});
@@ -107,37 +109,27 @@ function setUpStats(){
 	})();
 }
 
-function keyCodeToKeyName(keyCode) {
-	if (keyCode == 16) {
-		return 'Shift';
-	} else if (keyCode == 17) {
-		return 'Ctrl';
-	} else if (keyCode >= 65 && keyCode <= 90) {
-		return String.fromCharCode(keyCode);
-	} else {
-		return 'None';
-	}
-}
-
 // Report options stats
 // No user data (browser history, etc) is reported
 function optionsStats() {
 	_gaq.push(['_trackEvent', 'Options', 'extensionEnabled', options.extensionEnabled.toString()]);
 	_gaq.push(['_trackEvent', 'Options', 'pageActionEnabled', options.pageActionEnabled.toString()]);
+	_gaq.push(['_trackEvent', 'Options', 'updateNotifications', options.updateNotifications.toString()]);
+	_gaq.push(['_trackEvent', 'Options', 'mouseUnderlap', options.mouseUnderlap.toString()]);
 	_gaq.push(['_trackEvent', 'Options', 'showCaptions', options.showCaptions.toString()]);
 	_gaq.push(['_trackEvent', 'Options', 'showHighRes', options.showHighRes.toString()]);
 	_gaq.push(['_trackEvent', 'Options', 'addToHistory', options.addToHistory.toString()]);
 	_gaq.push(['_trackEvent', 'Options', 'alwaysPreload', options.alwaysPreload.toString()]);
+	_gaq.push(['_trackEvent', 'Options', 'showWhileLoading', options.showWhileLoading.toString()]);
+	_gaq.push(['_trackEvent', 'Options', 'whiteListMode', options.whiteListMode.toString()]);
 	_gaq.push(['_trackEvent', 'Options', 'displayDelay', options.displayDelay.toString()]);
 	_gaq.push(['_trackEvent', 'Options', 'fadeDuration', options.fadeDuration.toString()]);
 	_gaq.push(['_trackEvent', 'Options', 'picturesOpacity', options.picturesOpacity.toString()]);
-	_gaq.push(['_trackEvent', 'Options', 'showWhileLoading', options.showWhileLoading.toString()]);
-	_gaq.push(['_trackEvent', 'Options', 'actionKey', keyCodeToKeyName(options.actionKey)]);
+	/*_gaq.push(['_trackEvent', 'Options', 'actionKey', keyCodeToKeyName(options.actionKey)]);
 	_gaq.push(['_trackEvent', 'Options', 'fullZoomKey', keyCodeToKeyName(options.fullZoomKey)]);
-	_gaq.push(['_trackEvent', 'Options', 'whiteListMode', options.whiteListMode.toString()]);
 	for (var i=0; i<options.excludedSites.length; i++) {
 		_gaq.push(['_trackEvent', 'Options', 'excludedSites', options.excludedSites[i]]);
-	}
+	}*/
 }
 
 // Report miscellaneous stats

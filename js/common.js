@@ -100,3 +100,18 @@ function hasMinChromeVersion(minVersion) {
 	var currentVersion = matches[1];
 	return compareVersionNumbers(currentVersion, minVersion) >= 0;
 }
+
+
+function keyCodeToKeyName(keyCode) {
+	if (keyCode == 16) {
+		return 'Shift';
+	} else if (keyCode == 17) {
+		return 'Ctrl';
+	} else if (keyCode == 17) {
+		return 'Command';
+	} else if (keyCode >= 65 && keyCode <= 90) {
+		return String.fromCharCode(keyCode);
+	} else {
+		return 'None';
+	}
+}

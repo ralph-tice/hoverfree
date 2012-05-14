@@ -757,7 +757,7 @@ var hoverZoom = {
 					// "Open image in a new tab" key
 					if (event.which == options.openImageInTabKey) {
 						if (imgFullSize) {
-							openImageInTab();
+							openImageInTab(event.shiftKey);
 							return false;
 						}
 					}
@@ -885,11 +885,12 @@ var hoverZoom = {
 			});
 		}
 
-		function openImageInTab() {
+		function openImageInTab(background) {
 			chrome.extension.sendRequest({
 				action: 'openViewTab',
 				createData: {
-					url: imgDetails.url
+					url: imgDetails.url,
+					active: !background
 				}
 			});
 		}
