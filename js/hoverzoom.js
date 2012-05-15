@@ -333,7 +333,7 @@ var hoverZoom = {
 				restoreTitles();
 			}
 		}
-
+		
 		function loadFullSizeImage() {
 			// If no image is currently displayed...
 			if (!imgFullSize) {
@@ -370,6 +370,8 @@ var hoverZoom = {
 			hz.hzImg.stop(true, true);
 			hz.hzImg.offset({top:-9000, left:-9000});	// hides the image while making it available for size calculations
 			hz.hzImg.empty();
+			
+			clearTimeout(cursorHideTimeout);
 
 			imgFullSize.css(imgFullSizeCss).appendTo(hz.hzImg).mousemove(imgFullSizeOnMouseMove);
 
@@ -451,12 +453,25 @@ var hoverZoom = {
 			}
 		}
 
+		var firstMouseMoveAfterCursorHide = false,
+			cursorHideTimeout = 0;
+		function hideCursor() {
+			firstMouseMoveAfterCursorHide = true;
+			hz.hzImg.css('cursor', 'none');
+		}
+
 		function imgFullSizeOnMouseMove() {
 			if (!imgFullSize && !options.mouseUnderlap) {
 				hideHoverZoomImg(true);
 			}
+			clearTimeout(cursorHideTimeout);
+			if (!firstMouseMoveAfterCursorHide) {
+				hz.hzImg.css('cursor', 'pointer');
+				cursorHideTimeout = setTimeout(hideCursor, 500);
+			}
+			firstMouseMoveAfterCursorHide = false;
 		}
-
+		
 		function cancelImageLoading() {
 			hz.currentLink = null;
 			clearTimeout(loadFullSizeImageTimeout);
