@@ -372,6 +372,7 @@ var hoverZoom = {
 			hz.hzImg.empty();
 			
 			clearTimeout(cursorHideTimeout);
+			hz.hzImg.css('cursor', 'none');
 
 			imgFullSize.css(imgFullSizeCss).appendTo(hz.hzImg).mousemove(imgFullSizeOnMouseMove);
 
