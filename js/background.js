@@ -2,7 +2,7 @@
 // Licensed under the MIT license, read license.txt
 
 // True if the current version of the extension has something to show in an update notification
-var hasReleaseNotes = false;
+var hasReleaseNotes = true;
 
 var options, _gaq, viewWindow = null,
 	downloadRequests = {};
@@ -120,6 +120,7 @@ function optionsStats() {
 	_gaq.push(['_trackEvent', 'Options', 'showHighRes', options.showHighRes.toString()]);
 	_gaq.push(['_trackEvent', 'Options', 'addToHistory', options.addToHistory.toString()]);
 	_gaq.push(['_trackEvent', 'Options', 'alwaysPreload', options.alwaysPreload.toString()]);
+	_gaq.push(['_trackEvent', 'Options', 'enableAds', options.enableAds.toString()]);
 	_gaq.push(['_trackEvent', 'Options', 'showWhileLoading', options.showWhileLoading.toString()]);
 	_gaq.push(['_trackEvent', 'Options', 'whiteListMode', options.whiteListMode.toString()]);
 	_gaq.push(['_trackEvent', 'Options', 'displayDelay', options.displayDelay.toString()]);

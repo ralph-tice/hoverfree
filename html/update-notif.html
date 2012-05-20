@@ -29,18 +29,19 @@
 			}
 			
 			function init() {
-				var options = loadOptions();
+				/*var options = loadOptions();
 				if (options.openImageInTabKey > 0) {
 					document.getElementById('openImageInTabKey').textContent = keyCodeToKeyName(options.openImageInTabKey);
 					document.getElementById('backTab').style.display = 'list-item';
-				}
+				}*/
 			}
 		</script>
 	</head>
 	<body onload="init()">
 		<h1><img src="../images/icon32.png"> Hover Zoom has been updated</h1>
-		<li id="backTab" style="display: none">You can now press Shift+<span id="openImageInTabKey"></span> to open the current image in a background tab.</li>
-		<li>Fixes for IMDb and Flickr.</li>
+		<p>Hover Zoom is now sponsored via affiliate links.</p>
+		<p><a href="options.html#support" target="_blank">Learn more about this</a></p>
+		<p>&nbsp;</p>
 		<p><input type="checkbox" id="chkNoUpdateNotifications" onchange="chkNoUpdateNotifications_onchange()">
 		<label for="chkNoUpdateNotifications">Don't show these notifications</label></p>
 	</body>

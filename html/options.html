@@ -5,10 +5,10 @@
 		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.0/themes/base/jquery-ui.css" />
 		<link rel="stylesheet" href="../css/common.css" />
 		<style type="text/css">
-			#body { margin: 0 auto; width: 40em;  }
+			#body { margin: 0 auto; width: 50em;  }
 			#container {float: left; margin: 1em;}
 			#icon { float: left; margin-top: 2em }
-			#tabs { width: 25em; min-height: 19em; }
+			#tabs { width: 30em; min-height: 19em; }
 			#tabs li { font-size: 10pt; }
 			#title { font-size: 1.5em }
 			#selExcludedSites, #txtAddExcludedSite { width: 23em; }
@@ -23,6 +23,7 @@
 			#sliderPicturesOpacity { font-size: 0.7em; margin-bottom: 0.5em }
 			hr { margin: 0.7em 0 }
 			.actionKey { line-height: 14px; margin-top: 10px; }
+			#optionTab5 p { margin-bottom: 10px; }
 		</style>
 		<script src="../js/jquery.min.js"></script>
 		<script src="../js/jquery-ui.min.js"></script>
@@ -117,6 +118,8 @@
 					options.excludedSites.push($(this).text());
 				});
 				options.whiteListMode = $('#chkWhiteListMode')[0].checked;
+
+				options.enableAds = parseInt($('#hidEnableAds').val());
 				
 				localStorage.options = JSON.stringify(options);
 				enableControls(false);
@@ -154,6 +157,11 @@
 					$('<option>' + options.excludedSites[i] + '</option>').appendTo('#selExcludedSites');
 				}
 				$('#chkWhiteListMode')[0].checked = options.whiteListMode;
+				
+				$('#radEnableAds')[0].checked  = options.enableAds != 2;
+				$('#radDisableAds')[0].checked  = options.enableAds == 2;
+				$('#hidEnableAds').val(options.enableAds);
+				updateAdsMessage(options.enableAds);
 				
 				enableControls(false);
 			}
@@ -218,13 +226,27 @@
 				}
 			}		
 			
+			function updateAdsMessage(value) {
+				if (value == '1') {
+					$('#pAdsMessage').text('Thanks for your support!');
+				} else {
+					$('#pAdsMessage').text('No problem, enjoy Hover Zoom!');
+				}
+			}
+			
+			function radEnableAdsOnChange(event) {
+				var currSel = $(event.target);
+				updateAdsMessage(currSel.val());
+				$('#hidEnableAds').val(currSel.val());
+			}
+			
 			$(function() {
 				initActionKeys();
 				$('input, select, textarea').change(enableControls).keydown(enableControls);
 				$('#btnSave').click(saveOptions);
 				$('#btnReset').click(restoreOptions);
 				$('#chkWhiteListMode').change(chkWhiteListModeOnChange);
-				$('#tabs').tabs({ selected: 0 });
+				$('#tabs').tabs({ selected: (location.hash == "#support") ? 4 : 0 });
 				$('#sliderPicturesOpacity').slider({
 					range: 'min',
 					min: 1,
@@ -236,6 +258,7 @@
 				});
 				$('#txtPicturesOpacity').change(txtPicturesOpacityOnChange);
 				$('.actionKey').change(selKeyOnChange);
+				$('.radEnableAds').change(radEnableAdsOnChange);
 				restoreOptions();
 				chrome.extension.onRequest.addListener(onRequest);
 			});
@@ -252,6 +275,7 @@
 						<li><a href="#optionTab2">Sites</a></li>
 						<li><a href="#optionTab3">Action keys</a></li>
 						<li><a href="#optionTab4">Advanced</a></li>
+						<li><a href="#optionTab5">Support the project</a></li>
 					</ul>
 					<div id="optionTab1">
 						<p><input type="checkbox" id="chkExtensionEnabled"> <label for="chkExtensionEnabled">Enable Hover Zoom</label></p>
@@ -298,6 +322,19 @@
 						<p><label for="txtPicturesOpacity">Zoomed pictures opacity</label>: <input type="text" id="txtPicturesOpacity" size="2"> %
 						<div id="sliderPicturesOpacity"></div>
 						<div class="notice"><span>Transparent</span><span style="float: right">Opaque</span></div></p>
+					</div>
+					<div id="optionTab5">
+						<h2>Support Hover Zoom Development</h2>
+						<p>Hover Zoom is distributed for free and is supported via affiliate links. You can show your support to the project by keeping this option activated, or you can disable it.</p>
+						<p><b>What will happen if I enable affiliate links?</b><br>
+						Some search related ads will be displayed on your Google search results every once in a while. These ads were designed to be unobtrusive and won't degrade your user experience. Hover Zoom does not block or replace existing ads, it inserts ads only if Google has none to display.</p>
+						<p>Note: affiliate links won't be displayed if you use an ad blocking extension such as AdBlock.</p>
+						<p><b>Will I lose functionality if I disable affiliate links?</b><br>
+						No, enabling affiliate links is only a way to show your support to the project's development.</p>
+						<p><input type="radio" id="radEnableAds" name="radEnableAds" class="radEnableAds" value="1"> <label for="radEnableAds"><b>Yes, I want to support this project by enabling affiliate links.</b></p>
+						<p><input type="radio" id="radDisableAds" name="radEnableAds" class="radEnableAds" value="2"> <label for="radDisableAds">No, I don't want to enable affiliate links.</p>
+						<p id="pAdsMessage">Thanks for your support!</p>						
+						<input type="hidden" id="hidEnableAds">
 					</div>
 				</div>
 				<div id="buttons">

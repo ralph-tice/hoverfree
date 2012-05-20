@@ -1,4 +1,4 @@
-// Copyright (c) 2010 Romain Vallet
+// Copyright (c) 2012 Romain Vallet <romain.vallet@gmail.com>
 // Licensed under the MIT license, read license.txt
 
 // Load options from local storage
@@ -25,6 +25,7 @@ function loadOptions() {
 	//options.expAlwaysFullZoom = options.hasOwnProperty('expAlwaysFullZoom') ? options.expAlwaysFullZoom : false;
 	options.mouseUnderlap = 	options.hasOwnProperty('mouseUnderlap') ? options.mouseUnderlap : true;
 	options.updateNotifications = 	options.hasOwnProperty('updateNotifications') ? options.updateNotifications : true;
+	options.enableAds = 		options.hasOwnProperty('enableAds') ? options.enableAds : 0;
 	
 	// Action keys
 	options.actionKey = 			options.hasOwnProperty('actionKey') ? options.actionKey : 0;
