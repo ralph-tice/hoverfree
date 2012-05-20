@@ -129,8 +129,11 @@ hoverZoomPlugins.push( {
 		function preparePhotoAlbumLink() {
 			var _this = $(this), data = _this.data(), src;
 			if (data.hoverZoomSrc) { return; }
-			if (_this.attr('data-src')) {
-				src = srcReplace(_this.attr('data-src'));
+			if (options.showHighRes && _this.attr('ajaxify')) {
+				src = _this.attr('ajaxify');
+				var key = '&src=';
+				src = src.substr(src.indexOf(key) + key.length);
+				src = unescape(src.substr(0, src.indexOf('&')));
 				data.hoverZoomSrc = [src];
 				res.push(_this);				
 			} else {
