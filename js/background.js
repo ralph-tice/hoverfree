@@ -144,7 +144,7 @@ function miscStats() {
 function checkUpdate() {
 	var currVersion = chrome.app.getDetails().version,
 		prevVersion = localStorage.hzVersion;
-	if (hasReleaseNotes && prevVersion != '4.3' && options.updateNotifications && currVersion != prevVersion && typeof prevVersion != 'undefined') {
+	if (hasReleaseNotes && options.updateNotifications && currVersion != prevVersion && typeof prevVersion != 'undefined' && prevVersion.substr(0,3) != '4.3') {
 		webkitNotifications.createHTMLNotification(chrome.extension.getURL('html/update-notif.html')).show();
 	}
 	localStorage.hzVersion = currVersion;
