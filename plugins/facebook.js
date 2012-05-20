@@ -148,7 +148,7 @@ hoverZoomPlugins.push( {
 			}
 		}
 		
-		$('.uiMediaThumb').each(preparePhotoAlbumLink).mouseenter(preparePhotoAlbumLink);
+		$('.uiMediaThumb, .uiPhotoThumb').each(preparePhotoAlbumLink).mouseenter(preparePhotoAlbumLink);
 		
 		// Photo albums covers
 		$('.album_thumb a.album_link').each(function() {
