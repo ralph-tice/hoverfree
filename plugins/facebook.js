@@ -136,6 +136,10 @@ hoverZoomPlugins.push( {
 				src = unescape(src.substr(0, src.indexOf('&')));
 				data.hoverZoomSrc = [src];
 				res.push(_this);				
+			} else if (_this.attr('data-src')) {
+				src = srcReplace(_this.attr('data-src'));
+				data.hoverZoomSrc = [src];
+				res.push(_this);				
 			} else {
 				var i = _this.find('i:eq(0)'),
 					src = i.attr('style');
