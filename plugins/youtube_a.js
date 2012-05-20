@@ -1,10 +1,10 @@
-﻿// Copyright (c) 2011 Romain Vallet <romain.vallet@gmail.com>
+﻿// Copyright (c) 2012 Romain Vallet <romain.vallet@gmail.com>
 // Licensed under the MIT license, read license.txt
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	name: 'YouTube',
-	version: '0.1',
+	version: '0.2',
 	prepareImgLinks: function(callback) {
 		var res = [],
 			repl = 'http://i1.ytimg.com/vi/$1/0.jpg';
@@ -23,6 +23,11 @@ hoverZoomPlugins.push( {
 			/^.*youtu.be\/([\w-]+).*$/,
 			repl
 		);
+		$('img[data-thumb*="ytimg.com/vi/"]').each(function() {
+			var _this = $(this);
+			_this.data().hoverZoomSrc = [_this.attr('data-thumb').replace(/\/(\d|default)\.jpg/, '/0.jpg')];
+			res.push(_this);
+		});
 		callback($(res));
 	}
 });
