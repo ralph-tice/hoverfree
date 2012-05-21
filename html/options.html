@@ -107,6 +107,7 @@
 				//options.expAlwaysFullZoom = $('#chkAlwaysFullZoom')[0].checked;
 				options.mouseUnderlap = $('#chkMouseUnderlap')[0].checked;
 				options.updateNotifications = $('#chkUpdateNotifications')[0].checked;
+				options.filterNSFW = $('#chkFilterNSFW')[0].checked;
 				
 				for (var i=0; i<actionKeys.length; i++) {
 					options[actionKeys[i].id] = parseInt($('#sel' + actionKeys[i].id).val());
@@ -144,6 +145,7 @@
 				//$('#chkAlwaysFullZoom')[0].checked = options.expAlwaysFullZoom;
 				$('#chkMouseUnderlap')[0].checked = options.mouseUnderlap;
 				$('#chkUpdateNotifications')[0].checked  = options.updateNotifications;
+				$('#chkFilterNSFW')[0].checked  = options.filterNSFW;
 				
 				for (var i=0; i<actionKeys.length; i++) {
 					$('#sel' + actionKeys[i].id).val(options[actionKeys[i].id]);
@@ -316,6 +318,7 @@
 						<h2>Advanced options</h2>
 						<p><input type="checkbox" id="chkUpdateNotifications"> <label for="chkUpdateNotifications">Show update notifications</label></p>
 						<p><input type="checkbox" id="chkAddToHistory"> <label for="chkAddToHistory">Add viewed pictures to the browser's history</label></p>
+						<p><input type="checkbox" id="chkFilterNSFW"> <label for="chkFilterNSFW">Exclude NSFW images (Reddit only)</label></p>
 						<p><input type="checkbox" id="chkAlwaysPreload"> <label for="chkAlwaysPreload">Automatically preload zoomed images<br>
 							<span class="hint">(This may consume a lot of bandwidth)</span></label></p>
 						<hr>

@@ -4,12 +4,14 @@
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	name: 'Reddit',
-	version: '0.1',
+	version: '0.2',
 	prepareImgLinks: function(callback) {
 		$('.hoverZoomLink').each(function() {
-			var _this = $(this),
-				title = _this.parent().find('a.title').text();
-			_this.data().hoverZoomCaption = title;
+			var _this = $(this);
+			if (options.filterNSFW && _this.parents('.over18').length) {
+				_this.removeClass('hoverZoomLink');
+			}
+			_this.data().hoverZoomCaption = _this.parent().find('a.title').text();
 		});
 	}
 });

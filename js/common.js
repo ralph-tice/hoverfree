@@ -26,6 +26,7 @@ function loadOptions() {
 	options.mouseUnderlap = 	options.hasOwnProperty('mouseUnderlap') ? options.mouseUnderlap : true;
 	options.updateNotifications = 	options.hasOwnProperty('updateNotifications') ? options.updateNotifications : true;
 	options.enableAds = 		options.hasOwnProperty('enableAds') ? options.enableAds : 0;
+	options.filterNSFW = 		options.hasOwnProperty('filterNSFW') ? options.filterNSFW : false;
 	
 	// Action keys
 	options.actionKey = 			options.hasOwnProperty('actionKey') ? options.actionKey : 0;
