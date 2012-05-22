@@ -358,8 +358,8 @@ var hoverZoom = {
 			// Only the last hovered link gets displayed
 			if (imgDetails.url == $(imgFullSize).attr('src')) {
 				loading = false;
+				//imgFullSize.css({'background-image': 'none'});
 				displayFullSizeImage();
-				imgFullSize.css({'background-image': 'none'});
 			}
 		}
 
@@ -390,8 +390,9 @@ var hoverZoom = {
 					lowResSrc = hz.getThumbUrl(imgThumb);
 				}
 				lowResSrc = lowResSrc || 'noimage';
-				if (lowResSrc.indexOf('noimage') == -1) {
-					if (imgDetails.url.substr(imgDetails.url.length - 4).toLowerCase() != '.gif') {
+				if (loading && lowResSrc.indexOf('noimage') == -1) {
+					var ext = imgDetails.url.substr(imgDetails.url.length - 3).toLowerCase();
+					if (ext != 'gif' && ext != 'svg' && ext != 'png') {
 						var imgRatio = imgFullSize.width() / imgFullSize.height(),
 							thumbRatio = imgThumb.width() / imgThumb.height();
 						// The thumbnail is used as a background only if its width/height ratio is similar to the image
@@ -735,83 +736,81 @@ var hoverZoom = {
 
 			wnd.bind('DOMNodeInserted', windowOnDOMNodeInserted).load(windowOnLoad).scroll(cancelImageLoading);
 
-			if (options.actionKey || options.fullZoomKey) {
-				$(document).keydown(function (event) {
-					// Action key (zoom image) is pressed down
-					if (event.which == options.actionKey && !actionKeyDown) {
-						actionKeyDown = true;
-						$(this).mousemove();
-						if (loading || imgFullSize) {
-							return false;
-						}
-					}
-					// Full zoom key is pressed down
-					if (event.which == options.fullZoomKey && !fullZoomKeyDown) {
-						fullZoomKeyDown = true;
-						posImg();
-						if (imgFullSize) {
-							return false;
-						}
-					}
-					// Hide key (hide zoomed image) is pressed down
-					if (event.which == options.hideKey && !hideKeyDown) {
-						hideKeyDown = true;
-						if (hz.hzImg) {
-							hz.hzImg.hide();
-						}
-						if (imgFullSize) {
-							return false;
-						}
-					}
-					// "Open image in a new window" key
-					if (event.which == options.openImageInWindowKey) {
-						if (imgFullSize) {
-							openImageInWindow();
-							return false;
-						}
-					}
-					// "Open image in a new tab" key
-					if (event.which == options.openImageInTabKey) {
-						if (imgFullSize) {
-							openImageInTab(event.shiftKey);
-							return false;
-						}
-					}
-					// "Save image" key
-					if (event.which == options.saveImageKey) {
-						if (imgFullSize) {
-							saveImage();
-							return false;
-						}
-					}
-					// Cancels event if an action key is held down (auto repeat may trigger additional events)
-					if (imgFullSize &&
-						(event.which == options.actionKey ||
-						event.which == options.fullZoomKey ||
-						event.which == options.hideKey)) {
+			$(document).keydown(function (event) {
+				// Action key (zoom image) is pressed down
+				if (event.which == options.actionKey && !actionKeyDown) {
+					actionKeyDown = true;
+					$(this).mousemove();
+					if (loading || imgFullSize) {
 						return false;
 					}
-				}).keyup(function (event) {
-					// Action key (zoom image) is released
-					if (event.which == options.actionKey) {
-						actionKeyDown = false;
-						hideHoverZoomImg();
+				}
+				// Full zoom key is pressed down
+				if (event.which == options.fullZoomKey && !fullZoomKeyDown) {
+					fullZoomKeyDown = true;
+					posImg();
+					if (imgFullSize) {
+						return false;
 					}
-					// Full zoom key is released
-					if (event.which == options.fullZoomKey) {
-						fullZoomKeyDown = false;
-						$(this).mousemove();
+				}
+				// Hide key (hide zoomed image) is pressed down
+				if (event.which == options.hideKey && !hideKeyDown) {
+					hideKeyDown = true;
+					if (hz.hzImg) {
+						hz.hzImg.hide();
 					}
-					// Hide key is released
-					if (event.which == options.hideKey) {
-						hideKeyDown = false;
-						if (imgFullSize) {
-							hz.hzImg.show();
-						}
-						$(this).mousemove();
+					if (imgFullSize) {
+						return false;
 					}
-				});
-			}
+				}
+				// "Open image in a new window" key
+				if (event.which == options.openImageInWindowKey) {
+					if (imgFullSize) {
+						openImageInWindow();
+						return false;
+					}
+				}
+				// "Open image in a new tab" key
+				if (event.which == options.openImageInTabKey) {
+					if (imgFullSize) {
+						openImageInTab(event.shiftKey);
+						return false;
+					}
+				}
+				// "Save image" key
+				if (event.which == options.saveImageKey) {
+					if (imgFullSize) {
+						saveImage();
+						return false;
+					}
+				}
+				// Cancels event if an action key is held down (auto repeat may trigger additional events)
+				if (imgFullSize &&
+					(event.which == options.actionKey ||
+					event.which == options.fullZoomKey ||
+					event.which == options.hideKey)) {
+					return false;
+				}
+			}).keyup(function (event) {
+				// Action key (zoom image) is released
+				if (event.which == options.actionKey) {
+					actionKeyDown = false;
+					hideHoverZoomImg();
+				}
+				// Full zoom key is released
+				if (event.which == options.fullZoomKey) {
+					fullZoomKeyDown = false;
+					$(this).mousemove();
+				}
+				// Hide key is released
+				if (event.which == options.hideKey) {
+					hideKeyDown = false;
+					if (imgFullSize) {
+						hz.hzImg.show();
+					}
+					$(this).mousemove();
+				}
+			});
 		}
 
 		function fixFlash() {
