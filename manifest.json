@@ -1007,6 +1007,10 @@
 			"matches": [ "*://*.bing.com/*" ]
 		},
 		{
+			"js": [ "plugins/so_cl.js" ],
+			"matches": [ "*://*.so.cl/*" ]
+		},
+		{
             "js": ["js/hoverzoom.js"],
 			"matches": ["<all_urls>"],
 			"all_frames": true
