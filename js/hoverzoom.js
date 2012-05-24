@@ -736,86 +736,96 @@ var hoverZoom = {
 
 			wnd.bind('DOMNodeInserted', windowOnDOMNodeInserted).load(windowOnLoad).scroll(cancelImageLoading);
 
-			$(document).keydown(function (event) {
-				// Action key (zoom image) is pressed down
-				if (event.which == options.actionKey && !actionKeyDown) {
-					actionKeyDown = true;
-					$(this).mousemove();
-					if (loading || imgFullSize) {
-						return false;
-					}
-				}
-				// Full zoom key is pressed down
-				if (event.which == options.fullZoomKey && !fullZoomKeyDown) {
-					fullZoomKeyDown = true;
-					posImg();
-					if (imgFullSize) {
-						return false;
-					}
-				}
-				// Hide key (hide zoomed image) is pressed down
-				if (event.which == options.hideKey && !hideKeyDown) {
-					hideKeyDown = true;
-					if (hz.hzImg) {
-						hz.hzImg.hide();
-					}
-					if (imgFullSize) {
-						return false;
-					}
-				}
-				// "Open image in a new window" key
-				if (event.which == options.openImageInWindowKey) {
-					if (imgFullSize) {
-						openImageInWindow();
-						return false;
-					}
-				}
-				// "Open image in a new tab" key
-				if (event.which == options.openImageInTabKey) {
-					if (imgFullSize) {
-						openImageInTab(event.shiftKey);
-						return false;
-					}
-				}
-				// "Save image" key
-				if (event.which == options.saveImageKey) {
-					if (imgFullSize) {
-						saveImage();
-						return false;
-					}
-				}
-				// Cancels event if an action key is held down (auto repeat may trigger additional events)
-				if (imgFullSize &&
-					(event.which == options.actionKey ||
-					event.which == options.fullZoomKey ||
-					event.which == options.hideKey)) {
+			$(document).keydown(documentOnKeyDown).keyup(documentOnKeyUp);
+		}
+		
+		function documentOnKeyDown(event) {
+			// Action key (zoom image) is pressed down
+			if (event.which == options.actionKey && !actionKeyDown) {
+				actionKeyDown = true;
+				$(this).mousemove();
+				if (loading || imgFullSize) {
 					return false;
 				}
-			}).keyup(function (event) {
-				// Action key (zoom image) is released
-				if (event.which == options.actionKey) {
-					actionKeyDown = false;
-					hideHoverZoomImg();
+			}
+			// Full zoom key is pressed down
+			if (event.which == options.fullZoomKey && !fullZoomKeyDown) {
+				fullZoomKeyDown = true;
+				posImg();
+				if (imgFullSize) {
+					return false;
 				}
-				// Full zoom key is released
-				if (event.which == options.fullZoomKey) {
-					fullZoomKeyDown = false;
-					$(this).mousemove();
+			}
+			// Hide key (hide zoomed image) is pressed down
+			if (event.which == options.hideKey && !hideKeyDown) {
+				hideKeyDown = true;
+				if (hz.hzImg) {
+					hz.hzImg.hide();
 				}
-				// Hide key is released
-				if (event.which == options.hideKey) {
-					hideKeyDown = false;
-					if (imgFullSize) {
-						hz.hzImg.show();
-					}
-					$(this).mousemove();
+				if (imgFullSize) {
+					return false;
 				}
-			});
+			}
+			// "Open image in a new window" key
+			if (event.which == options.openImageInWindowKey) {
+				if (imgFullSize) {
+					openImageInWindow();
+					return false;
+				}
+			}
+			// "Open image in a new tab" key
+			if (event.which == options.openImageInTabKey) {
+				if (imgFullSize) {
+					openImageInTab(event.shiftKey);
+					return false;
+				}
+			}
+			// "Save image" key
+			if (event.which == options.saveImageKey) {
+				if (imgFullSize) {
+					saveImage();
+					return false;
+				}
+			}
+			// Cancels event if an action key is held down (auto repeat may trigger additional events)
+			if (imgFullSize &&
+				(event.which == options.actionKey ||
+				event.which == options.fullZoomKey ||
+				event.which == options.hideKey)) {
+				return false;
+			}
 		}
 
+		function documentOnKeyUp(event) {
+			// Action key (zoom image) is released
+			if (event.which == options.actionKey) {
+				actionKeyDown = false;
+				hideHoverZoomImg();
+			}
+			// Full zoom key is released
+			if (event.which == options.fullZoomKey) {
+				fullZoomKeyDown = false;
+				$(this).mousemove();
+			}
+			// Hide key is released
+			if (event.which == options.hideKey) {
+				hideKeyDown = false;
+				if (imgFullSize) {
+					hz.hzImg.show();
+				}
+				$(this).mousemove();
+			}
+		}
+		
 		function fixFlash() {
 			if (flashFixDomains.indexOf(location.host) == -1) { return; }
 			if (isExcludedSite() || window == window.top && $('.hoverZoomLink').length == 0) { return; }
+			/*if (location.host == 'www.youtube.com') {
+				var script = $('#watch-player').next('script').clone();
+				eval(script.html().replace('\\u003cembed', '\\u003cembed wmode=opaque'));
+				//script.appendTo(script.parent());
+				return;
+			}*/
 			$('embed:not([wmode]), embed[wmode="window"]').each(function () {
 				if (!this.type || this.type.toLowerCase() != 'application/x-shockwave-flash') { return; }
 				var embed = this.cloneNode(true);
@@ -967,6 +977,7 @@ var hoverZoom = {
 			} else {
 				url = url.replace(search, replace);
 			}
+			url = unescape(url);
 			if (thumbUrl == url) { return; }
 			var data = link.data().hoverZoomSrc;
 			if (Object.prototype.toString.call(data) === '[object Array]') {
