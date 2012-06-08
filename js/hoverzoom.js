@@ -600,6 +600,10 @@ var hoverZoom = {
 		}
 
 		function prepareDownscaledImages() {
+			
+			// Excluded sites
+			if (['www.facebook.com'].indexOf(location.host) > -1) { return; }
+		
 			$('img').filter(function () {
 				var _this = $(this);
 
@@ -732,11 +736,8 @@ var hoverZoom = {
 		}
 
 		function bindEvents() {
-			$(document).mousemove(documentMouseMove).mouseleave(cancelImageLoading).mousedown(documentMouseDown);
-
 			wnd.bind('DOMNodeInserted', windowOnDOMNodeInserted).load(windowOnLoad).scroll(cancelImageLoading);
-
-			$(document).keydown(documentOnKeyDown).keyup(documentOnKeyUp);
+			$(document).mousemove(documentMouseMove).mouseleave(cancelImageLoading).mousedown(documentMouseDown).keydown(documentOnKeyDown).keyup(documentOnKeyUp);
 		}
 		
 		function documentOnKeyDown(event) {
