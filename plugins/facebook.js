@@ -7,7 +7,7 @@ hoverZoomPlugins.push( {
 	version: '0.9',
 	prepareImgLinks: function(callback) {
 	
-		$('img[src*="fbcdn"], img[src*="fbexternal"], i[style*="fbcdn"]').mouseenter(function() {
+		$('img[src*="fbcdn"], img[src*="fbexternal"], [style*="fbcdn"], [style*="fbexternal"]').mouseenter(function() {
 			var img = $(this),
 				data = img.data();
 			if (data.hoverZoomSrc) { return; }
