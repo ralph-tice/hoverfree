@@ -17,6 +17,11 @@
 				margin-right: 5px;
 				height: 28px;
 			}
+			#footer {
+				position: fixed; 
+				bottom: 0;
+				margin: 1.5em;
+			}
 		</style>
 		<script src="../js/common.js"></script>
 		<script>
@@ -39,9 +44,9 @@
 	</head>
 	<body onload="init()">
 		<h1><img src="../images/icon32.png"> Hover Zoom has been updated</h1>
-		<li>Fixes for Youtube and Facebook (support for high resolution photos in albums).</li>
-		<li>Hover Zoom is now sponsored via affiliate links. <a href="options.html#support" target="_blank">Learn more about this</a></li>
-		<p><input type="checkbox" id="chkNoUpdateNotifications" onchange="chkNoUpdateNotifications_onchange()">
+		<ul><li>Fixes for eBay, Facebook and 500px.</li>
+		<li>Redditors can now <a href="options.html#3" target="_blank">filter NSFW links</a>.</li></ul>
+		<p id="footer"><input type="checkbox" id="chkNoUpdateNotifications" onchange="chkNoUpdateNotifications_onchange()">
 		<label for="chkNoUpdateNotifications">Don't show these notifications</label></p>
 	</body>
 </html>

@@ -248,7 +248,7 @@
 				$('#btnSave').click(saveOptions);
 				$('#btnReset').click(restoreOptions);
 				$('#chkWhiteListMode').change(chkWhiteListModeOnChange);
-				$('#tabs').tabs({ selected: (location.hash == "#support") ? 4 : 0 });
+				$('#tabs').tabs({ selected: (location.hash != '') ? parseInt(location.hash.substr(1)) : 0 });
 				$('#sliderPicturesOpacity').slider({
 					range: 'min',
 					min: 1,
