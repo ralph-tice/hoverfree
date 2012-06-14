@@ -1,6 +1,6 @@
 ﻿{
     "name": "Hover Zoom",
-    "version": "4.3.5",
+    "version": "4.4",
     "description": "__MSG_extDescription__",
 	"icons": {
 		"16": "images/icon16.png",
@@ -528,7 +528,6 @@
 						"*://*.ebay.com.au/*",
 						"*://*.ebay.at/*",
 						"*://*.ebay.be/*",
-						"*://*.ebay.com.cn/*",
 						"*://*.ebay.es/*",
 						"*://*.ebay.fr/*",
 						"*://*.ebay.com.hk/*",
@@ -542,8 +541,7 @@
 						"*://*.ebay.co.uk/*",
 						"*://*.ebay.com.sg/*",
 						"*://*.ebay.ch/*",
-						"*://*.ebay.co.th/*",
-						"*://*.ebay.vn/*"]
+						"*://*.ebay.co.th/*"]
 		},
         {
             "js": ["plugins/allocine.js"],
