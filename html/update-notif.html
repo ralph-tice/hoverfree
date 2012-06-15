@@ -34,8 +34,9 @@
 			}
 			
 			function init() {
-				/*var options = loadOptions();
-				if (options.openImageInTabKey > 0) {
+				var options = loadOptions();
+				document.getElementById('chkNoUpdateNotifications').checked = !options.updateNotifications;
+				/*if (options.openImageInTabKey > 0) {
 					document.getElementById('openImageInTabKey').textContent = keyCodeToKeyName(options.openImageInTabKey);
 					document.getElementById('backTab').style.display = 'list-item';
 				}*/
@@ -45,7 +46,7 @@
 	<body onload="init()">
 		<h1><img src="../images/icon32.png"> Hover Zoom has been updated</h1>
 		<ul><li>Fixes for eBay, Facebook and 500px.</li>
-		<li>Redditors can now <a href="options.html#3" target="_blank">filter NSFW links</a>.</li></ul>
+		<li>Redditors can now <a href="options.html#3" target="_blank">exclude NSFW links</a>.</li></ul>
 		<p id="footer"><input type="checkbox" id="chkNoUpdateNotifications" onchange="chkNoUpdateNotifications_onchange()">
 		<label for="chkNoUpdateNotifications">Don't show these notifications</label></p>
 	</body>

@@ -19,7 +19,8 @@
 			#title, #buttons, #about, #about p, #messages p { text-align: center }
 			#delays p, #delays input, #txtPicturesOpacity { text-align: right }
 			.notice { font-size: 8pt; }
-			.hint { font-size: 8pt; padding-left: 25px; display: block; color: #555; }
+			.hint { font-size: 8pt; padding-left: 25px; display: block; }
+			.hint, .hint a { color: #555; }
 			#sliderPicturesOpacity { font-size: 0.7em; margin-bottom: 0.5em }
 			hr { margin: 0.7em 0 }
 			.actionKey { line-height: 14px; margin-top: 10px; }
@@ -316,7 +317,8 @@
 					</div>
 					<div id="optionTab4">
 						<h2>Advanced options</h2>
-						<p><input type="checkbox" id="chkUpdateNotifications"> <label for="chkUpdateNotifications">Show update notifications</label></p>
+						<p><input type="checkbox" id="chkUpdateNotifications"> <label for="chkUpdateNotifications">Show update notifications</label><br>
+							<span class="hint"><a href="javascript:" onclick="showUpdateNotification();">Show latest</a></span></p>
 						<p><input type="checkbox" id="chkAddToHistory"> <label for="chkAddToHistory">Add viewed pictures to the browser's history</label></p>
 						<p><input type="checkbox" id="chkFilterNSFW"> <label for="chkFilterNSFW">Exclude NSFW images (Reddit only)</label></p>
 						<p><input type="checkbox" id="chkAlwaysPreload"> <label for="chkAlwaysPreload">Automatically preload zoomed images<br>

@@ -103,7 +103,6 @@ function hasMinChromeVersion(minVersion) {
 	return compareVersionNumbers(currentVersion, minVersion) >= 0;
 }
 
-
 function keyCodeToKeyName(keyCode) {
 	if (keyCode == 16) {
 		return 'Shift';
@@ -116,4 +115,8 @@ function keyCodeToKeyName(keyCode) {
 	} else {
 		return 'None';
 	}
+}
+
+function showUpdateNotification() {
+	webkitNotifications.createHTMLNotification(chrome.extension.getURL('html/update-notif.html')).show();
 }
