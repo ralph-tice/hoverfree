@@ -9,8 +9,13 @@ hoverZoomPlugins.push( {
 		var res = [];
 		hoverZoom.urlReplace(res, 
 			'img[src*="/1.jpg"], img[src*="/2.jpg"], img[src*="/3.jpg"]',
-			/\/[123]\.jpg/,
-			'/4.jpg'
+			/(.*pcdn.*)\/[123]\.jpg/,
+			'$1/4.jpg'
+		);		
+		hoverZoom.urlReplace(res, 
+			'a img.changed[src*="/4.jpg"]',
+			'/4.jpg',
+			'/4.jpg#'
 		);		
 		callback($(res));	
 	}
