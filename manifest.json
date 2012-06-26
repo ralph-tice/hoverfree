@@ -41,6 +41,7 @@
 				   "plugins/wordpress_a.js",
 				   "plugins/vbulletin_a.js",
 				   "plugins/photoshop_a.js",
+				   "plugins/instagram_a.js",
 				   "plugins/ipboard_a.js"],
 			"matches": ["<all_urls>"],
 			"all_frames": true
