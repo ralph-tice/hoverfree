@@ -1069,6 +1069,20 @@ var hoverZoom = {
 		}
 
 		setTimeout(preloadNextImage, preloadDelay);
+	},
+	
+	prepareOEmbedLink: function(link, apiEndpoint, linkUrl) {
+		if (!linkUrl) {
+			linkUrl = getThumbUrl(link);
+		}
+		link = $(link);
+		$.getJSON(apiEndpoint + linkUrl, function(data) {
+			if (data && data.type == 'photo' && data.url) {
+				link.data().hoverZoomSrc = [data.url];
+				link.addClass('hoverZoomLink');
+				hoverZoom.displayPicFromElement(link);
+			}
+		});
 	}
 };
 
