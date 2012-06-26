@@ -29,6 +29,7 @@ hoverZoomPlugins.push( {
 					src = src.replace(/\/(\d|(hq)?default)\.jpg/, '/0.jpg');				
 				}
 			} else {
+				if (src.match(/_[no]\.jpg$/)) { return; }
 				src = src.replace(/[a-z]\d+\.(facebook\.com|sphotos\.ak\.fbcdn\.net)\//, 'fbcdn-sphotos-a.akamaihd.net/').replace(/\/[a-z]\d+(\.\d+)+\//, '/').replace(/\/[a-z]\d+x\d+\//, '/').replace(/_[sqta]\./, '_n.').replace(/\/[sqta](\d)/, '/n$1');
 			}
 			data.hoverZoomSrc = [src];
