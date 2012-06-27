@@ -1,6 +1,6 @@
 ﻿{
     "name": "Hover Zoom",
-    "version": "4.4",
+    "version": "4.5",
     "description": "__MSG_extDescription__",
 	"icons": {
 		"16": "images/icon16.png",
@@ -42,6 +42,7 @@
 				   "plugins/vbulletin_a.js",
 				   "plugins/photoshop_a.js",
 				   "plugins/instagram_a.js",
+				   "plugins/deviantart_a.js",
 				   "plugins/ipboard_a.js"],
 			"matches": ["<all_urls>"],
 			"all_frames": true
