@@ -2,6 +2,7 @@
     "name": "Hover Zoom",
     "version": "4.5",
     "description": "__MSG_extDescription__",
+	"manifest_version": 2,
 	"icons": {
 		"16": "images/icon16.png",
 		"32": "images/icon32.png",
@@ -9,8 +10,10 @@
 		"128": "images/icon128.png"
 	},
 	"default_locale": "en",
-	"minimum_chrome_version": "17",
-	"background_page": "html/background.html",
+	"minimum_chrome_version": "18",
+	"background": {
+		"page": "html/background.html"
+	},
 	"options_page": "html/options.html",
 	"page_action": {
 		"default_icon": "images/icon19.png",
@@ -24,6 +27,10 @@
 		"webRequest",
 		"webRequestBlocking",
 		"*://*/*"
+	],
+	"content_security_policy": "script-src 'self' https://apis.google.com https://ssl.google-analytics.com; object-src 'self'",
+	"web_accessible_resources": [
+		"images/loading.gif"
 	],
 	"content_scripts": [
         {
@@ -1013,6 +1020,10 @@
 		{
 			"js": [ "plugins/xuite.js" ],
 			"matches": [ "*://*.xuite.net/*" ]
+		},
+		{
+			"js": [ "plugins/craigslist.js" ],
+			"matches": [ "*://*.craigslist.org/*" ]
 		},
 		{
             "js": ["js/hoverzoom.js"],

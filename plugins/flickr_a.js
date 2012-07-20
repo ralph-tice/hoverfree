@@ -41,6 +41,9 @@ var hoverZoomPluginFlickerA = {
 		$(filter).each(function() {
 			hoverZoomPluginFlickerA.prepareImgLinkFromHref($(this));
 		});
+		/*$(filter).one('mouseenter', function() {
+			hoverZoom.prepareOEmbedLink(this, 'http://www.flickr.com/services/oembed?format=json&url=', this.href);
+		});*/
 	},
 	
 	// Get details from this URL: http://www.flickr.com/photos/{user-id}/{photo-id}
