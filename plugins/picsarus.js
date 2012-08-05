@@ -1,14 +1,15 @@
-// Copyright (c) 2011 Romain Vallet <romain.vallet@gmail.com>
+// Copyright (c) 2012 Romain Vallet <romain.vallet@gmail.com>
 // Licensed under the MIT license, read license.txt
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	name: 'Picsarus',
-	version: '0.1',
+	version: '0.2',
 	prepareImgLinks: function(callback) {
 		var res = [];
 			
 		$('a[href*="picsarus.com/"]').each(function() {
+			if (this.href.match(/\.(jpg|gif|png)$/i)) { return; }
 			var link = $(this),
 				aHref = link.attr('href').split('/');
 			if (aHref.length < 4) { return; }
