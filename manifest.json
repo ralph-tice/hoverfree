@@ -1,8 +1,9 @@
 ﻿{
     "name": "Hover Zoom",
-    "version": "4.5",
+    "version": "4.5.1",
     "description": "__MSG_extDescription__",
 	"manifest_version": 2,
+	"update_url": "http://hoverzoom.net/chrome/updates.xml",
 	"icons": {
 		"16": "images/icon16.png",
 		"32": "images/icon32.png",
