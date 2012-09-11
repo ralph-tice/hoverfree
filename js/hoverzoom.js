@@ -91,7 +91,7 @@ var hoverZoom = {
 		};
 
 		var flashFixDomains = [
-			'www.youtube.com',
+			/*'www.youtube.com',*/
 			'www.redditmedia.com'
 		];
 
