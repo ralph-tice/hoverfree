@@ -230,6 +230,10 @@ $(function() {
 	$('#txtPicturesOpacity').change(txtPicturesOpacityOnChange);
 	$('.actionKey').change(selKeyOnChange);
 	$('.radEnableAds').change(radEnableAdsOnChange);
+	$('#btnAddExcludedSite').click(btnAddExcludedSiteOnClick);
+	$('#btnRemoveExcludedSite').click(btnRemoveExcludedSiteOnClick);
+	$('#btnClearExcludedSites').click(btnClearExcludedSitesOnClick);
+	$('#aShowUpdateNotification').click(showUpdateNotification);
 	restoreOptions();
 	chrome.extension.onRequest.addListener(onRequest);
 	$('#versionNumber').text(chrome.app.getDetails().version);
