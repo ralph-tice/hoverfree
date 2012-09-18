@@ -1,6 +1,6 @@
 ﻿{
     "name": "Hover Zoom",
-    "version": "4.5.2",
+    "version": "4.6",
     "description": "__MSG_extDescription__",
 	"manifest_version": 2,
 	"update_url": "http://hoverzoom.net/chrome/updates.xml",
@@ -31,7 +31,8 @@
 	],
 	"content_security_policy": "script-src 'self' https://apis.google.com https://ssl.google-analytics.com; object-src 'self'",
 	"web_accessible_resources": [
-		"images/loading.gif"
+		"images/loading.gif",
+		"images/fb-close.png"
 	],
 	"content_scripts": [
         {
@@ -1025,6 +1026,14 @@
 		{
 			"js": [ "plugins/craigslist.js" ],
 			"matches": [ "*://*.craigslist.org/*" ]
+		},
+		{
+			"js": [ "plugins/zinio.js" ],
+			"matches": [ "*://*.zinio.com/*" ]
+		},
+		{
+			"js": [ "plugins/posterrevolution.js" ],
+			"matches": [ "*://*.posterrevolution.com/*" ]
 		},
 		{
             "js": ["js/hoverzoom.js"],

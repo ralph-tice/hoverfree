@@ -137,7 +137,7 @@ function optionsStats() {
 // No user data (browser history, etc) is reported
 function miscStats() {
 	_gaq.push(['_trackEvent', 'Misc', 'extensionVersion', chrome.app.getDetails().version]);
-	_gaq.push(['_trackEvent', 'Misc', 'downloadedFrom', 'hoverzoom.net']);
+	_gaq.push(['_trackEvent', 'Misc', 'downloadedFrom', 'Chrome Web Store']);
 }
 
 // Checks if the extension has been updated.
