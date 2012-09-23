@@ -9,7 +9,7 @@ hoverZoomPlugins.push( {
 		var res = [];
 			
 		$('a[href*="picsarus.com/"]').each(function() {
-			if (this.href.match(/\.(jpg|gif|png)$/i)) { return; }
+			if (this.href.match(/\.(jpe?g|gif|png)$/i)) { return; } 
 			var link = $(this),
 				aHref = link.attr('href').split('/');
 			if (aHref.length < 4) { return; }
