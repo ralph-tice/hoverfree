@@ -11,6 +11,10 @@ $(function() {
 	lblPreloading = $('#lblPreloading');
 	aPreload = $('#aPreload');
 	
+	aPreload.click(aPreloadOnClick);
+	$('#chkExtensionDisabled').click(chkExtensionDisabledOnClick);
+	$('#chkExcludeSite').click(chkExcludeSiteOnClick);
+	
 	if (!options.alwaysPreload) {
 		aPreload.css('display', 'inline');
 	}
@@ -86,7 +90,7 @@ function onRequest(request, sender, callback) {
 	}
 }					
 
-function btnPreloadOnClick() {
+function aPreloadOnClick() {
 	chrome.tabs.executeScript(null, {code: 'if (hoverZoom) { hoverZoom.preloadImages(); }'});
 	aPreload.css('display', 'none');
 	prgPreloading.attr('value', 0).attr('max', 1);
