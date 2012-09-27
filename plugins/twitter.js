@@ -20,12 +20,10 @@ hoverZoomPlugins.push( {
 				res.push(link);
 			}
 		});
-		$('a[data-expanded-url*="/photo/"]').each(function() {
-			var link = $(this),
-				linkData = link.data(),
-				expandedUrl = link.attr('data-expanded-url'),
-				photoId = expandedUrl.replace(/.*status\/(\d+).*$/, '$1'),
-				storedUrl = localStorage['HZcache_' + photoId];
+		
+		function getFromAPI(link, photoId) {
+			var linkData = link.data(),
+				storedUrl = localStorage['HZcache_' + photoId]
 			if (storedUrl) {
 				linkData.hoverZoomSrc = [storedUrl];
 				link.addClass('hoverZoomLink');
@@ -56,7 +54,23 @@ hoverZoomPlugins.push( {
 					linkData.hoverZoomMouseOver = false;
 				});
 			}
+		}	
+		
+		$('a:contains("pic.twitter.com/")').each(function() {
+			var link = $(this),
+				photoId = link.parents('[data-item-id]').attr('data-item-id');
+			if (photoId) {
+				getFromAPI(link, photoId);
+			}
 		});
+		
+		$('a[data-expanded-url*="/photo/"]').each(function() {
+			var link = $(this),
+				expandedUrl = link.attr('data-expanded-url'),
+				photoId = expandedUrl.replace(/.*status\/(\d+).*$/, '$1');
+			getFromAPI(link, photoId);
+		});
+		
 		callback($(res));
 	}
 });
