@@ -1,7 +1,8 @@
 ﻿// Copyright (c) 2012 Romain Vallet <romain.vallet@gmail.com>
 // Licensed under the MIT license, read license.txt
 
-var hoverZoomPlugins = hoverZoomPlugins || [];
+var hoverZoomPlugins = hoverZoomPlugins || [],
+	debug = true;
 
 var hoverZoom = {
 
@@ -247,6 +248,7 @@ var hoverZoom = {
 		}
 
 		function hideHoverZoomImg(now) {
+			if (debug) { console.log('hideHoverZoomImg'); }
 			if (!now && !imgFullSize || !hz.hzImg || fullZoomKeyDown) {
 				return;
 			}
@@ -335,6 +337,7 @@ var hoverZoom = {
 		}
 		
 		function loadFullSizeImage() {
+			if (debug) { console.log('loadFullSizeImage'); }
 			// If no image is currently displayed...
 			if (!imgFullSize) {
 
@@ -355,6 +358,7 @@ var hoverZoom = {
 		}
 
 		function imgFullSizeOnLoad() {
+			if (debug) { console.log('imgFullSizeOnLoad'); }
 			// Only the last hovered link gets displayed
 			if (imgDetails.url == $(imgFullSize).attr('src')) {
 				loading = false;
@@ -365,6 +369,8 @@ var hoverZoom = {
 
 		function displayFullSizeImage() {
 
+			if (debug) { console.log('displayFullSizeImage'); }
+		
 			hz.imgLoading.remove();
 			hz.imgLoading = null;
 			hz.hzImg.stop(true, true);
@@ -463,6 +469,7 @@ var hoverZoom = {
 		}
 
 		function imgFullSizeOnMouseMove() {
+			if (debug) { console.log('imgFullSizeOnMouseMove'); }
 			if (!imgFullSize && !options.mouseUnderlap) {
 				hideHoverZoomImg(true);
 			}
@@ -566,7 +573,7 @@ var hoverZoom = {
 		}
 
 		function prepareImgLinks() {
-			//console.time('prepareImgLinks');
+			if (debug) { console.time('prepareImgLinks'); }
 			pageActionShown = false;
 
 			// Commented this out in version 2.9 for better performances. Keep an eye on it for potential side effects.
@@ -585,7 +592,7 @@ var hoverZoom = {
 			}
 
 			prepareDownscaledImagesAsync();
-			//console.timeEnd('prepareImgLinks');
+			if (debug) { console.timeEnd('prepareImgLinks'); }
 
 		}
 
