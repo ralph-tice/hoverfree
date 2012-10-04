@@ -41,7 +41,7 @@ hoverZoomPlugins.push( {
 			}
 		});
 	
-		$('a[ajaxify*="src="]').mouseenter(function() {
+		$('a[ajaxify*="src="]:not(.coverWrap)').mouseenter(function() {
 			var link = $(this),
 				data = link.data();
 			if (data.hoverZoomSrc) { return; }
