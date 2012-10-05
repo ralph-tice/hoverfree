@@ -32,6 +32,7 @@
 	"content_security_policy": "script-src 'self' https://apis.google.com https://ssl.google-analytics.com; object-src 'self'",
 	"web_accessible_resources": [
 		"images/loading.gif",
+		"images/wm-gallery.png",
 		"images/fb-close.png"
 	],
 	"content_scripts": [
@@ -1034,6 +1035,10 @@
 		{
 			"js": [ "plugins/posterrevolution.js" ],
 			"matches": [ "*://*.posterrevolution.com/*" ]
+		},
+		{
+			"js": [ "plugins/dribbble.js" ],
+			"matches": [ "*://*.dribbble.com/*" ]
 		},
 		{
             "js": ["js/hoverzoom.js"],
