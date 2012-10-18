@@ -30,7 +30,26 @@ hoverZoomPlugins.push( {
 			'a[href*="tumblr.com/photo/"]',
 			'',
 			''
-		);		
+		);
+		if (location.host.indexOf('tumblr.com') == -1) {
+			$('a[href*="tumblr.com/post/"]').one('mouseenter', function() {
+				var link = $(this),
+					aHref = this.href.split('/');
+				$.getJSON('http://api.tumblr.com/v2/blog/' + aHref[2] + '/posts?id=' + aHref[4] + '&api_key=GSgWCc96GxL3x2OlEtMUE56b8gjbFHSV5wf8Zm8Enr1kNcjt3U', function(data) {
+					if (data && data.response && data.response.posts && data.response.posts[0]) {
+						var post = data.response.posts[0];
+						if (post.photos && post.photos[0]) {
+							link.data().hoverZoomSrc = [post.photos[0].alt_sizes[0].url];
+							if (post.photos.length > 1) {
+								link.data().hoverZoomGallery = true;
+							}
+							link.addClass('hoverZoomLink');
+							hoverZoom.displayPicFromElement(link);
+						}
+					}
+				});
+			});
+		}
 		callback($(res));
 	}
 });

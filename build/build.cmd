@@ -2,7 +2,7 @@ rem @echo off
 
 setlocal
 
-set HZ_VERSION=4.6.2
+set HZ_VERSION=4.7.1
 set SRC_DIR=..\src
 set DEST_DIR=%~dp0releases\hoverzoom_%HZ_VERSION%
 

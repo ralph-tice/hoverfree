@@ -2,7 +2,13 @@
 // Licensed under the MIT license, read license.txt
 
 var hoverZoomPlugins = hoverZoomPlugins || [],
-	debug = true;
+	debug = false;
+	
+function cLog(msg) {
+	if (debug) {
+		console.log(msg);
+	}
+}
 
 var hoverZoom = {
 
@@ -29,6 +35,7 @@ var hoverZoom = {
 			wnd = $(window),
 			body = $(document.body),
 			hzCaption = null,
+			hzWatermark = null,
 			imgFullSize = null,
 			imgThumb = null,
 			mousePos = {},
@@ -248,7 +255,7 @@ var hoverZoom = {
 		}
 
 		function hideHoverZoomImg(now) {
-			if (debug) { console.log('hideHoverZoomImg'); }
+			cLog('hideHoverZoomImg(' + now + ')');
 			if (!now && !imgFullSize || !hz.hzImg || fullZoomKeyDown) {
 				return;
 			}
@@ -289,8 +296,14 @@ var hoverZoom = {
 			if (options.mouseUnderlap && target.length && mousePos && linkRect &&
 				(imgFullSize && imgFullSize.length && target[0] == imgFullSize[0] ||
 				 hz.hzImg && hz.hzImg.length && target[0] == hz.hzImg[0])) {
-				if (mousePos.top > linkRect.top && mousePos.top < linkRect.bottom && mousePos.left > linkRect.left && mousePos.left < linkRect.right)
+				 cLog('Over image. linkRect:');
+				 cLog(linkRect);
+				 cLog('Over image. mousePos:');
+				 cLog(mousePos);
+				if (mousePos.top > linkRect.top && mousePos.top < linkRect.bottom && mousePos.left > linkRect.left && mousePos.left < linkRect.right) {
+					 cLog('Mouse over link');
 					return;
+				}
 			}
 
 			if (links && links.length > 0) {
@@ -308,6 +321,7 @@ var hoverZoom = {
 					// Is the image source has not been set yet
 					if (!imgFullSize) {
 						hz.currentLink = links;
+						//initLinkRect(hz.currentLink);
 						if (!options.actionKey || actionKeyDown) {
 							imgDetails.url = links.data().hoverZoomSrc[hoverZoomSrcIndex];
 							clearTimeout(loadFullSizeImageTimeout);
@@ -337,7 +351,7 @@ var hoverZoom = {
 		}
 		
 		function loadFullSizeImage() {
-			if (debug) { console.log('loadFullSizeImage'); }
+			cLog('loadFullSizeImage');
 			// If no image is currently displayed...
 			if (!imgFullSize) {
 
@@ -350,7 +364,7 @@ var hoverZoom = {
 
 				skipFadeIn = false;
 				imgFullSize.css(progressCss);
-				if (options.showWhileLoading || imgDetails.url.substr(-4).toLowerCase() == '.gif') {
+				if (options.showWhileLoading) {
 					posWhileLoading();
 				}
 			}
@@ -358,18 +372,26 @@ var hoverZoom = {
 		}
 
 		function imgFullSizeOnLoad() {
-			if (debug) { console.log('imgFullSizeOnLoad'); }
+			cLog('imgFullSizeOnLoad');
 			// Only the last hovered link gets displayed
 			if (imgDetails.url == $(imgFullSize).attr('src')) {
 				loading = false;
 				//imgFullSize.css({'background-image': 'none'});
-				displayFullSizeImage();
+				if (hz.imgLoading) {
+					displayFullSizeImage();
+				}
 			}
+		}
+		
+		function initLinkRect(elem) {
+			linkRect = elem.offset();
+			linkRect.bottom = linkRect.top + elem.height();
+			linkRect.right = linkRect.left + elem.width();
 		}
 
 		function displayFullSizeImage() {
 
-			if (debug) { console.log('displayFullSizeImage'); }
+			cLog('displayFullSizeImage');
 		
 			hz.imgLoading.remove();
 			hz.imgLoading = null;
@@ -415,15 +437,18 @@ var hoverZoom = {
 
 				hz.hzImg.css('cursor', 'pointer');
 
-				var rectSource = imgThumb || hz.currentLink;
-				linkRect = rectSource.offset();
-				linkRect.bottom = linkRect.top + rectSource.height();
-				linkRect.right = linkRect.left + rectSource.width();
+				initLinkRect(imgThumb || hz.currentLink);
 
 			}
 
 			if (options.showCaptions && hz.currentLink && hz.currentLink.data().hoverZoomCaption) {
 				hzCaption = $('<div/>', {id: 'hzCaption', text: hz.currentLink.data().hoverZoomCaption}).css(hzCaptionCss).appendTo(hz.hzImg);
+			}
+			if (hz.currentLink && hz.currentLink.data().hoverZoomGallery) {
+				hzWatermark = $('<img/>', {id: 'hzWatermark', src: chrome.extension.getURL('images/wm-gallery.png')}).css({opacity: '0.5', position: 'absolute',bottom: '5px',right: '5px'}).appendTo(hz.hzImg);
+				if (hzCaption) {
+					hzWatermark.css({bottom: '20px'});
+				}
 			}
 			if (!skipFadeIn && !hideKeyDown) {
 				hz.hzImg.hide().fadeTo(options.fadeDuration, options.picturesOpacity);
@@ -469,7 +494,7 @@ var hoverZoom = {
 		}
 
 		function imgFullSizeOnMouseMove() {
-			if (debug) { console.log('imgFullSizeOnMouseMove'); }
+			cLog('imgFullSizeOnMouseMove');
 			if (!imgFullSize && !options.mouseUnderlap) {
 				hideHoverZoomImg(true);
 			}
@@ -482,6 +507,7 @@ var hoverZoom = {
 		}
 		
 		function cancelImageLoading() {
+			cLog('cancelImageLoading');
 			hz.currentLink = null;
 			clearTimeout(loadFullSizeImageTimeout);
 			hideHoverZoomImg();

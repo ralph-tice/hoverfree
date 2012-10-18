@@ -4,15 +4,15 @@
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push( {
 	name: 'Wordpress',
-	version: '0.1',
 	prepareImgLinks: function(callback) {
 		if ((hoverZoom.pageGenerator && hoverZoom.pageGenerator.indexOf('WordPress') == -1) || $('img[src*="wp-content"]').length == 0) { return; }
 		var res = [];
-		hoverZoom.urlReplace(res, 
-			'img[src*="wp-content"]',
-			/-\d+x\d+\./,
-			'.'
-		);
+		$('img[src*="wp-content"]').each(function() {
+			var img = $(this),
+				src = this.src.replace(/-\d+x\d+\./, '.');
+			img.data().hoverZoomSrc = [src, src.replace(/jpg$/, 'jpeg')];
+			res.push(img);
+		});
 		callback($(res));
 	}
 });
