@@ -7,7 +7,7 @@ hoverZoomPlugins.push( {
 	version: '0.1',
 	prepareImgLinks: function(callback) {
 		var res = [],
-			filter = 'a img[src*="pixiv.net/img/"]',
+			filter = 'a img[src*="pixiv.net/img"]',
 			search = [/_(s|\d+(ms)?)\./, '/mobile/'];
 			
 		hoverZoom.urlReplace(res, filter, search, ['_m.', '/']);		
