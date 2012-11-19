@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2010 Romain Vallet
+﻿// Copyright (c) 2012 Romain Vallet
 // Licensed under the MIT license, read license.txt
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
@@ -8,7 +8,7 @@ hoverZoomPlugins.push( {
 	prepareImgLinks: function(callback) {
 		var res = [],
 			filter = 'a img[src*="pixiv.net/img"]',
-			search = [/_(s|\d+(ms)?)\./, '/mobile/'];
+			search = [/_(s|\d+(ms)?|\d+x\d+)\./, '/mobile/'];
 			
 		hoverZoom.urlReplace(res, filter, search, ['_m.', '/']);		
 		if (options.showHighRes) {
