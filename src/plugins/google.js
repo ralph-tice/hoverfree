@@ -12,8 +12,10 @@ hoverZoomPlugins.push( {
 				href = link.href,
 				imgUrlIndex = href.indexOf('imgurl=');
 			href = href.substring(imgUrlIndex + 7, href.indexOf('&', imgUrlIndex));
-			while (decodeURIComponent(href) != href)
-				href = decodeURIComponent(href);
+			try {
+				while (decodeURIComponent(href) != href)
+					href = decodeURIComponent(href);
+			} catch(e) {}
 			img.data().hoverZoomSrc = [href];
 			img.addClass('hoverZoomLink');
 		}

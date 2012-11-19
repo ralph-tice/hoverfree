@@ -33,7 +33,8 @@
 	"web_accessible_resources": [
 		"images/loading.gif",
 		"images/wm-gallery.png",
-		"images/fb-close.png"
+		"images/fb-close.png",
+		"images/fb-amazon.png"
 	],
 	"content_scripts": [
         {
