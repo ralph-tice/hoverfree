@@ -1,6 +1,6 @@
 ﻿{
     "name": "Hover Zoom",
-    "version": "4.7.1",
+    "version": "4.7.3",
     "description": "__MSG_extDescription__",
 	"manifest_version": 2,
 	"update_url": "http://hoverzoom.net/chrome/updates.xml",
@@ -1041,6 +1041,10 @@
 		{
 			"js": [ "plugins/dribbble.js" ],
 			"matches": [ "*://*.dribbble.com/*" ]
+		},
+		{
+			"js": [ "plugins/pixnet.js" ],
+			"matches": [ "*://*.pixnet.net/*" ]
 		},
 		{
             "js": ["js/hoverzoom.js"],
