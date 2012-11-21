@@ -955,20 +955,13 @@ var hoverZoom = {
 		}
 
 		function saveImage() {
-			var hzDownloadIframe = $('#hzDownloadIframe'),
-				//hzDownloadImg = $('#hzDownloadImg'),
-				url = location.protocol + '//hoverzoomdownload/?url=' + encodeURIComponent(imgDetails.url);
-			if (!hzDownloadIframe.length) {
-				hzDownloadIframe = $('<iframe id="hzDownloadIframe" style="display: none"/>').appendTo(hz.hzImg);
-			}
-			hzDownloadIframe.attr('src', url);
-			/*if (!hzDownloadImg.length) {
-				hzDownloadImg = $('<img id="hzDownloadImg" style="display: none"/>').appendTo(hz.hzImg);
-				hzDownloadImg.error(function() {
-					alert("Sorry, Hover Zoom doesn't support\nimage saving on this site.");
-				});
-			}
-			hzDownloadImg.attr('src', url);*/
+			var a = document.createElement('a');
+			a.href = imgDetails.url;
+			a.download = imgDetails.url.split('/').pop().split('?')[0];
+			if (!a.download) { a.download = 'image.jpg'; }
+			var clickEvent = document.createEvent('MouseEvent');
+			clickEvent.initEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+			a.dispatchEvent(clickEvent);
 		}
 
 		function init() {

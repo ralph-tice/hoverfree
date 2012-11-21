@@ -4,8 +4,7 @@
 // True if the current version of the extension has something to show in an update notification
 var hasReleaseNotes = false;
 
-var options, _gaq, viewWindow = null,
-	downloadRequests = {};
+var options, _gaq, viewWindow = null;
 
 // Performs an ajax request
 function ajaxRequest(request, callback) {
@@ -164,35 +163,7 @@ function init() {
 		miscStats();
 		optionsStats();
 	}
-	
-	// Store request IDs of 'hoverzoomdownload' URLs
-	chrome.webRequest.onBeforeRequest.addListener(function(details) {
-		downloadRequests[details.requestId] = true;
-		return {redirectUrl: decodeURIComponent(details.url.replace(/.*hoverzoomdownload\/\?url=/, ''))};
-	}, {urls: ['*://hoverzoomdownload/*'], types: ['sub_frame']}, ['blocking']);
 
-	// Modify response headers of web requests with a stored request ID
-	// to trigger a 'Save as' dialog for the image
-	chrome.webRequest.onHeadersReceived.addListener(function(details) {
-		if (downloadRequests[details.requestId]) {
-			delete downloadRequests[details.requestId];
-			
-			var fileName = details.url.split('/').pop().split('?')[0];
-			if (!fileName) {
-				for (var i = 0; i < details.responseHeaders.length; i++) {
-					if (details.responseHeaders[i].name == 'Content-Type')
-						fileName = 'image.' + details.responseHeaders[i].value.split('/').pop();									
-				}
-			}
-			if (!fileName)
-				fileName = 'image.jpg';
-					
-			details.responseHeaders.push({name: 'Content-Disposition', value: 'attachment; filename=' + fileName});
-			
-			return {responseHeaders: details.responseHeaders};
-		}
-	}, {urls: ['<all_urls>'], types: ['sub_frame']}, ['blocking', 'responseHeaders']);
-	
 	checkUpdate();
 }
 
