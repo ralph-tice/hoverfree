@@ -1,9 +1,8 @@
 ﻿{
     "name": "Hover Zoom",
-    "version": "4.7.3",
+    "version": "4.8",
     "description": "__MSG_extDescription__",
 	"manifest_version": 2,
-	"update_url": "http://hoverzoom.net/chrome/updates.xml",
 	"icons": {
 		"16": "images/icon16.png",
 		"32": "images/icon32.png",
@@ -1045,6 +1044,10 @@
 		{
 			"js": [ "plugins/pixnet.js" ],
 			"matches": [ "*://*.pixnet.net/*" ]
+		},
+		{
+			"js": [ "plugins/dropbox.js" ],
+			"matches": [ "*://*.dropbox.com/*" ]
 		},
 		{
             "js": ["js/hoverzoom.js"],
