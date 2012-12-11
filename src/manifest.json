@@ -1050,6 +1050,10 @@
 			"matches": [ "*://*.dropbox.com/*" ]
 		},
 		{
+			"js": [ "plugins/newegg.js" ],
+			"matches": [ "*://*.newegg.com/*" ]
+		},
+		{
             "js": ["js/hoverzoom.js"],
 			"matches": ["<all_urls>"],
 			"all_frames": true
