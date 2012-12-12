@@ -2,7 +2,7 @@
 // Licensed under the MIT license, read license.txt
 
 // True if the current version of the extension has something to show in an update notification
-var hasReleaseNotes = false;
+var hasReleaseNotes = true;
 
 var options, _gaq, viewWindow = null;
 
@@ -136,6 +136,7 @@ function optionsStats() {
 // No user data (browser history, etc) is reported
 function miscStats() {
 	_gaq.push(['_trackEvent', 'Misc', 'extensionVersion', chrome.app.getDetails().version]);
+	//_gaq.push(['_trackEvent', 'Misc', 'downloadedFrom', 'hoverzoom.net']);
 	_gaq.push(['_trackEvent', 'Misc', 'downloadedFrom', 'Chrome Web Store']);
 }
 
