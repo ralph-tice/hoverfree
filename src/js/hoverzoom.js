@@ -35,6 +35,7 @@ var hoverZoom = {
 			wnd = $(window),
 			body = $(document.body),
 			hzCaption = null,
+            hzGallery = null,
 			hzWatermark = null,
 			imgFullSize = null,
 			imgThumb = null,
@@ -96,13 +97,29 @@ var hoverZoom = {
 			'max-height': '27px',
 			'overflow': 'hidden',
 			'vertical-align': 'top'
-		};
-
+		},
+        hzGalleryInfoCss = {
+            'position': 'absolute',
+            'top': '5px',
+            'right': '5px',
+            'font': 'menu',
+            'font-size': '14px',
+            'font-weight': 'bold',
+            'color': 'white',
+            'text-shadow': '-1px 0 black, 0 1px black, 1px 0 black, 0 -1px black',
+            'text-align': 'center',
+            'overflow': 'hidden',
+            'vertical-align': 'top',
+            'horizontal-align': 'right'
+        };
 		var flashFixDomains = [
 			/*'www.youtube.com',*/
 			'www.redditmedia.com'
 		];
 
+        var attrChangeObserver = new WebKitMutationObserver(onAttrChange);
+        var attrChangeConf = {attributes: true, attributeFilter: ['href']}
+        
 		// Calculate optimal image position and size
 		function posImg(position) {
 			if (!imgFullSize) {
@@ -354,19 +371,22 @@ var hoverZoom = {
 			cLog('loadFullSizeImage');
 			// If no image is currently displayed...
 			if (!imgFullSize) {
+                //$.ajax({type: 'HEAD', url: imgDetails.url, always: function(xhr) { 
+                    //console.log(xhr);
+                    hz.createHzImg(!hideKeyDown);
+                    hz.createImgLoading();
 
-				hz.createHzImg(!hideKeyDown);
-				hz.createImgLoading();
+                    imgFullSize = $('<img style="border: none" />').appendTo(hz.hzImg).load(imgFullSizeOnLoad).error(imgFullSizeOnError).attr('src', imgDetails.url);
 
-				imgFullSize = $('<img style="border: none" />').appendTo(hz.hzImg).load(imgFullSizeOnLoad).error(imgFullSizeOnError).attr('src', imgDetails.url);
+                    imgDetails.host = getHostFromUrl(imgDetails.url);
 
-				imgDetails.host = getHostFromUrl(imgDetails.url);
-
-				skipFadeIn = false;
-				imgFullSize.css(progressCss);
-				if (options.showWhileLoading) {
-					posWhileLoading();
-				}
+                    skipFadeIn = false;
+                    imgFullSize.css(progressCss);
+                    if (options.showWhileLoading) {
+                        posWhileLoading();
+                    }
+                    posImg();
+                //}});            
 			}
 			posImg();
 		}
@@ -441,15 +461,22 @@ var hoverZoom = {
 
 			}
 
-			if (options.showCaptions && hz.currentLink && hz.currentLink.data().hoverZoomCaption) {
-				hzCaption = $('<div/>', {id: 'hzCaption', text: hz.currentLink.data().hoverZoomCaption}).css(hzCaptionCss).appendTo(hz.hzImg);
-			}
-			if (hz.currentLink && hz.currentLink.data().hoverZoomGallery) {
-				hzWatermark = $('<img/>', {id: 'hzWatermark', src: chrome.extension.getURL('images/wm-gallery.png')}).css({opacity: '0.5', position: 'absolute',bottom: '5px',right: '5px'}).appendTo(hz.hzImg);
-				if (hzCaption) {
-					hzWatermark.css({bottom: '20px'});
-				}
-			}
+            if (hz.currentLink) {
+                var linkData = hz.currentLink.data();
+                if (options.showCaptions && linkData.hoverZoomCaption) {
+                    hzCaption = $('<div/>', {id: 'hzCaption', text: linkData.hoverZoomCaption}).css(hzCaptionCss).appendTo(hz.hzImg);
+                }
+                if (linkData.hoverZoomGallerySrc) {
+                    var info = (linkData.hoverZoomGalleryIndex + 1) + '/' + linkData.hoverZoomGallerySrc.length;
+                    hzGallery = $('<div/>', {id: 'hzGallery', text: info}).css(hzGalleryInfoCss).appendTo(hz.hzImg);
+                }
+               /*if (hz.currentLink && linkData.hoverZoomGallery) {
+                    hzWatermark = $('<img/>', {id: 'hzWatermark', src: chrome.extension.getURL('images/wm-gallery.png')}).css({opacity: '0.5', position: 'absolute',bottom: '5px',right: '5px'}).appendTo(hz.hzImg);
+                    if (hzCaption) {
+                        hzWatermark.css({bottom: '20px'});
+                    }
+                }*/
+            }
 			if (!skipFadeIn && !hideKeyDown) {
 				hz.hzImg.hide().fadeTo(options.fadeDuration, options.picturesOpacity);
 			}
@@ -542,28 +569,31 @@ var hoverZoom = {
 		function imgLinksPrepared(links) {
 			var showPageAction = false;
 			links.each(function () {
-				var _this = $(this);
-				if (!_this.data().hoverZoomSrc) {
+				var link = $(this),
+                    linkData = link.data();
+				if (!linkData.hoverZoomSrc && !linkData.hoverZoomGallerySrc) {
 
 					prepareImgLinksAsync(true);
 
 				} else {
 
 					// Skip if the image has the same URL as the thumbnail.
-					try {
-						var url = _this.data().hoverZoomSrc[0],
-							skip = (url == _this.attr('src'));
+					//try {
+                    if (linkData.hoverZoomSrc) {
+						var url = linkData.hoverZoomSrc[0],
+							skip = (url == link.attr('src'));
 						if (!skip) {
-							_this.find('img[src]').each(function() {
+							link.find('img[src]').each(function() {
 								if (this.src == url) {
 									skip = true;
 								}
 							});
 						}
 						if (skip) { return; }
-					} catch(e) {
-						console.error(e);
-					}
+                    }
+					/*} catch(e) {
+						throw e;
+					}*/
 
 					showPageAction = true;
 
@@ -573,21 +603,29 @@ var hoverZoom = {
 						return;
 					}
 
-					_this.addClass('hoverZoomLink');
+					link.addClass('hoverZoomLink');
 
-					// Convert URL special characters
-					var srcs = _this.data().hoverZoomSrc;
+					// Convert URL special characters                 
+					/*var srcs = linkData.hoverZoomSrc;
 					for (var i=0; i<srcs.length; i++) {
 						srcs[i] = deepUnescape(srcs[i]);
 					}
-					//console.log(srcs);
-					_this.data().hoverZoomSrc = srcs;
+					linkData.hoverZoomSrc = srcs;*/
+                    if(linkData.hoverZoomGallerySrc) {
+                        linkData.hoverZoomGalleryIndex = 0;
+                        linkData.hoverZoomGallerySrc = linkData.hoverZoomGallerySrc.map(function(srcs) { 
+                            return srcs.map(deepUnescape);
+                        });
+                        updateImageFromGallery(link);
+                    } else {
+                        linkData.hoverZoomSrc = linkData.hoverZoomSrc.map(deepUnescape);
+                    }                    
 
-					_this.data().hoverZoomSrcIndex = 0;
+					linkData.hoverZoomSrcIndex = 0;
 
 					// Caption
-					if (options.showCaptions && !_this.data().hoverZoomCaption) {
-						prepareImgCaption(_this);
+					if (options.showCaptions && !linkData.hoverZoomCaption) {
+						prepareImgCaption(link);
 					}
 				}
 			});
@@ -764,7 +802,14 @@ var hoverZoom = {
 			}
 		}
 
-		function windowOnLoad(event) {
+        function onAttrChange(mutations) {
+            mutations.forEach(function(mutation) {
+                $(mutation.target).data().hoverZoomSrc = undefined;
+            });
+            prepareImgLinksAsync();
+        }
+
+        function windowOnLoad(event) {
 			prepareImgLinksAsync();
 		}
 
@@ -800,35 +845,41 @@ var hoverZoom = {
 					return false;
 				}
 			}
-			// "Open image in a new window" key
-			if (event.which == options.openImageInWindowKey) {
-				if (imgFullSize) {
-					openImageInWindow();
-					return false;
-				}
-			}
-			// "Open image in a new tab" key
-			if (event.which == options.openImageInTabKey) {
-				if (imgFullSize) {
-					openImageInTab(event.shiftKey);
-					return false;
-				}
-			}
-			// "Save image" key
-			if (event.which == options.saveImageKey) {
-				if (imgFullSize) {
-					saveImage();
-					return false;
-				}
-			}
-			// Cancels event if an action key is held down (auto repeat may trigger additional events)
-			if (imgFullSize &&
-				(event.which == options.actionKey ||
-				event.which == options.fullZoomKey ||
-				event.which == options.hideKey)) {
-				return false;
-			}
-		}
+            // The following keys are processed only if an image is displayed
+            if (imgFullSize) {
+                // "Open image in a new window" key
+                if (event.which == options.openImageInWindowKey) {
+                    openImageInWindow();
+                    return false;
+                }
+                // "Open image in a new tab" key
+                if (event.which == options.openImageInTabKey) {
+                    openImageInTab(event.shiftKey);
+                    return false;
+                }
+                // "Save image" key
+                if (event.which == options.saveImageKey) {
+                    saveImage();
+                    return false;
+                }
+                // Cancels event if an action key is held down (auto repeat may trigger additional events)
+                if (event.which == options.actionKey ||
+                    event.which == options.fullZoomKey ||
+                    event.which == options.hideKey) {
+                    return false;
+                }
+                // "Previous image" key
+                if (event.which == options.prevImgKey) {
+                    rotateGalleryImg(-1);
+                    return false;
+                }
+                // "Next image" key
+                if (event.which == options.nextImgKey) {
+                    rotateGalleryImg(1);
+                    return false;
+                }		
+            }
+        }
 
 		function documentOnKeyUp(event) {
 			// Action key (zoom image) is released
@@ -964,7 +1015,62 @@ var hoverZoom = {
 			a.dispatchEvent(clickEvent);
 		}
 
-		function init() {
+    function rotateGalleryImg(rot) {
+      cLog('rotateGalleryImg(' + rot + ')');
+      var link = hz.currentLink, data = link.data();
+      if(!data.hoverZoomGallerySrc) { return; }
+
+      var l = data.hoverZoomGallerySrc.length;
+      data.hoverZoomGalleryIndex = (data.hoverZoomGalleryIndex + rot + l) % l;
+      updateImageFromGallery(link);
+
+      data.hoverZoomSrcIndex = 0;
+      loading = true;
+      hzGallery.text('.../' + data.hoverZoomGallerySrc.length);
+
+      loadNextGalleryImage();
+      preloadGalleryImage((data.hoverZoomGalleryIndex + rot + l) % l);
+    }
+
+    function loadNextGalleryImage() {
+      clearTimeout(loadFullSizeImageTimeout);
+      imgDetails.url = hz.currentLink.data().hoverZoomSrc[hz.currentLink.data().hoverZoomSrcIndex];
+      imgFullSize.load(nextGalleryImageOnLoad).error(function () { imgOnError(this, false, loadNextGalleryImage); }).attr('src', imgDetails.url);
+    }
+
+    function nextGalleryImageOnLoad() {
+      cLog('nextGalleryImageOnLoad');
+      if(loading) {
+        loading = false;
+        posImg();
+
+        data = hz.currentLink.data();
+        hzGallery.text((data.hoverZoomGalleryIndex + 1) + '/' + data.hoverZoomGallerySrc.length);
+        if (options.showCaptions) {
+          $(hzCaption).text(data.hoverZoomCaption);
+        }
+      }
+    }
+
+    
+
+    function updateImageFromGallery(link) {
+      var data = link.data();
+      data.hoverZoomSrc = data.hoverZoomGallerySrc[data.hoverZoomGalleryIndex];
+
+      if(data.hoverZoomGalleryCaption) {
+        data.hoverZoomCaption = data.hoverZoomGalleryCaption[data.hoverZoomGalleryIndex];
+      } else {
+        prepareImgCaption(link);
+      }
+    }
+    
+        function preloadGalleryImage(index) {
+            var preloadImg = new Image();
+            preloadImg.src = hz.currentLink.data().hoverZoomGallerySrc[index][0];
+        }
+
+        function init() {
 			if (!window.innerHeight || !window.innerWidth) { return; }
 
 			webSiteExcluded = null;

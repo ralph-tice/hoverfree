@@ -29,6 +29,16 @@
 			id: 'fullZoomKey',
 			title: 'Activate full zoom',
 			description: 'When this key is held down, the picture is displayed using all available space. Useful for high resolution pictures only.'
+		},
+		{
+			id: 'prevImgKey',
+			title: 'View previous image in a galley',
+			description: 'Press this key to view the previous image in a gallery.'
+		},
+		{
+			id: 'nextImgKey',
+			title: 'View next image in a galley',
+			description: 'Press this key to view the next image in a gallery.'
 		}
 	];
 
@@ -59,6 +69,19 @@ function loadKeys(sel) {
 	for (var i=65; i<91; i++) {
 		$('<option value="' + i + '">&#' + i + ';</option>').appendTo(sel);
 	}
+	for (var i=112; i<124; i++) {
+		$('<option value="' + i + '">F' + (i - 111) + '</option>').appendTo(sel);
+	}
+	$('<option value="33">Page Up</option>').appendTo(sel);
+	$('<option value="34">Page Down</option>').appendTo(sel);
+	$('<option value="35">End</option>').appendTo(sel);
+	$('<option value="36">Home</option>').appendTo(sel);
+	$('<option value="37">Left</option>').appendTo(sel);
+	$('<option value="38">Up</option>').appendTo(sel);
+	$('<option value="39">Right</option>').appendTo(sel);
+	$('<option value="40">Down</option>').appendTo(sel);
+	$('<option value="45">Insert</option>').appendTo(sel);
+	$('<option value="46">Delete</option>').appendTo(sel);
 }
 
 // Saves options to localStorage.
