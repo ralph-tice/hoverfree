@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2011 Romain Vallet <romain.vallet@gmail.com>
+﻿// Copyright (c) 2012 Romain Vallet <romain.vallet@gmail.com>
 // Licensed under the MIT license, read license.txt
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
@@ -9,9 +9,13 @@ hoverZoomPlugins.push( {
 		var res = [];
 		$('img[src*="wp-content"]').each(function() {
 			var img = $(this),
-				src = this.src.replace(/-\d+x\d+\./, '.');
-			img.data().hoverZoomSrc = [src, src.replace(/jpg$/, 'jpeg')];
-			res.push(img);
+                re = /-\d+x\d+\./,
+                src = this.src;
+            if (src.match(re)) {
+				src = src.replace(re, '.');
+                img.data().hoverZoomSrc = [src, src.replace(/jpg$/, 'jpeg')];
+                res.push(img);
+            }
 		});
 		callback($(res));
 	}
