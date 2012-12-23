@@ -12,6 +12,11 @@ hoverZoomPlugins.push( {
 			''
 		);
 		hoverZoom.urlReplace(res, 
+			'img[src*="neweggimages"]',
+			/\/P\d+\//,
+			'/P800/'
+		);
+		hoverZoom.urlReplace(res, 
 			'img[src*="ProductImageCompress"]',
 			/NeweggImage\/ProductImageCompress.*\//,
 			'productimage/'
