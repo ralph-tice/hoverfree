@@ -1,6 +1,6 @@
 ﻿{
     "name": "Hover Zoom",
-    "version": "4.8",
+    "version": "4.8.3",
     "description": "__MSG_extDescription__",
 	"manifest_version": 2,
 	"icons": {
@@ -1051,7 +1051,9 @@
 		},
 		{
 			"js": [ "plugins/newegg.js" ],
-			"matches": [ "*://*.newegg.com/*" ]
+			"matches": [ "*://*.newegg.com/*",
+						 "*://*.newegg.ca/*",
+						 "*://*.newegg.com.cn/*" ]
 		},
 		{
             "js": ["js/hoverzoom.js"],
