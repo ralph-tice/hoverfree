@@ -74,9 +74,8 @@ var hoverZoomPluginFlickerA = {
         var src = link.data().hoverZoomSrc[0],
             aSrc = src.split('/');
         if (aSrc.length < 5) {
-            return
+            return;
         }
-        ;
         var photoId = aSrc[4];
         photoId = photoId.substr(0, photoId.indexOf('_'));
         hoverZoomPluginFlickerA.prepareImgLinkFromPhotoId(link, photoId);

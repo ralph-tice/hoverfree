@@ -36,7 +36,6 @@ var hoverZoom = {
             body = $(document.body),
             hzCaption = null,
             hzGallery = null,
-            hzWatermark = null,
             imgFullSize = null,
             imgThumb = null,
             mousePos = {},
@@ -123,7 +122,7 @@ var hoverZoom = {
         ];
 
         var attrChangeObserver = new WebKitMutationObserver(onAttrChange);
-        var attrChangeConf = {attributes:true, attributeFilter:['href']}
+        var attrChangeConf = {attributes:true, attributeFilter:['href']};
 
         // Calculate optimal image position and size
         function posImg(position) {
@@ -363,8 +362,6 @@ var hoverZoom = {
                     } else {
                         posImg();
                     }
-                } else {
-                    return;
                 }
             } else if (hz.currentLink) {
                 cancelImageLoading();
@@ -481,12 +478,6 @@ var hoverZoom = {
                     var info = (linkData.hoverZoomGalleryIndex + 1) + '/' + linkData.hoverZoomGallerySrc.length;
                     hzGallery = $('<div/>', {id:'hzGallery', text:info}).css(hzGalleryInfoCss).appendTo(hz.hzImg);
                 }
-                /*if (hz.currentLink && linkData.hoverZoomGallery) {
-                 hzWatermark = $('<img/>', {id: 'hzWatermark', src: chrome.extension.getURL('images/wm-gallery.png')}).css({opacity: '0.5', position: 'absolute',bottom: '5px',right: '5px'}).appendTo(hz.hzImg);
-                 if (hzCaption) {
-                 hzWatermark.css({bottom: '20px'});
-                 }
-                 }*/
             }
             if (!skipFadeIn && !hideKeyDown) {
                 hz.hzImg.hide().fadeTo(options.fadeDuration, options.picturesOpacity);
@@ -1247,7 +1238,6 @@ var hoverZoom = {
                 }).error(function () {
                         if (hoverZoomSrcIndex < link.data().hoverZoomSrc.length - 1) {
                             link.data().hoverZoomSrcIndex++;
-                            ;
                             preloadIndex--;
                         }
                         setTimeout(preloadNextImage, preloadDelay);

@@ -23,7 +23,7 @@ hoverZoomPlugins.push({
 
         function getFromAPI(link, photoId) {
             var linkData = link.data(),
-                storedUrl = localStorage['HZcache_' + photoId]
+                storedUrl = localStorage['HZcache_' + photoId];
             if (storedUrl) {
                 linkData.hoverZoomSrc = [storedUrl];
                 link.addClass('hoverZoomLink');

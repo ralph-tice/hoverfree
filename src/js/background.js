@@ -17,13 +17,13 @@ function ajaxRequest(request, callback) {
                 callback(null);
             }
         }
-    }
+    };
     xhr.open(request.method, request.url, true);
     for (var i in request.headers) {
         xhr.setRequestHeader(request.headers[i].header, request.headers[i].value);
     }
     xhr.send(request.data);
-};
+}
 
 function onRequest(request, sender, callback) {
     switch (request.action) {
@@ -85,7 +85,7 @@ function onRequest(request, sender, callback) {
             }
             break;
     }
-};
+}
 
 function showPageAction(tab) {
     if (!tab) {

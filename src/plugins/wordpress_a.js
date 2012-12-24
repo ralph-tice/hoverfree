@@ -5,7 +5,7 @@ var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push({
     name:'Wordpress',
     prepareImgLinks:function (callback) {
-        if ((hoverZoom.pageGenerator && hoverZoom.pageGenerator.indexOf('WordPress') == -1) || $('img[src*="wp-content"]').length == 0) {
+        if (hoverZoom.pageGenerator && hoverZoom.pageGenerator.indexOf('WordPress') == -1) {
             return;
         }
         var res = [];

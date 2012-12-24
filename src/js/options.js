@@ -107,7 +107,7 @@ function saveOptions() {
 
     // Excluded sites
     options.excludedSites = [];
-    $('#selExcludedSites option').each(function () {
+    $('#selExcludedSites').find('option').each(function () {
         options.excludedSites.push($(this).text());
     });
     options.whiteListMode = $('#chkWhiteListMode')[0].checked;
@@ -161,19 +161,19 @@ function restoreOptions() {
 }
 
 function btnAddExcludedSiteOnClick() {
-    var site = $('#txtAddExcludedSite').val().trim().toLowerCase().replace(/.*:\/\//, '')
+    var site = $('#txtAddExcludedSite').val().trim().toLowerCase().replace(/.*:\/\//, '');
     if (site)
         $('<option>' + site + '</option>').appendTo('#selExcludedSites');
     $('#txtAddExcludedSite').val('').focus();
 }
 
 function btnRemoveExcludedSiteOnClick() {
-    $('#selExcludedSites option:selected').remove();
+    $('#selExcludedSites').find('option:selected').remove();
 }
 
 function btnClearExcludedSitesOnClick() {
     if (confirm('This will remove all sites from the list.\nContinue?')) {
-        $('#selExcludedSites option').remove();
+        $('#selExcludedSites').find('option').remove();
     }
 }
 
@@ -209,7 +209,7 @@ function txtPicturesOpacityOnChange() {
 
 function enableControls(enabled) {
     enabled = enabled || false;
-    $('#buttons button').attr('disabled', !enabled);
+    $('#buttons').find('button').attr('disabled', !enabled);
 }
 
 function onRequest(request, sender, callback) {

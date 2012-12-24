@@ -6,7 +6,7 @@ hoverZoomPlugins.push({
     name:'Phapit.com',
     version:'0.1',
     prepareImgLinks:function (callback) {
-        var res = []
+        var res = [];
         hoverZoom.urlReplace(res,
             'a[href*="phapit.com/image/"]',
             /.*\/(phap\d*)(\/.*)?/,

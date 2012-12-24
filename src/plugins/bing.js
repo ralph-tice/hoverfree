@@ -20,6 +20,6 @@ hoverZoomPlugins.push({
         }
 
         $('img[src*="url="]').each(prepareImgLink);
-        $('#sg_hid img.sg_t').load(prepareImgLink);
+        $('#sg_hid').find('img.sg_t').load(prepareImgLink);
     }
 });
