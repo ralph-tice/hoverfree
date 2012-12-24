@@ -1,55 +1,59 @@
 ﻿<html>
-	<head>
-		<title>Hover Zoom update</title>
-		<style>
-			body {
-				font: 10pt sans-serif;
-			}
-			h1 {
-				font-size: 10pt;
-				margin: 0;
-			}
-			p, li {
-				margin: 5px;
-			}
-			img {
-				vertical-align: middle;
-				margin-right: 5px;
-				height: 28px;
-			}
-			#footer {
-				position: fixed; 
-				bottom: 0;
-				margin: 1.5em;
-			}
-		</style>
-		<script src="../js/common.js"></script>
-		<script>
-			function chkNoUpdateNotifications_onchange() {
-				chrome.extension.sendRequest({
-					action: 'setOption', 
-					name: 'updateNotifications', 
-					value: !document.getElementById('chkNoUpdateNotifications').checked
-				});
-			}
-			
-			function init() {
-				var options = loadOptions();
-				document.getElementById('chkNoUpdateNotifications').checked = !options.updateNotifications;
-				/*if (options.openImageInTabKey > 0) {
-					document.getElementById('openImageInTabKey').textContent = keyCodeToKeyName(options.openImageInTabKey);
-					document.getElementById('backTab').style.display = 'list-item';
-				}*/
-			}
-		</script>
-	</head>
-	<body onload="init()">
-		<h1><img src="../images/icon32.png"> Hover Zoom has been updated</h1>
-		<ul>
-		<li>New supported sites: Dropbox, Newegg.</li>
-		<li>Fixed deviantArt support.</li>
-		</ul>
-		<p id="footer"><input type="checkbox" id="chkNoUpdateNotifications" onchange="chkNoUpdateNotifications_onchange()">
-		<label for="chkNoUpdateNotifications">Don't show these notifications</label></p>
-	</body>
+<head>
+    <title>Hover Zoom update</title>
+    <style>
+        body {
+            font: 10pt sans-serif;
+        }
+
+        h1 {
+            font-size: 10pt;
+            margin: 0;
+        }
+
+        p, li {
+            margin: 5px;
+        }
+
+        img {
+            vertical-align: middle;
+            margin-right: 5px;
+            height: 28px;
+        }
+
+        #footer {
+            position: fixed;
+            bottom: 0;
+            margin: 1.5em;
+        }
+    </style>
+    <script src="../js/common.js"></script>
+    <script>
+        function chkNoUpdateNotifications_onchange() {
+            chrome.extension.sendRequest({
+                action:'setOption',
+                name:'updateNotifications',
+                value:!document.getElementById('chkNoUpdateNotifications').checked
+            });
+        }
+
+        function init() {
+            var options = loadOptions();
+            document.getElementById('chkNoUpdateNotifications').checked = !options.updateNotifications;
+            /*if (options.openImageInTabKey > 0) {
+             document.getElementById('openImageInTabKey').textContent = keyCodeToKeyName(options.openImageInTabKey);
+             document.getElementById('backTab').style.display = 'list-item';
+             }*/
+        }
+    </script>
+</head>
+<body onload="init()">
+<h1><img src="../images/icon32.png"> Hover Zoom has been updated</h1>
+<ul>
+    <li>New supported sites: Dropbox, Newegg.</li>
+    <li>Fixed deviantArt support.</li>
+</ul>
+<p id="footer"><input type="checkbox" id="chkNoUpdateNotifications" onchange="chkNoUpdateNotifications_onchange()">
+    <label for="chkNoUpdateNotifications">Don't show these notifications</label></p>
+</body>
 </html>

@@ -3,16 +3,16 @@
 // Contributed by Thomas Efer
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
-hoverZoomPlugins.push( {
-	name: 'Xing.com',
-	version: '0.2',
-	prepareImgLinks: function(callback) {
-		var res = [];
-		hoverZoom.urlReplace(res, 
-			'a img[src*="_s"]',
-			/_s[234]/,
-			''
-		);
-		callback($(res));
-	}
+hoverZoomPlugins.push({
+    name:'Xing.com',
+    version:'0.2',
+    prepareImgLinks:function (callback) {
+        var res = [];
+        hoverZoom.urlReplace(res,
+            'a img[src*="_s"]',
+            /_s[234]/,
+            ''
+        );
+        callback($(res));
+    }
 });
