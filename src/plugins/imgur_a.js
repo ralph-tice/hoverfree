@@ -1,14 +1,12 @@
-﻿// Copyright (c) 2012 Romain Vallet
+﻿// Copyright (c) 2013 Romain Vallet <romain.vallet@gmail.com>
 // Licensed under the MIT license, read license.txt
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push({
     name:'Imgur',
-    version:'0.4',
     prepareImgLinks:function (callback) {
 
-        var res = [],
-            minSplitLength = 4;
+        var res = [];
 
         function prepareImgLink() {
             var link = $(this), data = link.data(), href = link.attr('href');
@@ -17,18 +15,17 @@ hoverZoomPlugins.push({
             }
 
             function createUrls(hash) {
-                var url = 'http://i.imgur.com/' + hash;
-                var srcs = [url + '.jpg', url + '.gif', url + '.png'];
+                var srcs = ['http://i.imgur.com/' + hash + '.jpg'];
                 // Same array duplicated several times so that a retry is done if an image fails to load
                 return srcs.concat(srcs).concat(srcs).concat(srcs);
             }
 
-            var matches = href.match(/(?:\/(a|signin))?\/([^\W_]{5})(?:\/|\.[a-zA-Z]+|#([^\W_]{5}|\d+))?$/);
+            var matches = href.match(/(?:\/(a|signin))?\/([^\W_]{5,7})(?:\/|\.[a-zA-Z]+|#([^\W_]{5,7}|\d+))?$/);
             if (matches && matches[2]) {
 
                 var view = matches[1];
                 var hash = matches[2];
-                var excl = ['imgur', 'forum', 'stats'];
+                var excl = ['imgur', 'forum', 'stats', 'signin', 'upgrade'];
                 if (excl.indexOf(hash) > -1) {
                     return;
                 }
