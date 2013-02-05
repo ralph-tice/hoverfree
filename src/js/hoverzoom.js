@@ -1260,6 +1260,22 @@ var hoverZoom = {
                 hoverZoom.displayPicFromElement(link);
             }
         });
+    },
+    
+    prepareFromDocument:function (link, url, getSrc) {
+        $.get(url, function(data) {
+            var doc = document.implementation.createHTMLDocument();
+            doc.open();
+            doc.write(data);
+            doc.close();
+            //console.log(doc);
+            var src = getSrc(doc);
+            if (src) {
+                link.data().hoverZoomSrc = [src];
+                link.addClass('hoverZoomLink');
+                hoverZoom.displayPicFromElement(link);
+            }
+        });
     }
 };
 
