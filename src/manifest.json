@@ -1058,6 +1058,10 @@
             "matches":[ "*://*.furaffinity.net/*" ]
         },
         {
+            "js":[ "plugins/taobao.js" ],
+            "matches":[ "*://*.taobao.com/*" ]
+        },
+        {
             "js":["js/hoverzoom.js"],
             "matches":["<all_urls>"],
             "all_frames":true
