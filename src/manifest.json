@@ -1054,6 +1054,10 @@
                 "*://*.newegg.com.cn/*" ]
         },
         {
+            "js":[ "plugins/furaffinity.js" ],
+            "matches":[ "*://*.furaffinity.net/*" ]
+        },
+        {
             "js":["js/hoverzoom.js"],
             "matches":["<all_urls>"],
             "all_frames":true
@@ -1062,5 +1066,5 @@
             "js":["js/affiliate.min.js"],
             "matches":["<all_urls>"]
         }
-    ]
+   ]
 }
