@@ -1092,13 +1092,15 @@ var hoverZoom = {
         }
 
         function updateImageFromGallery(link) {
-            var data = link.data();
-            data.hoverZoomSrc = data.hoverZoomGallerySrc[data.hoverZoomGalleryIndex];
+            if (options.enableGalleries) {
+                var data = link.data();
+                data.hoverZoomSrc = data.hoverZoomGallerySrc[data.hoverZoomGalleryIndex];
 
-            if (data.hoverZoomGalleryCaption) {
-                data.hoverZoomCaption = data.hoverZoomGalleryCaption[data.hoverZoomGalleryIndex];
-            } else {
-                prepareImgCaption(link);
+                if (data.hoverZoomGalleryCaption) {
+                    data.hoverZoomCaption = data.hoverZoomGalleryCaption[data.hoverZoomGalleryIndex];
+                } else {
+                    prepareImgCaption(link);
+                }
             }
         }
 
