@@ -17,10 +17,11 @@ hoverZoomPlugins.push({
             function createUrls(hash) {
                 var srcs = ['http://i.imgur.com/' + hash + '.jpg'];
                 // Same array duplicated several times so that a retry is done if an image fails to load
-                return srcs.concat(srcs).concat(srcs).concat(srcs);
+                //return srcs.concat(srcs).concat(srcs).concat(srcs);
+                return srcs;
             }
 
-            var matches = href.match(/(?:\/(a|signin))?\/([^\W_]{5,7})(?:\/|\.[a-zA-Z]+|#([^\W_]{5,7}|\d+))?$/);
+            var matches = href.match(/(?:\/(a|gallery|signin))?\/([^\W_]{5,7})(?:\/|\.[a-zA-Z]+|#([^\W_]{5,7}|\d+))?$/);
             if (matches && matches[2]) {
 
                 var view = matches[1];
@@ -34,6 +35,7 @@ hoverZoomPlugins.push({
                     case 'signin':
                         return;
                     case 'a': // album view:
+                    case 'gallery':
                         var anchor = matches[3];
                         if (!anchor || anchor.match(/^\d+$/)) { // whole album or indexed image
                             data.hoverZoomGallerySrc = [];
