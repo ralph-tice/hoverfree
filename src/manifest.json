@@ -1062,6 +1062,10 @@
             "matches":[ "*://*.taobao.com/*" ]
         },
         {
+            "js":[ "plugins/lazygirls_info.js" ],
+            "matches":[ "*://*.lazygirls.info/*" ]
+        },
+        {
             "js":["js/hoverzoom.js"],
             "matches":["<all_urls>"],
             "all_frames":true
