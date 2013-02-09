@@ -2,7 +2,7 @@ rem @echo off
 
 setlocal
 
-set HZ_VERSION=4.10
+set HZ_VERSION=4.11.1
 set SRC_DIR=..\src
 set DEST_DIR=%~dp0releases\hoverzoom_%HZ_VERSION%
 
@@ -15,7 +15,8 @@ del "%DEST_DIR%\js\affiliate.js"
 
 tools\7za.exe a -r -tzip "releases\hoverzoom_%HZ_VERSION%.zip" "%DEST_DIR%\*.*"
 
-%LOCALAPPDATA%\Google\Chrome\Application\chrome.exe --pack-extension="%DEST_DIR%" --pack-extension-key="%~dp0hoverzoom.pem" --no-message-box
+%LOCALAPPDATA%\Google\Chrome\Application\chrome.exe --pack-extension="%DEST_DIR%" --pack-extension-key="%~dp0hoverzoom.pem" 
+rem --no-message-box
 
 copy /y "%DEST_DIR%.crx" "releases\hoverzoom.crx"
 
