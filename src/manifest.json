@@ -1,6 +1,6 @@
 ﻿{
     "name":"Hover Zoom",
-    "version":"4.11.3",
+    "version":"4.11.5",
     "description":"__MSG_extDescription__",
     "manifest_version":2,
     "update_url": "http://hoverzoom.net/chrome/updates.xml",
@@ -22,6 +22,7 @@
         "default_title":"Hover Zoom"
     },
     "permissions":[
+        "cookies",
         "tabs",
         "history",
         "notifications",
