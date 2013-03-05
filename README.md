@@ -3,7 +3,7 @@ hoverfree
 
 Fork of hoverzoom.net -- this Chrome extension will show an image if you hover its thumbnail or a link.
 
-Read why here: https://gist.github.com/ralph-tice/5087704 or see http://www.reddit.com/r/chrome/comments/19nndn/hoverzoom_stealing_all_its_users_browsing_data/ for discussion.
+Read why here: https://gist.github.com/ralph-tice/5087704 or see http://www.reddit.com/r/technology/comments/19oy0s/hoverzoom_has_gone_evil_tracking_browsing_history/ for discussion.
 
 
 Philosophy:
