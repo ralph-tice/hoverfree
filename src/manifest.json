@@ -3,8 +3,6 @@
     "version":"1.0.0",
     "description":"__MSG_extDescription__",
     "manifest_version":2,
-    //disabling auto_update until we get settled, we'll probably just use chrome dev dashboard.
-    //"update_url": "http://hoverzoom.net/chrome/updates.xml",
     "icons":{
         "16":"images/icon16.png",
         "32":"images/icon32.png",
