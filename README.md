@@ -9,8 +9,8 @@ Read why here: https://gist.github.com/ralph-tice/5087704 or see http://www.redd
 Philosophy:
 ===========
 
-HoverFree should be free to use and help people preview a linked image.
+HoverFree will be free to use and help people preview a linked image.
 
-HoverFree should never inject advertising, referral links, adware, spyware, etc.
+HoverFree will never inject advertising, referral links, adware, spyware, etc.
 
-HoverFree should never track or record browsing activity.
+HoverFree will never track or record browsing activity.
