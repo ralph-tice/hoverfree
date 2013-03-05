@@ -486,7 +486,7 @@ var hoverZoom = {
             // The image size is not yet available in the onload so I have to delay the positioning
             setTimeout(posImg, options.showWhileLoading ? 0 : 10);
 
-            if (options.addToHistory && !chrome.extension.inIncognitoTab) {
+            if (options.addToHistory && !chrome.extension.inIncognitoContext) {
                 var url = hz.currentLink.context.href || imgDetails.url;
                 chrome.extension.sendRequest({action:'addUrlToHistory', url:url});
             }
@@ -1004,7 +1004,7 @@ var hoverZoom = {
                     width:imgDetails.naturalWidth + popupBorder.width,
                     height:imgDetails.naturalHeight + popupBorder.height,
                     type:'popup',
-                    incognito:chrome.extension.inIncognitoTab
+                    incognito:chrome.extension.inIncognitoContext
                 };
 
                 // If image bigger than screen, adjust window dimensions to match image's aspect ratio
