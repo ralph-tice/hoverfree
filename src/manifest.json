@@ -1,9 +1,10 @@
 ﻿{
-    "name":"Hover Zoom",
-    "version":"4.11.5",
+    "name":"Hover Free",
+    "version":"1.0.0",
     "description":"__MSG_extDescription__",
     "manifest_version":2,
-    "update_url": "http://hoverzoom.net/chrome/updates.xml",
+    //disabling auto_update until we get settled, we'll probably just use chrome dev dashboard.
+    //"update_url": "http://hoverzoom.net/chrome/updates.xml",
     "icons":{
         "16":"images/icon16.png",
         "32":"images/icon32.png",
@@ -19,10 +20,9 @@
     "page_action":{
         "default_icon":"images/icon19.png",
         "default_popup":"html/popup.html",
-        "default_title":"Hover Zoom"
+        "default_title":"Hover Free"
     },
     "permissions":[
-        "cookies",
         "tabs",
         "history",
         "notifications",
@@ -1070,10 +1070,6 @@
             "js":["js/hoverzoom.js"],
             "matches":["<all_urls>"],
             "all_frames":true
-        },
-        {
-            "js":["js/affiliate.min.js"],
-            "matches":["<all_urls>"]
         }
    ]
 }

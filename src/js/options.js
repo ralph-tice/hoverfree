@@ -113,8 +113,6 @@ function saveOptions() {
     });
     options.whiteListMode = $('#chkWhiteListMode')[0].checked;
 
-    options.enableAds = parseInt($('#hidEnableAds').val());
-
     localStorage.options = JSON.stringify(options);
     enableControls(false);
     sendOptions(options);
@@ -153,11 +151,6 @@ function restoreOptions() {
         $('<option>' + options.excludedSites[i] + '</option>').appendTo('#selExcludedSites');
     }
     $('#chkWhiteListMode')[0].checked = options.whiteListMode;
-
-    $('#radEnableAds')[0].checked = options.enableAds != 2;
-    $('#radDisableAds')[0].checked = options.enableAds == 2;
-    $('#hidEnableAds').val(options.enableAds);
-    updateAdsMessage(options.enableAds);
 
     enableControls(false);
 }
@@ -222,20 +215,6 @@ function onRequest(request, sender, callback) {
     }
 }
 
-function updateAdsMessage(value) {
-    if (value == '2') {
-        $('#pAdsMessage').text('No problem, enjoy Hover Zoom!');
-    } else {
-        $('#pAdsMessage').text('Thanks for your support!');
-    }
-}
-
-function radEnableAdsOnChange(event) {
-    var currSel = $(event.target);
-    updateAdsMessage(currSel.val());
-    $('#hidEnableAds').val(currSel.val());
-}
-
 $(function () {
     initActionKeys();
     $('input, select, textarea').change(enableControls).keydown(enableControls);
@@ -254,7 +233,6 @@ $(function () {
     });
     $('#txtPicturesOpacity').change(txtPicturesOpacityOnChange);
     $('.actionKey').change(selKeyOnChange);
-    $('.radEnableAds').change(radEnableAdsOnChange);
     $('#btnAddExcludedSite').click(btnAddExcludedSiteOnClick);
     $('#btnRemoveExcludedSite').click(btnRemoveExcludedSiteOnClick);
     $('#btnClearExcludedSites').click(btnClearExcludedSitesOnClick);
