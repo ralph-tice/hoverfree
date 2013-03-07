@@ -8,17 +8,17 @@ hoverZoomPlugins.push({
 
         var res = [];
 
+        function createUrls(hash) {
+            var srcs = ['http://i.imgur.com/' + hash + '.jpg'];
+            // Same array duplicated several times so that a retry is done if an image fails to load
+            //return srcs.concat(srcs).concat(srcs).concat(srcs);
+            return srcs;
+        }
+
         function prepareImgLink() {
             var link = $(this), data = link.data(), href = link.attr('href');
-            if (data.hoverZoomSrc) {
+            if (href.indexOf('gallery') == -1 && data.hoverZoomSrc) {
                 return;
-            }
-
-            function createUrls(hash) {
-                var srcs = ['http://i.imgur.com/' + hash + '.jpg'];
-                // Same array duplicated several times so that a retry is done if an image fails to load
-                //return srcs.concat(srcs).concat(srcs).concat(srcs);
-                return srcs;
             }
 
             var matches = href.match(/(?:\/(a|gallery|signin))?\/([^\W_]{5,7})(?:\/|\.[a-zA-Z]+|#([^\W_]{5,7}|\d+))?$/);
@@ -30,7 +30,7 @@ hoverZoomPlugins.push({
                 if (excl.indexOf(hash) > -1) {
                     return;
                 }
-
+                
                 switch (view) {
                     case 'signin':
                         return;
@@ -43,19 +43,28 @@ hoverZoomPlugins.push({
 
                             var albumUrl = 'http://api.imgur.com/2/album/' + hash + '.json';
                             $.get(albumUrl, function (imgur) {
-                                imgur.album.images.forEach(function (img) {
-                                    var urls = createUrls(img.image.hash),
-                                        caption = img.image.title;
-                                    if (data.hoverZoomGallerySrc.indexOf(urls) == -1) {
-                                        if (caption != '' && img.image.caption != '') {
-                                            caption += ';\n';
+                                if (imgur.error) {
+                                    data.hoverZoomSrc = createUrls(hash);
+                                    res.push(link);
+                                } else {
+                                    imgur.album.images.forEach(function (img) {
+                                        var urls = createUrls(img.image.hash),
+                                            caption = img.image.title;
+                                        if (data.hoverZoomGallerySrc.indexOf(urls) == -1) {
+                                            if (caption != '' && img.image.caption != '') {
+                                                caption += ';\n';
+                                            }
+                                            caption += img.image.caption;
+                                            data.hoverZoomGalleryCaption.push(caption);
+                                            data.hoverZoomGallerySrc.push(urls);
+                                            data.hoverZoomSrc = undefined;
                                         }
-                                        caption += img.image.caption;
-                                        data.hoverZoomGalleryCaption.push(caption);
-                                        data.hoverZoomGallerySrc.push(urls);
-                                    }
-                                });
-                                callback($([link]));
+                                    });
+                                    callback($([link]));
+                                }
+                            }).fail(function() {
+                                data.hoverZoomSrc = createUrls(hash);
+                                res.push(link);
                             });
                             break;
                         } else { // image of an album (hash as anchor)
@@ -70,12 +79,13 @@ hoverZoomPlugins.push({
         }
 
         // Every sites
-        $('a[href*="//imgur.com/"], a[href*="//www.imgur.com/"], a[href*="//i.imgur.com/"], ').each(prepareImgLink);
+        $('a[href*="//imgur.com/"], a[href*="//www.imgur.com/"], a[href*="//i.imgur.com/"]').each(prepareImgLink);
 
         // On imgur.com (galleries, etc)
         if (window.location.host.indexOf('imgur.com') > -1) {
+            hoverZoom.urlReplace(res, 'a img[src*="b."]', 'b.', '.');
             minSplitLength = 2;
-            $('a[href^="/"]').each(prepareImgLink);
+            $('a[href*="/gallery/"]').each(prepareImgLink);
         }
 
         if (res.length) {
