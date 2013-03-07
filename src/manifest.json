@@ -1,6 +1,6 @@
 ﻿{
     "name":"Hover Free",
-    "version":"1.0.0",
+    "version":"1.0.1",
     "description":"__MSG_extDescription__",
     "manifest_version":2,
     "icons":{
@@ -1063,6 +1063,26 @@
         {
             "js":[ "plugins/lazygirls_info.js" ],
             "matches":[ "*://*.lazygirls.info/*" ]
+        },
+        {
+            "js":[ "plugins/zhihu.js" ],
+            "matches":[ "*://*.zhihu.com/*" ]
+        },
+        {
+            "js":[ "plugins/hupu.js" ],
+            "matches":[ "*://*.hupu.com/*" ]
+        },
+        {
+            "js":[ "plugins/weibo.js" ],
+            "matches":[ "*://*.weibo.com/*" ]
+        },
+        {
+            "js":[ "plugins/douban.js" ],
+            "matches":[ "*://*.douban.com/*" ]
+        },
+        {
+            "js":[ "plugins/github.js" ],
+            "matches":[ "*://*.github.com/*" ]
         },
         {
             "js":["js/hoverzoom.js"],

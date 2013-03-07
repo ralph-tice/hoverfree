@@ -490,8 +490,6 @@ var hoverZoom = {
                 var url = hz.currentLink.context.href || imgDetails.url;
                 chrome.extension.sendRequest({action:'addUrlToHistory', url:url});
             }
-            chrome.extension.sendRequest({action:'trackEvent', event:{category:'Actions', action:'ImageDisplayedOnSite', label:document.location.host}});
-            chrome.extension.sendRequest({action:'trackEvent', event:{category:'Actions', action:'ImageDisplayedFromSite', label:imgDetails.host}});
         }
 
         function imgFullSizeOnError() {
@@ -510,7 +508,6 @@ var hoverZoom = {
                     hideHoverZoomImg();
                     //hz.currentLink.removeClass('hoverZoomLink').removeData();
                     console.warn('[HoverZoom] Failed to load image: ' + imgDetails.url);
-                    chrome.extension.sendRequest({action:'trackEvent', event:{category:'Errors', action:'LoadingErrorFromSite', label:imgDetails.host}});
                 }
             }
         }

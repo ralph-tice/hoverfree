@@ -2,7 +2,7 @@
 // Licensed under the MIT license, read license.txt
 
 // True if the current version of the extension has something to show in an update notification
-var hasReleaseNotes = false;
+var hasReleaseNotes = true;
 
 var options, viewWindow = null;
 
