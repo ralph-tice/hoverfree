@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Romain Vallet <romain.vallet@gmail.com>
+// Copyright (c) 2013 Romain Vallet <romain.vallet@gmail.com>
 // Licensed under the MIT license, read license.txt
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
@@ -12,9 +12,14 @@ hoverZoomPlugins.push({
             /_(mini|normal|bigger)/,
             ''
         );
-        $('a[data-expanded-url], a[data-url]').each(function () {
+        hoverZoom.urlReplace(res,
+            'img[src*=":thumb"]',
+            ':thumb',
+            ''
+        );
+        $('a[data-expanded-url], a[data-full-url], a[data-url]').each(function () {
             var link = $(this),
-                url = this.getAttribute('data-expanded-url') || this.getAttribute('data-url');
+                url = this.getAttribute('data-expanded-url') || this.getAttribute('data-full-url') || this.getAttribute('data-url');
             if (url.match(/\/[^:]+\.(?:jpe?g|gif|png|svg|webp|bmp|ico|xbm)(?:[\?#].*)?$/i)) {
                 link.data().hoverZoomSrc = [url];
                 res.push(link);
@@ -34,7 +39,7 @@ hoverZoomPlugins.push({
                         return;
                     }
                     linkData.hoverZoomTwitterApiCalled = true;
-                    $.getJSON('http://api.twitter.com/1/statuses/show.json?id=' + photoId + '&include_entities=true&trim_user=true',
+                    $.getJSON('https://api.twitter.com/1/statuses/show.json?id=' + photoId + '&include_entities=true&trim_user=true',
                         function (data) {
                             if (data && data.entities && data.entities.media && data.entities.media.length) {
                                 var media = data.entities.media[0],
@@ -66,9 +71,9 @@ hoverZoomPlugins.push({
             }
         });
 
-        $('a[data-expanded-url*="/photo/"]').each(function () {
+        $('a[data-expanded-url*="/photo/"], a[data-full-url*="/photo/"]').each(function () {
             var link = $(this),
-                expandedUrl = link.attr('data-expanded-url'),
+                expandedUrl = link.attr('data-expanded-url') || link.attr('data-full-url'),
                 photoId = expandedUrl.replace(/.*status\/(\d+).*$/, '$1');
             getFromAPI(link, photoId);
         });

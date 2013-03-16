@@ -1,6 +1,6 @@
 ﻿{
     "name":"Hover Free",
-    "version":"1.0.1",
+    "version":"1.0.2",
     "description":"__MSG_extDescription__",
     "manifest_version":2,
     "icons":{
@@ -37,7 +37,7 @@
     ],
     "content_scripts":[
         {
-            "js":["js/jquery.min.js", "plugins/default.js"],
+            "js":["js/tools.js", "js/jquery.min.js", "plugins/default.js"],
             "matches":["<all_urls>"],
             "all_frames":true
         },
@@ -53,6 +53,8 @@
                 "plugins/photoshop_a.js",
                 "plugins/instagram_a.js",
                 "plugins/deviantart_a.js",
+                "plugins/youtube_a.js",
+                "plugins/gravatar_a.js",
                 "plugins/ipboard_a.js"],
             "matches":["<all_urls>"],
             "all_frames":true
@@ -569,7 +571,8 @@
         },
         {
             "js":["plugins/twitter.js"],
-            "matches":["*://*.twitter.com/*"]
+            "matches":["*://*.twitter.com/*",
+                       "*://*.tweetdeck.com/*"]
         },
         {
             "js":["plugins/twitpic.js"],
@@ -840,10 +843,6 @@
             "matches":["*://*.pict.mobi/*"]
         },
         {
-            "js":["plugins/youtube_a.js"],
-            "matches":["*://*.youtube.com/*"]
-        },
-        {
             "js":["plugins/zing_vn.js"],
             "matches":["*://*.zing.vn/*"],
             "all_frames":true
@@ -1083,6 +1082,10 @@
         {
             "js":[ "plugins/github.js" ],
             "matches":[ "*://*.github.com/*" ]
+        },
+        {
+            "js":[ "plugins/freepik.js" ],
+            "matches":[ "*://*.freepik.com/*" ]
         },
         {
             "js":["js/hoverzoom.js"],
