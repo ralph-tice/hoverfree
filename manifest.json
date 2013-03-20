@@ -28,7 +28,7 @@
         "webRequestBlocking",
         "*://*/*"
     ],
-    "content_security_policy":"script-src 'self' https://apis.google.com object-src 'self'",
+    "content_security_policy":"script-src 'self' https://apis.google.com; object-src 'self'",
     "web_accessible_resources":[
         "images/loading.gif"
     ],
@@ -52,7 +52,8 @@
                 "plugins/deviantart_a.js",
                 "plugins/youtube_a.js",
                 "plugins/gravatar_a.js",
-                "plugins/ipboard_a.js"],
+                "plugins/ipboard_a.js",
+                "plugins/chzbgr_a.js"],
             "matches":["<all_urls>"],
             "all_frames":true
         },
