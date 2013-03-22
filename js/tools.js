@@ -20,3 +20,13 @@ function ce(s) {
 function ge(s) {
   return document.getElementById(s);
 }
+
+function parentNodeName(e, tag) {
+  var p = e.parentNode;
+  if (!p) { return null; }
+  if (p && p.nodeName == tag.toUpperCase()) {
+       return p;
+  } else {
+    return parentNodeName(p, tag);
+  }
+ }
