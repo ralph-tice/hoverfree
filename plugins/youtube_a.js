@@ -7,25 +7,13 @@ hoverZoomPlugins.push({
     prepareImgLinks:function (callback) {
         var res = [],
             repl = 'http://i1.ytimg.com/vi/$1/0.jpg';
-        /*hoverZoom.urlReplace(res,
-            'a[href*="youtube.com/watch"] img',
-            /^.*v=([\w-]+).*$/,
-            repl,
-            'eq(0)'
-        );
-        hoverZoom.urlReplace(res,
-            'a[href*="youtu.be/"] img',
-            /^.*youtu.be\/([\w-]+).*$/,
-            repl,
-            'eq(0)'
-        );*/
         $('a[href*="youtu.be/"] img').each(function () {
-            var link = $(this.parentNode);
+            var link = $(parentNodeName(this, 'a'));
             link.data().hoverZoomSrc = [link.attr('href').replace(/^.*youtu.be\/([\w-]+).*$/, repl)];
             res.push(link);
         });
         $('a[href*="youtube.com/watch"] img').each(function () {
-            var link = $(this.parentNode);
+            var link = $(parentNodeName(this, 'a'));
             link.data().hoverZoomSrc = [link.attr('href').replace(/^.*v=([\w-]+).*$/, repl)];
             res.push(link);
         });

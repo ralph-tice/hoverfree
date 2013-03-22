@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Romain Vallet <romain.vallet@gmail.com>
+// Copyright (c) 2013 Romain Vallet <romain.vallet@gmail.com>
 // Licensed under the MIT license, read license.txt
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
@@ -15,7 +15,7 @@ hoverZoomPlugins.push({
             res.push(_this);
         });
         hoverZoom.urlReplace(res,
-            'a:not([data-super-img]) img[src*="deviantart.net/fs"]',
+            'a:not([data-super-img]) img[src*="deviantart.net/fs"], [style*="deviantart.net/fs"]',
             /\/(fs\d+)\/\d+\w+\//,
             '/$1/',
             ':eq(0)'
