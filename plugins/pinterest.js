@@ -20,9 +20,21 @@ hoverZoomPlugins.push({
 		});
         hoverZoom.urlReplace(res,
             'img[src*="/avatars/"]',
-            /\.jpg/,
-            '_o.jpg'
+            /_\d+\.jpg/,
+            '_140.jpg',
+			':eq(0)'
         );
         callback($(res));
+		$('img[data-src]').parents('a').one('mouseover', function() {
+			var link = $(this),
+				data = link.data();
+			if (data.hoverZoomSrc) { return; }
+			var img = link.find('img[data-src]');
+			if (img.length == 1) {
+				data.hoverZoomSrc = [img.attr('data-src').replace(/\/\d+x(\d+)?\//, '/736x/')];
+				data.hoverZoomCaption = link.parents('.pinWrapper').find('.pinDescription').text();
+				link.addClass('hoverZoomLink');
+			}
+		});
     }
 });

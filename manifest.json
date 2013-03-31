@@ -1,6 +1,6 @@
 ﻿{
     "name":"Hover Free",
-    "version":"1.0.7",
+    "version":"1.0.8",
     "description":"__MSG_extDescription__",
     "manifest_version":2,
     "icons":{
@@ -683,10 +683,6 @@
             "matches":["*://*.skyrock.com/*"]
         },
         {
-            "js":["plugins/tagged.js"],
-            "matches":["*://*.tagged.com/*"]
-        },
-        {
             "js":["plugins/leboncoin_fr.js"],
             "matches":["*://*.leboncoin.fr/*"]
         },
@@ -823,10 +819,14 @@
         {
             "matches":["*://*.reddit.com/*"],
             "js":["plugins/reddit.js",
-                "plugins/quickmeme.js",
                 "plugins/livememe.js",
-                "plugins/memegenerator.js",
-                "plugins/slutcapades.js"]
+                "plugins/slutcapades.js",
+                "plugins/memefive.js"]
+        },
+        {
+            "js":["plugins/quickmeme.js"],
+            "matches":["*://*.reddit.com/*",
+                       "*://*.feedly.com/*"]
         },
         {
             "js":["plugins/instructables.js"],
@@ -1088,6 +1088,14 @@
         {
             "js":[ "plugins/weasyl.js" ],
             "matches":[ "*://*.weasyl.com/*" ]
+        },
+        {
+            "js":[ "plugins/quora.js" ],
+            "matches":[ "*://*.quora.com/*" ]
+        },
+        {
+            "js":[ "plugins/wallbase_cc.js" ],
+            "matches":[ "*://*.wallbase.cc/*" ]
         },
         {
             "js":["js/hoverzoom.js"],

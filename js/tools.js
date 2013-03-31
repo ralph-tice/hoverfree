@@ -25,8 +25,8 @@ function parentNodeName(e, tag) {
   var p = e.parentNode;
   if (!p) { return null; }
   if (p && p.nodeName == tag.toUpperCase()) {
-       return p;
+	return p;
   } else {
     return parentNodeName(p, tag);
   }
- }
+}

@@ -4,16 +4,16 @@
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push({
     name:'Facebook',
-    version:'0.9',
     prepareImgLinks:function (callback) {
 
-        $('img[src*="fbcdn"], img[src*="fbexternal"], [style*="fbcdn"], [style*="fbexternal"]').mouseenter(function () {
+        $('img[src*="fbcdn"], img[src*="fbexternal"], [style*="fbcdn"], [style*="fbexternal"]').one('mousemove', function () {
             var img = $(this),
                 data = img.data();
             if (data.hoverZoomSrc) {
                 return;
             }
-            var src = hoverZoom.getThumbUrl(this);
+            var src = hoverZoom.getThumbUrl(this),
+                origSrc = src;
             if (src.indexOf('safe_image.php') > -1) {
                 src = unescape(src.substr(src.lastIndexOf('&url=') + 5));
                 if (src.indexOf('?') > -1) {
@@ -31,21 +31,21 @@ hoverZoomPlugins.push({
                     src = src.replace(/\/(\d|(hq)?default)\.jpg/, '/0.jpg');
                 }
             } else {
-                if (src.match(/_[no]\.jpg$/)) {
-                    return;
-                }
                 src = src.replace(/[a-z]\d+\.(facebook\.com|sphotos\.ak\.fbcdn\.net)\//, 'fbcdn-sphotos-a.akamaihd.net/').replace(/\/[a-z]\d+(\.\d+)+\//, '/').replace(/\/[a-z]\d+x\d+\//, '/').replace(/_[sqta]\./, '_n.').replace(/\/[sqta](\d)/, '/n$1');
             }
+            
             data.hoverZoomSrc = [src];
-            img.addClass('hoverZoomLink');
+            if (origSrc != src || (this.style.top && parseInt(this.style.top) < 0)) {
+                img.addClass('hoverZoomLink');
 
-            var caption = getTooltip(img.parents('a:eq(0)'));
-            if (caption) {
-                data.hoverZoomCaption = caption;
+                var caption = getTooltip(img.parents('a:eq(0)'));
+                if (caption) {
+                    data.hoverZoomCaption = caption;
+                }
             }
         });
 
-        $('a[ajaxify*="src="]:not(.coverWrap)').mouseenter(function () {
+        $('a[ajaxify*="src="]:not(.coverWrap)').one('mouseover', function () {
             var link = $(this),
                 data = link.data();
             if (data.hoverZoomSrc) {
