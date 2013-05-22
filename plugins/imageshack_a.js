@@ -1,14 +1,13 @@
-// Copyright (c) 2011 Romain Vallet <romain.vallet@gmail.com>
+// Copyright (c) 2013 Romain Vallet <romain.vallet@gmail.com>
 // Licensed under the MIT license, read license.txt
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push({
     name:'ImageShack (a)',
-    version:'0.3',
     prepareImgLinks:function (callback) {
         var res = [];
         hoverZoom.urlReplace(res,
-            'a[href*="imageshack.us/my.php"], a[href*="imageshack.us/i/"',
+            'a[href*="imageshack.us/my.php"], a[href*="imageshack.us/i/"]',
             /img(\d+)\.imageshack\.us\/(?:i\/|my\.php\?image=)([\w\.]+).*$/,
             'desmond.imageshack.us/Himg$1/scaled.php?server=$1&filename=$2&res=medium'
         );

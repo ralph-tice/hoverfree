@@ -121,9 +121,6 @@ var hoverZoom = {
             'www.redditmedia.com'
         ];
 
-        var attrChangeObserver = new WebKitMutationObserver(onAttrChange);
-        var attrChangeConf = {attributes:true, attributeFilter:['href']};
-
         // Calculate optimal image position and size
         function posImg(position) {
             if (!imgFullSize) {
@@ -379,8 +376,6 @@ var hoverZoom = {
             cLog('loadFullSizeImage');
             // If no image is currently displayed...
             if (!imgFullSize) {
-                //$.ajax({type: 'HEAD', url: imgDetails.url, always: function(xhr) { 
-                //console.log(xhr);
                 hz.createHzImg(!hideKeyDown);
                 hz.createImgLoading();
 
@@ -796,7 +791,9 @@ var hoverZoom = {
         function loadOptions() {
             chrome.extension.sendRequest({action:'getOptions'}, function (result) {
                 options = result;
+                if (options) {
                 applyOptions();
+                }
             });
         }
 
@@ -808,26 +805,21 @@ var hoverZoom = {
         }
 
         function windowOnDOMNodeInserted(event) {
-            if (event.target) {
-                if (event.target.id == 'hzImg' ||
-                    event.target.parentNode.id == 'hzImg' ||
-                    event.target.id == 'hzDownscaled') {
-                    return;
-                }
-                var srcElement = $(event.target);
-                if (event.target.nodeName == 'A' || event.target.nodeName == 'IMG' || srcElement.find('a, img').length || srcElement.parents('a, img').length) {
-                    prepareImgLinksAsync();
-                } else if (event.target.nodeName == 'EMBED' || event.target.nodeName == 'OBJECT') {
+            var insertedNode = event.target;
+            if (insertedNode && insertedNode.nodeType === Node.ELEMENT_NODE) {
+                if (insertedNode.nodeName === 'A' || 
+                    insertedNode.nodeName === 'IMG' || 
+                    insertedNode.getElementsByTagName('A').length > 0 || 
+                    insertedNode.getElementsByTagName('IMG').length > 0) {
+                    if (insertedNode.id !== 'hzImg' &&
+                        insertedNode.parentNode.id !== 'hzImg' &&
+                        insertedNode.id !== 'hzDownscaled') {
+                        prepareImgLinksAsync();
+                    }
+                } else if (insertedNode.nodeName === 'EMBED' || insertedNode.nodeName === 'OBJECT') {
                     fixFlash();
                 }
             }
-        }
-
-        function onAttrChange(mutations) {
-            mutations.forEach(function (mutation) {
-                $(mutation.target).data().hoverZoomSrc = undefined;
-            });
-            prepareImgLinksAsync();
         }
 
         function windowOnLoad(event) {

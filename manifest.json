@@ -53,7 +53,8 @@
                 "plugins/youtube_a.js",
                 "plugins/gravatar_a.js",
                 "plugins/ipboard_a.js",
-                "plugins/chzbgr_a.js"],
+                "plugins/chzbgr_a.js",
+                "plugins/wallbase_cc_a.js"],
             "matches":["<all_urls>"],
             "all_frames":true
         },
@@ -258,7 +259,7 @@
             "matches":["*://*.deviantart.com/*"]
         },
         {
-            "js":["plugins/google.js"],
+            "js":["plugins/google.js" ],
             "matches":["*://*.google.com/*",
                 "*://*.google.ad/*",
                 "*://*.google.ae/*",
@@ -820,6 +821,7 @@
             "matches":["*://*.reddit.com/*"],
             "js":["plugins/reddit.js",
                 "plugins/livememe.js",
+                "plugins/memegenerator.js",
                 "plugins/slutcapades.js",
                 "plugins/memefive.js"]
         },
@@ -1096,6 +1098,18 @@
         {
             "js":[ "plugins/wallbase_cc.js" ],
             "matches":[ "*://*.wallbase.cc/*" ]
+        },
+        {
+            "js":[ "plugins/bluray.js" ],
+            "matches":[ "*://*.blu-ray.com/*" ]
+        },
+        {
+            "js": [ "plugins/minitokyo.js" ],
+            "matches": [ "*://*.minitokyo.net/*" ]
+        },
+        {
+            "js": [ "plugins/animepaper.js" ],
+            "matches": [ "*://*.animepaper.net/*" ]
         },
         {
             "js":["js/hoverzoom.js"],
