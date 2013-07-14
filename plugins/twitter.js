@@ -26,58 +26,21 @@ hoverZoomPlugins.push({
             }
         });
 
-        function getFromAPI(link, photoId) {
-            var linkData = link.data(),
-                storedUrl = localStorage['HZcache_' + photoId];
-            if (storedUrl) {
-                linkData.hoverZoomSrc = [storedUrl];
-                link.addClass('hoverZoomLink');
-            } else {
-                link.mouseenter(function () {
-                    linkData.hoverZoomMouseOver = true;
-                    if (linkData.hoverZoomTwitterApiCalled) {
-                        return;
-                    }
-                    linkData.hoverZoomTwitterApiCalled = true;
-                    $.getJSON('https://api.twitter.com/1/statuses/show.json?id=' + photoId + '&include_entities=true&trim_user=true',
-                        function (data) {
-                            if (data && data.entities && data.entities.media && data.entities.media.length) {
-                                var media = data.entities.media[0],
-                                    url = (location.protocol == 'https:') ? media.media_url_https : media.media_url;
-
-                                linkData.hoverZoomSrc = [url];
-                                link.addClass('hoverZoomLink');
-
-                                // Image is displayed if the cursor is still over the link
-                                if (linkData.hoverZoomMouseOver)
-                                    hoverZoom.displayPicFromElement(link);
-
-                                // URLs are stored to lessen API calls
-                                localStorage['HZcache_' + photoId] = url;
-                            }
-                        }
-                    );
-                }).mouseleave(function () {
-                        linkData.hoverZoomMouseOver = false;
-                    });
-            }
-        }
-
         $('a:contains("pic.twitter.com/")').each(function () {
-            var link = $(this),
-                photoId = link.parents('[data-item-id]').attr('data-item-id');
-            if (photoId) {
-                getFromAPI(link, photoId);
-            }
+            var link = $(this);
+            var url = $(link.parent().parent().parent().data('expandedFooter')).find("a.media-thumbnail").data('url');
+            link.data().hoverZoomSrc = [url];
+            link.addClass('hoverZoomLink');
         });
 
-        $('a[data-expanded-url*="/photo/"], a[data-full-url*="/photo/"]').each(function () {
+/*        $('a[data-expanded-url*="/photo/"], a[data-full-url*="/photo/"]').each(function () {
             var link = $(this),
                 expandedUrl = link.attr('data-expanded-url') || link.attr('data-full-url'),
                 photoId = expandedUrl.replace(/.*status\/(\d+).*$/, '$1');
-            getFromAPI(link, photoId);
+            //getFromAPI(link, photoId);
+            link.addClass('hoverZoomLink');
         });
-
+*/
         callback($(res));
     }
 });
