@@ -20,6 +20,9 @@ Installation:
 
 Easiest method is Chrome Web Store: https://chrome.google.com/webstore/detail/hover-free/hcmnnggnaofmhflgomfjfbndngdoogkj
 
-For manual installation, create a .crx by zipping up / and drag it into your chrome://extensions or turn on developer mode and use either of the two manual methods there.
+For manual installation, simplest method is:
+```
+git archive --format zip --output ~/hoverfree.zip master 
+```
 
 Over 24,000 weekly users as of 7/13!
