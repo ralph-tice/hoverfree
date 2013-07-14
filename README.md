@@ -22,4 +22,4 @@ Easiest method is Chrome Web Store: https://chrome.google.com/webstore/detail/ho
 
 For manual installation, create a .crx by zipping up / and drag it into your chrome://extensions or turn on developer mode and use either of the two manual methods there.
 
-Over 6500 weekly users as of 3/31!
+Over 24,000 weekly users as of 7/13!
