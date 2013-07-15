@@ -2,7 +2,7 @@
 // Licensed under the MIT license, read license.txt
 
 var hoverZoomPlugins = hoverZoomPlugins || [],
-    debug = true;
+    debug = false;
 
 function cLog(msg) {
     if (debug) {
