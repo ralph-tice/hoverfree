@@ -921,13 +921,7 @@ var hoverZoom = {
             }
             if (isExcludedSite() || window == window.top && $('.hoverZoomLink').length == 0) {
                 return;
-            }
-            /*if (location.host == 'www.youtube.com') {
-             var script = $('#watch-player').next('script').clone();
-             eval(script.html().replace('\\u003cembed', '\\u003cembed wmode=opaque'));
-             //script.appendTo(script.parent());
-             return;
-             }*/
+            }            
             $('embed:not([wmode]), embed[wmode="window"]').each(function () {
                 if (!this.type || this.type.toLowerCase() != 'application/x-shockwave-flash') {
                     return;

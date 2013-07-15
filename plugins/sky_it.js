@@ -1,4 +1,6 @@
 // Copyright (c) 2011 Andrea Carron <mail2hox@gmail.com> and Romain Vallet <romain.vallet@gmail.com>
+// Copyright (c) 2013 Ralph Tice
+// removed hidden links eval
 // Licensed under the MIT license, read license.txt
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
@@ -9,20 +11,6 @@ hoverZoomPlugins.push({
         var res = [],
             sky_n = 0,
             pics_data = [],
-            hidden_links = $('div.hiddenlink a');
-
-        if (hidden_links.length) {
-            $.ajax({
-                type:'GET',
-                url:hidden_links.attr('href'),
-                async:false,
-                success:function (data) {
-                    data = data.slice(data.indexOf('var pics_data') + 4);
-                    data = data.slice(0, data.indexOf(']') + 1);
-                    eval(data);
-                }
-            });
-        }
 
         $('img[src*="/resized/"], a.opener_img').each(function () {
             var img = $(this),
