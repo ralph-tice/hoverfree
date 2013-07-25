@@ -1,4 +1,10 @@
-hoverfree
+This repo is DEPRECATED
+=======================
+
+Highly recommend you try out http://my.opera.com/Deathamns/blog/opera-extension-imagus as I've decided to discontinue support for HoverFree.
+============================================================================================================================================
+
+hoverfree 
 =========
 
 Fork of hoverzoom.net -- this Chrome extension will show an image if you hover its thumbnail or a link.
