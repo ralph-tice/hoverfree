@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2011 Romain Vallet <romain.vallet@gmail.com>
+// Copyright (c) 2011 Romain Vallet <romain.vallet@gmail.com>
 // Licensed under the MIT license, read license.txt
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
@@ -9,7 +9,12 @@ hoverZoomPlugins.push({
         var res = [];
         hoverZoom.urlReplace(res,
             'img[src*="twimg.com"]',
-            /_(normal|mini)/,
+            /\:(thumb|normal|mini|large)/,
+            ''
+        );
+        hoverZoom.urlReplace(res,
+            'a[href*="twimg.com"]',
+            /\:(thumb|normal|mini|large)/,
             ''
         );
         callback($(res));
