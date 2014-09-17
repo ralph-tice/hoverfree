@@ -766,8 +766,8 @@
         },
         {
             "js":["plugins/twimg.js"],
-            "matches":["*://*.favstar.fm/*",
-                "*://*.tweetmeme.com/*"]
+            "matches":["<all_urls>"],
+            "all_frames":true
         },
         {
             "js":["plugins/cyworld.js"],
