@@ -9,7 +9,7 @@ hoverZoomPlugins.push({
         var res = [];
 
         function createUrls(hash) {
-            var srcs = ['http://i.imgur.com/' + hash + '.jpg'];
+            var srcs = ['//i.imgur.com/' + hash + '.jpg'];
             // Same array duplicated several times so that a retry is done if an image fails to load
             //return srcs.concat(srcs).concat(srcs).concat(srcs);
             return srcs;
@@ -41,7 +41,7 @@ hoverZoomPlugins.push({
                             data.hoverZoomGallerySrc = [];
                             data.hoverZoomGalleryCaption = [];
 
-                            var albumUrl = 'http://api.imgur.com/2/album/' + hash + '.json';
+                            var albumUrl = '//api.imgur.com/2/album/' + hash + '.json';
                             $.get(albumUrl, function (imgur) {
                                 if (imgur.error) {
                                     data.hoverZoomSrc = createUrls(hash);
