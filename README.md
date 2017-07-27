@@ -1,7 +1,7 @@
 This repo is DEPRECATED
 =======================
 
-Highly recommend you try out http://my.opera.com/Deathamns/blog/opera-extension-imagus as I've decided to discontinue support for HoverFree.
+Highly recommend you try out https://chrome.google.com/webstore/detail/imagus/immpkjjlgappgfkkfieppnmlhakdmaab as I've decided to discontinue support for HoverFree.
 ============================================================================================================================================
 
 hoverfree 
